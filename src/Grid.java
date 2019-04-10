@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Grid implements Drawable {
     private int startX;
@@ -43,6 +44,14 @@ public class Grid implements Drawable {
         g.setColor(act.color);
         g.fillRect(getXPixels(act.x), getYPixels(act.y), size, size);
 //        System.out.printf("Grid drawing actor id: %s%n", act.toString());
+    }
+
+    public void drawImage(Graphics g, Actor act, BufferedImage image) {
+
+    }
+
+    public int getSize() {
+        return size;
     }
 
     @Override
