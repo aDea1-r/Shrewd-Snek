@@ -11,6 +11,7 @@ public class Brain {
     private double[][] inputWeights;    //Matrix which holds the weights of all input nodes: r = input node; c = hidden node
 
     private double[][] hiddenNodes;         //Array that holds the values of all hidden nodes r = 0 for first layer
+    private double[][] hiddenBias;          //Holds the biases(initial values) for all hidden layers
     private double[][][] hiddenWeights;     //Matrix which holds the weights of all hidden nodes: first index = layer #; r = input node; c = hidden node
                                             //Sentinel value is -999.999 for unused weights
 
@@ -35,10 +36,11 @@ public class Brain {
     public int compute(int[] inputs){
 
         for (int i = 0; i < inputs.length; i++) {       //Put the inputs into the neural net
-            inputNodes[i] = (double)inputs[i];
+            inputNodes[i] = (double)inputs[i];              //TODO: insert bias here
         }
         
-        transferBetweenLayers(inputNodes, inputWeights, hiddenNodes[0]);      //Transfer info from inputs to 1st hidden layer
+        transferBetweenLayers(inputNodes, inputWeights, hiddenNodes[0], null);      //Transfer info from inputs to 1st hidden layer
+        removeNegatives(hiddenNodes[0]);
 
         
         for (int i = 0; i < hiddenNodes.length - 1; i++) {  //Loop through each hidden layers----------------
@@ -47,12 +49,14 @@ public class Brain {
             double[] layerNodes = hiddenNodes[i];
             double[][] layerWeights = hiddenWeights[i];
 
-            transferBetweenLayers(layerNodes, layerWeights, hiddenNodes[i+1]);
+            transferBetweenLayers(layerNodes, layerWeights, hiddenNodes[i + 1], hiddenBias[i + 1]);
+            removeNegatives(hiddenNodes[i + 1]);
 
         }
         
         
-        transferBetweenLayers(hiddenNodes[numHidden - 1], hiddenWeights[numHidden - 1], outputNodes);    //Transfer info in last hidden layer to output layer
+        transferBetweenLayers(hiddenNodes[numHidden - 1], hiddenWeights[numHidden - 1], outputNodes, null);    //Transfer info in last hidden layer to output layer
+        removeNegatives(outputNodes);
         
         
         int maxIndex = 0;                                   //Find the max of the output nodes
@@ -64,12 +68,14 @@ public class Brain {
         return maxIndex;
     }
 
-    private void transferBetweenLayers(double[] thisLayerNodes, double[][] thisLayerWeights, double[] nextLayerNodes){
+    private void transferBetweenLayers(double[] thisLayerNodes, double[][] thisLayerWeights, double[] nextLayerNodes, double[] nextLayerBias){
         /*
         Given the nodes of a layer, thisLayerNodes
         the weights of a layer, thisLayerWeights
         and the nodes of the next layer, nextLayerNodes
         this method updates all the nods of the nextLayer
+
+        In addition: when it is on the first node, it will reinitialize the values of every node in nextLayerNodes to bias
          */
         
         for (int nodeNum = 0; nodeNum < thisLayerNodes.length; nodeNum++) { //Loop through nodes------------
@@ -80,7 +86,12 @@ public class Brain {
             for (int weightNum = 0; weightNum < thisNodeWeights.length; weightNum++) {  //Loop through weights
                 double weight = thisNodeWeights[weightNum];
                 if(weight != -999.999){
-                    nextLayerNodes[weightNum] += (nodeVal * weight);
+                    if(nextLayerBias != null && nodeNum == 0){          //Biases
+                        nextLayerNodes[weightNum] = (nodeVal * weight) + nextLayerBias[weightNum];
+                    }
+                    else {
+                        nextLayerNodes[weightNum] += (nodeVal * weight);
+                    }
                 }
             }
 
