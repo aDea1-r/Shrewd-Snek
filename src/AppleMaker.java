@@ -57,7 +57,7 @@ public class AppleMaker extends Actor {
     private static BufferedImage createResizedCopy(Image originalImage, int scaledWidth, int scaledHeight)
     {
 //        System.out.println("resizing...");
-        int imageType = BufferedImage.TYPE_INT_RGB;
+        int imageType = BufferedImage.TYPE_INT_ARGB;
         BufferedImage scaledBI = new BufferedImage(scaledWidth, scaledHeight, imageType);
         Graphics2D g = scaledBI.createGraphics();
         g.setComposite(AlphaComposite.Src);

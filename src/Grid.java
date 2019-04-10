@@ -52,6 +52,7 @@ public class Grid implements Drawable {
         int xCorner = xCenter - image.getWidth()/2;
         int yCorner = yCenter - image.getHeight()/2;
         g.drawImage(image,xCorner,yCorner,null);
+//        g.drawImage(image,1200,100,null);
     }
 
     public int getSize() {
