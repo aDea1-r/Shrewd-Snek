@@ -4,7 +4,7 @@ import java.util.Map;
 public class Body extends Actor {
     int id;
     public Body(Color c, int x, int y, Grid grid, int id){
-        super(c, x, y, grid);
+        super(c, x, y, grid, id);
         id = id;
     }
 

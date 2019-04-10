@@ -10,7 +10,20 @@ public class AppleMaker extends Actor {
     public int eat(SnakeHead other){       //Method will be called by snakeHead when it eats this apple
         x = -1;
         y = -1;
-        other.
+        other.grow(foodVal);
         this.act(null);
+        System.out.printf("Snake id: %d, has eaten Apple id: %d, and grown by %d%n", other.id, this.id, foodVal);
+        return foodVal;
+    }
+
+    @Override
+    public boolean act(Map<Integer, Boolean> inputs) {
+        //TODO: this
+        return false;
+    }
+
+    @Override
+    public void drawMe(Graphics g) {
+        //TODO: this
     }
 }

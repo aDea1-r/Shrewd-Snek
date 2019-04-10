@@ -96,8 +96,8 @@ public class SnakeHead extends Actor {
         }
     }
 
-    public void grow(){     //increases length
-
+    public void grow(int growBy){     //increases length
+        length += growBy;
     }
 
     private boolean makeBody(){

@@ -37,47 +37,66 @@ public class Brain {
         for (int i = 0; i < inputs.length; i++) {       //Put the inputs into the neural net
             inputNodes[i] = (double)inputs[i];
         }
+        
+        transferBetweenLayers(inputNodes, inputWeights, hiddenNodes[0]);      //Transfer info from inputs to 1st hidden layer
 
-        for (int i = 0; i < inputNodes.length; i++) {   //Loop through input nodes-----------------------
-
-            double nodeVal = inputNodes[i];
-            double[] thisNodeWeights = inputWeights[i];
-
-            for (int j = 0; j < thisNodeWeights.length; j++) {  //Loop through weights----------------------
-                double weight = thisNodeWeights[j];
-                if(weight != -999.999){
-                    hiddenNodes[0][j] += (nodeVal * weight);
-                }
-            }                                                   //End loop through weights------------------
-
-        }                                               //End loop through input nodes-------------------
-
+        
         for (int i = 0; i < hiddenNodes.length - 1; i++) {  //Loop through each hidden layers----------------
-                                                        //This code will only run if there are multiple hidden layers
+                                                            //This code will only run if there are multiple hidden layers
 
             double[] layerNodes = hiddenNodes[i];
             double[][] layerWeights = hiddenWeights[i];
 
-            for (int nodeNum = 0; nodeNum < layerNodes.length; nodeNum++) { //Loop through nodes------------
-
-                double nodeVal = layerNodes[nodeNum];
-                double[] thisNodeWeights = layerWeights[nodeNum];
-
-                for (int weightNum = 0; weightNum < thisNodeWeights.length; weightNum++) {  //Loop through weights
-                    double weight = thisNodeWeights[weightNum];
-                    if(weight != -999.999){
-                        hiddenNodes[i + 1][weightNum] += (nodeVal * weight);
-                    }
-                }
-
-            }         //End Loop through nodes--------------------------------------------------------------
+            transferBetweenLayers(layerNodes, layerWeights, hiddenNodes[i+1]);
 
         }
+        
+        
+        transferBetweenLayers(hiddenNodes[numHidden - 1], hiddenWeights[numHidden - 1], outputNodes);    //Transfer info in last hidden layer to output layer
+        
+        
+        int maxIndex = 0;                                   //Find the max of the output nodes
+        for (int i = 1; i < outputNodes.length; i++) {
+            if(outputNodes[i] > outputNodes[maxIndex])
+                maxIndex = i;
+        }
 
-        return 'N';
+        return maxIndex;
     }
 
-//    private int computeHelp(){
-//
-//    }
+    private void transferBetweenLayers(double[] thisLayerNodes, double[][] thisLayerWeights, double[] nextLayerNodes){
+        /*
+        Given the nodes of a layer, thisLayerNodes
+        the weights of a layer, thisLayerWeights
+        and the nodes of the next layer, nextLayerNodes
+        this method updates all the nods of the nextLayer
+         */
+        
+        for (int nodeNum = 0; nodeNum < thisLayerNodes.length; nodeNum++) { //Loop through nodes------------
+
+            double nodeVal = thisLayerNodes[nodeNum];
+            double[] thisNodeWeights = thisLayerWeights[nodeNum];
+
+            for (int weightNum = 0; weightNum < thisNodeWeights.length; weightNum++) {  //Loop through weights
+                double weight = thisNodeWeights[weightNum];
+                if(weight != -999.999){
+                    nextLayerNodes[weightNum] += (nodeVal * weight);
+                }
+            }
+
+        }         //End Loop through nodes--------------------------------------------------------------
+        
+    }
+
+    private void removeNegatives(double[] layerNodes){
+        /*
+        Loops through a single layer's nodes, layerNodes
+        and changes any negative values to 0
+         */
+
+        for (int i = 0; i < layerNodes.length; i++) {
+            layerNodes[i] = Math.max(0, layerNodes[i]);
+        }
+
+    }
 }
