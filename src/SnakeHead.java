@@ -18,25 +18,25 @@ public class SnakeHead extends Actor {
     public boolean move(){
 //        System.out.printf("Direction = %d%n", direction);
         if(direction == 0){
-            if(y > 0 && grid.gridMat[x][y-1] == null){
+            if(y > 0 && !(grid.gridMat[x][y-1] instanceof Body)){
                 y = y - 1;
                 return true;
             }
         }
         else if(direction == 1){
-            if(x < grid.gridMat.length - 1 && grid.gridMat[x+1][y] == null){
+            if(x < grid.gridMat.length - 1 && !(grid.gridMat[x+1][y] instanceof Body)){
                 x = x + 1;
                 return true;
             }
         }
         else if(direction == 2){
-            if(y < grid.gridMat.length - 1 && grid.gridMat[x][y+1] == null){
+            if(y < grid.gridMat.length - 1 && !(grid.gridMat[x][y+1] instanceof Body)){
                 y = y + 1;
                 return true;
             }
         }
         else if(direction == 3){
-            if(x > 0 && grid.gridMat[x-1][y] == null){
+            if(x > 0 && !(grid.gridMat[x-1][y] instanceof Body)){
                 x = x - 1;
                 return true;
             }

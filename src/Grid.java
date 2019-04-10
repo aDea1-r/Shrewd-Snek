@@ -5,7 +5,7 @@ public class Grid implements Drawable {
     private int startX;
     private int startY;
     private int size;       //pixel width of a single spot
-    private int numSquares;
+    public int numSquares;
     private Color color = Color.BLACK;
 
     public Object[][] gridMat;  //Let -1 be empty
@@ -47,7 +47,7 @@ public class Grid implements Drawable {
     }
 
     public void drawImage(Graphics g, Actor act, BufferedImage image) {
-
+        g.drawImage(image,getXPixels(act.x),getYPixels(act.y),null);
     }
 
     public int getSize() {

@@ -6,12 +6,14 @@ import java.io.IOException;
 import java.util.*;
 
 public class AppleMaker extends Actor {
-    public int foodVal;     //length snake gains when eats
+    public int foodVal = 1;     //length snake gains when eats
     private static BufferedImage image;
 
-    public AppleMaker(Color c, Grid grid, int id, int foodVal){
+    public AppleMaker(Color c, Grid grid, int id){
         super(c, -1, -1, grid, id);
         typeID = 2;
+
+        place();
 
         try {
             image = ImageIO.read(new File("food.png"));
@@ -21,12 +23,23 @@ public class AppleMaker extends Actor {
         image = createResizedCopy(image,grid.getSize(),grid.getSize());
     }
     public int eat(SnakeHead other){       //Method will be called by snakeHead when it eats this apple
-        x = -1;
-        y = -1;
+        place();
         other.grow(foodVal);
         this.act(null);
         System.out.printf("Snake id: %d, has eaten Apple id: %d, and grown by %d%n", other.id, this.id, foodVal);
         return foodVal;
+    }
+    private void place() { //assigns x and y positions a value
+        try {
+            grid.gridMat[x][y] = null;
+        } catch (IndexOutOfBoundsException e) {}
+
+        do {
+            x = (int)(Math.random()*grid.numSquares);
+            y = (int)(Math.random()*grid.numSquares);
+        }
+        while(grid.gridMat[x][y] != null);
+        grid.gridMat[x][y] = this;
     }
 
     @Override
@@ -40,7 +53,7 @@ public class AppleMaker extends Actor {
         grid.drawImage(g,this,image);
     }
 
-    public static BufferedImage createResizedCopy(Image originalImage, int scaledWidth, int scaledHeight)
+    private static BufferedImage createResizedCopy(Image originalImage, int scaledWidth, int scaledHeight)
     {
 //        System.out.println("resizing...");
         int imageType = BufferedImage.TYPE_INT_RGB;
