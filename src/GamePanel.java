@@ -18,18 +18,18 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 
     private int testerX;
 
-    private final int refreshRate = 10;        //Delay in milliseconds between game ticks
+    private final int refreshRate = 60;        //Delay in milliseconds between game ticks
 
     private int frames;             //Used to calculate frame rate
     private double avgFrameRate;
     private int numPastFrameAverages;
 
-    private final double startXPercent = 0.1;          //% of the total screen which the play screen will start at
+    private final double startXPercent = 0.05;          //% of the total screen which the play screen will start at
 //    public int startX;
-    private final double startYPercent = 0.1;          //% of the total screen which the play screen will start at
+    private final double startYPercent = 0.05;          //% of the total screen which the play screen will start at
 //    public int startY;
-    private final double screenSize = 0.75;      //% of the total screen which the play screen will take up
-    private final int numSquares = 16;          //The size of the grid taking up the play screen
+    private final double screenSize = 0.85;      //% of the total screen which the play screen will take up
+    private final int numSquares = 20;          //The size of the grid taking up the play screen
 //    public int gridSize;                                //the size in pixels of each grid piece
 
     private Grid gameGrid;

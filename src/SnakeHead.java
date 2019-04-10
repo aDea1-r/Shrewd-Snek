@@ -10,7 +10,7 @@ public class SnakeHead extends Actor {
     public SnakeHead(Color c, int x, int y, Grid grid, int id){
         super(c, x, y, grid, id);
         bodyParts = new LinkedList<Body>();
-        length = 30;
+        length = 4;
         direction = 1;
         typeID = 1;
     }
