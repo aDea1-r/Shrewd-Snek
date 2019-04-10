@@ -29,7 +29,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
     private final double startYPercent = 0.05;          //% of the total screen which the play screen will start at
 //    public int startY;
     private final double screenSize = 0.85;      //% of the total screen which the play screen will take up
-    private final int numSquares = 20;          //The size of the grid taking up the play screen
+    private final int numSquares = 25;          //The size of the grid taking up the play screen
 //    public int gridSize;                                //the size in pixels of each grid piece
 
     private Grid gameGrid;

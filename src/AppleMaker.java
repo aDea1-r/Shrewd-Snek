@@ -20,7 +20,8 @@ public class AppleMaker extends Actor {
         } catch (IOException e) {
             System.out.println("Image not found");
         }
-        image = createResizedCopy(image,grid.getSize(),grid.getSize());
+        int boostedSize = (int)(grid.getSize()*1.45);
+        image = createResizedCopy(image,boostedSize,boostedSize);
     }
     public int eat(SnakeHead other){       //Method will be called by snakeHead when it eats this apple
         place();
