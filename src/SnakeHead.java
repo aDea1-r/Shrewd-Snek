@@ -106,6 +106,9 @@ public class SnakeHead extends Actor {
         if(grid.gridMat[x][y] == null) {
             grid.gridMat[x][y] = temp;
             return true;
+        } else if(grid.gridMat[x][y] instanceof AppleMaker) {
+            ((AppleMaker)(grid.gridMat[x][y])).eat(this);
+            return true;
         }
         else{
             System.out.printf("Something went wrong at SnakeHead id = %d, makeBody()%n", id);
