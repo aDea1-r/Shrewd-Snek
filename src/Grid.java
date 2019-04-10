@@ -47,6 +47,7 @@ public class Grid implements Drawable {
     }
 
     public void drawImage(Graphics g, Actor act, BufferedImage image) {
+//       finds center of square, then backtracks to find corner of where the image should go
         int xCenter = getXPixels(act.x) + size/2;
         int yCenter = getYPixels(act.y) + size/2;
         int xCorner = xCenter - image.getWidth()/2;
