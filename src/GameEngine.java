@@ -40,7 +40,7 @@ public class GameEngine extends JPanel implements ActionListener, MouseListener,
     private LinkedList<Drawable> drawables = new LinkedList<Drawable>();
     private LinkedList<Actor> actors = new LinkedList<Actor>();
 
-    GamePanel()
+    GameEngine()
     {
         time = new Timer(refreshRate, this); //sets delay to 15 millis and calls the actionPerformed of this class.
         setSize(width, height);
