@@ -72,7 +72,7 @@ public class GamePanel extends JPanel implements ActionListener, MouseListener, 
 
         food = new AppleMaker(Color.BLACK,gameGrid,2);
         drawables.add(food);
-        actors.add(food);
+//        actors.add(food);
 
         //------------------------------- Snake 1 Code
         inputs.put((int)'w', false);

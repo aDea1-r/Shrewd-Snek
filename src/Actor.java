@@ -7,7 +7,7 @@ public abstract class Actor implements Drawable {
     public int y;      //in terms of grid
     protected Grid grid;
     public int id;
-    public int typeID;      //1 is snakehead, 2 is appleMaker
+//    public int typeID;      //1 is snakehead, 2 is appleMaker
     public Actor(Color c, int x, int y, Grid grid, int id){
         color = c;
         this.x = x;

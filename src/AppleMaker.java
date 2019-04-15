@@ -11,7 +11,7 @@ public class AppleMaker extends Actor {
 
     public AppleMaker(Color c, Grid grid, int id){
         super(c, -1, -1, grid, id);
-        typeID = 2;
+//        typeID = 2;
 
         place();
 
@@ -26,7 +26,6 @@ public class AppleMaker extends Actor {
     public int eat(SnakeHead other){       //Method will be called by snakeHead when it eats this apple
         place();
         other.grow(foodVal);
-        this.act(null);
         System.out.printf("Snake id: %d, has eaten Apple id: %d, and grown by %d%n", other.id, this.id, foodVal);
         return foodVal;
     }
@@ -46,6 +45,7 @@ public class AppleMaker extends Actor {
     @Override
     public boolean act(Map<Integer, Boolean> inputs) {
         //TODO: this
+        System.out.printf("AppleMaker id %d, act called, this is a mistake%n", id);
         return false;
     }
 
