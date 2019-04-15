@@ -12,7 +12,7 @@ public class SnakeHead extends Actor {
         bodyParts = new LinkedList<Body>();
         length = 4;
         direction = 1;
-        typeID = 1;
+//        typeID = 1;
     }
 
     public boolean move(){
