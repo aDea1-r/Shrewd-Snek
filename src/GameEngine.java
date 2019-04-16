@@ -8,32 +8,37 @@ import java.util.Map;
 
 public class GameEngine implements ActionListener, Drawable {
     private Timer time;
-    private final int refreshRate = 60;        //Delay in milliseconds between game ticks
+    public final static int refreshRate = 60;        //Delay in milliseconds between game ticks
 
-    private final int numSquares = 25;          //The size of the grid taking up the play screen
+    public final static int numSquares = 25;          //The size of the grid taking up the play screen
 
     private Grid gameGrid;
     private Map<Integer, Boolean> inputs;
-    //    boolean initInputs = false;
+
     AppleMaker food;
-    //test
+
     private LinkedList<Actor> actors = new LinkedList<Actor>();
     private LinkedList<Drawable> drawables = new LinkedList<Drawable>();
 
 
-    GameEngine()
+    GameEngine(Map<Integer, Boolean> inputs)
     {
         time = new Timer(refreshRate, this); //sets delay to 15 millis and calls the actionPerformed of this class.
 
         inputs = new LinkedHashMap<Integer, Boolean>();
 
-        gameGrid = new Grid(0, 0, (int)(Math.sqrt(numSquares)), numSquares, null);
+        gameGrid = new Grid(0, 0, (int)(Math.sqrt(numSquares)), numSquares, Color.BLACK);
 
         SnakeHead snake1 = new SnakeHead(Color.CYAN, 1, 1, gameGrid, 1);
         actors.add(snake1);
 
         food = new AppleMaker(Color.BLACK,gameGrid,2);
 
+        drawables.add(gameGrid);
+        drawables.add(snake1);
+        drawables.add(food);
+
+        this.inputs = inputs;
         //------------------------------- Snake 1 Code
         inputs.put((int)'w', false);
         inputs.put((int)'d', false);
@@ -69,9 +74,6 @@ public class GameEngine implements ActionListener, Drawable {
     }
 
     public void drawMe(Graphics g) {
-
-        g.setColor(Color.MAGENTA);
-        g.fillRect(0,0,2000,1500);
 
         Iterator it = drawables.listIterator();
         Drawable tempDrawable;
