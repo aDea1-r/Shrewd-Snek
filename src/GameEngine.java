@@ -16,7 +16,7 @@ public class GameEngine implements ActionListener, Drawable {
     private Map<Integer, Boolean> inputs;
     //    boolean initInputs = false;
     AppleMaker food;
-
+    //test
     private LinkedList<Actor> actors = new LinkedList<Actor>();
     private LinkedList<Drawable> drawables = new LinkedList<Drawable>();
 
