@@ -19,13 +19,24 @@ public class GameEngine implements ActionListener {
 
     private LinkedList<Actor> actors = new LinkedList<Actor>();
 
-    GameEngine()
+    public GameEngine(double startXPercent, double startYPercent, double screenSize, int height, int width)
     {
         time = new Timer(refreshRate, this); //sets delay to 15 millis and calls the actionPerformed of this class.
 
         inputs = new LinkedHashMap<Integer, Boolean>();
 
-        gameGrid = new Grid(0, 0, (int)(Math.sqrt(numSquares)), numSquares, null);
+        //Grid setup----------------------------------------------------------------------------------------
+//        double startXPercent = 0.05;          //% of the total screen which the play screen will start at
+//        double startYPercent = 0.05;          //% of the total screen which the play screen will start at
+//        double screenSize = 0.85;      //% of the total screen which the play screen will take up
+
+        int startX = (int)(width * startXPercent);
+        int startY = (int)(height * startYPercent);
+
+        int gridSize = Math.max(Math.min((int)(height * screenSize), (int)(width * screenSize))/numSquares, 1);
+
+        gameGrid = new Grid(startX, startY, gridSize, numSquares, Color.BLACK);
+        //end grid setup -----------------------------------------------------------------------------------
 
         SnakeHead snake1 = new SnakeHead(Color.CYAN, 1, 1, gameGrid, 1);
         actors.add(snake1);
@@ -43,6 +54,9 @@ public class GameEngine implements ActionListener {
         inputs.put((int)'A', false);
 
         time.start();
+    }
+    public GameEngine(){
+        this(0, 0, 0, 1, 1);
     }
 
     public void gameTick(){
@@ -78,13 +92,25 @@ public class GameEngine implements ActionListener {
             //last 2 is vector to food
 
         //Looking for snake body--------------------------------
-        //Look the the East
-        for (int i = x+1; i < gameGrid.numSquares; i++) {
-            if(grid[y][i] instanceof Body){
-                i = gameGrid.numSquares;
-                newInputs[2] = i - x;
+        for (int i = 1; i < y; i++) {       //Look the the North
+            if(grid[y-i][x] instanceof Body){
+                newInputs[0] = i;
+                break;
             }
         }
+        for (int i = 1; i < y; i++) {       //Look the the NorthEast
+            if(grid[y-i][x+1] instanceof Body){
+                newInputs[1] = i;
+                break;
+            }
+        }
+        for (int i = 1; i < y; i++) {       //Look the the East
+            if(grid[y][x+1] instanceof Body){
+                newInputs[1] = i;
+                break;
+            }
+        }
+
 
         return newInputs;
     }
