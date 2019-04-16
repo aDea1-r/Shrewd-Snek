@@ -80,4 +80,27 @@ public class GameEngine implements ActionListener, Drawable {
             tempDrawable.drawMe(g);
         }
     }
+
+    //method which updates the snake's vision
+    private int[] lookAround(SnakeHead head){
+        int x = head.x;
+        int y = head.y;
+        Actor[][] grid = (Actor[][])gameGrid.gridMat;
+
+        int[] newInputs = new int[14];
+            //first 8 is nearest snake body: N-NE-E-SE-S-SW-W-NW
+            //next 4 is distance from walls
+            //last 2 is vector to food
+
+        //Looking for snake body--------------------------------
+        //Look the the East
+        for (int i = x+1; i < gameGrid.numSquares; i++) {
+            if(grid[y][i] instanceof Body){
+                i = gameGrid.numSquares;
+                newInputs[2] = i - x;
+            }
+        }
+
+        return newInputs;
+    }
 }
