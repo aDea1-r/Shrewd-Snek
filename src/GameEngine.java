@@ -109,13 +109,15 @@ public class GameEngine implements ActionListener, Drawable {
         //Looking for snake body--------------------------------
         int stop;   //Helper variable for loop stop
         stop = y;                                                                       //Look the the North
-        for (int i = 1; i < y; i++) {
+        newInputs[0] = stop;
+        for (int i = 1; i < stop; i++) {
             if(grid[y-i][x] instanceof Body){
                 newInputs[0] = i;
                 break;
             }
         }
         stop = Math.min(y, gameGrid.gridMat.length - x);                                //Look to the NorthEast
+        newInputs[1] = stop;
         for (int i = 1; i < stop; i++) {
             if(grid[y-i][x+i] instanceof Body){
                 newInputs[1] = i;
@@ -123,6 +125,7 @@ public class GameEngine implements ActionListener, Drawable {
             }
         }
         stop = gameGrid.gridMat.length - x;                                             //Look to the East
+        newInputs[2] = stop;
         for (int i = 1; i < stop; i++) {
             if(grid[y][x+i] instanceof Body){
                 newInputs[2] = i;
@@ -130,6 +133,7 @@ public class GameEngine implements ActionListener, Drawable {
             }
         }
         stop = Math.min(gameGrid.gridMat.length - y, gameGrid.gridMat.length - x);      //Look to the SouthEast
+        newInputs[3] = stop;
         for (int i = 1; i < stop; i++) {
             if(grid[y+i][x+i] instanceof Body){
                 newInputs[3] = i;
@@ -137,6 +141,7 @@ public class GameEngine implements ActionListener, Drawable {
             }
         }
         stop = gameGrid.gridMat.length - y;                                             //Look to the South
+        newInputs[4] = stop;
         for (int i = 1; i < stop; i++) {       //Look the the South
             if(grid[y+i][x] instanceof Body){
                 newInputs[4] = i;
@@ -144,6 +149,7 @@ public class GameEngine implements ActionListener, Drawable {
             }
         }
         stop = Math.min(gameGrid.gridMat.length - y, x);                                //Look to the SouthWest
+        newInputs[5] = stop;
         for (int i = 1; i < stop; i++) {       //Look the the SouthWest
             if(grid[y+i][x-i] instanceof Body){
                 newInputs[5] = i;
@@ -151,6 +157,7 @@ public class GameEngine implements ActionListener, Drawable {
             }
         }
         stop = x;                                                                       //Look to the West
+        newInputs[6] = stop;
         for (int i = 1; i < stop; i++) {
             if(grid[y][x-i] instanceof Body){
                 newInputs[6] = i;
@@ -158,6 +165,7 @@ public class GameEngine implements ActionListener, Drawable {
             }
         }
         stop = Math.min(y, x);                                //Look to the NorthWest
+        newInputs[7] = stop;
         for (int i = 1; i < stop; i++) {
             if(grid[y-i][x-i] instanceof Body){
                 newInputs[7] = i;
