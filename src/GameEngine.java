@@ -107,21 +107,60 @@ public class GameEngine implements ActionListener, Drawable {
             //last 2 is vector to food
 
         //Looking for snake body--------------------------------
-        for (int i = 1; i < y; i++) {       //Look the the North
+        int stop;   //Helper variable for loop stop
+        stop = y;                                                                       //Look the the North
+        for (int i = 1; i < y; i++) {
             if(grid[y-i][x] instanceof Body){
                 newInputs[0] = i;
                 break;
             }
         }
-        for (int i = 1; i < y; i++) {       //Look the the NorthEast
-            if(grid[y-i][x+1] instanceof Body){
+        stop = Math.min(y, gameGrid.gridMat.length - x);                                //Look to the NorthEast
+        for (int i = 1; i < stop; i++) {
+            if(grid[y-i][x+i] instanceof Body){
                 newInputs[1] = i;
                 break;
             }
         }
-        for (int i = 1; i < y; i++) {       //Look the the East
-            if(grid[y][x+1] instanceof Body){
-                newInputs[1] = i;
+        stop = gameGrid.gridMat.length - x;                                             //Look to the East
+        for (int i = 1; i < stop; i++) {
+            if(grid[y][x+i] instanceof Body){
+                newInputs[2] = i;
+                break;
+            }
+        }
+        stop = Math.min(gameGrid.gridMat.length - y, gameGrid.gridMat.length - x);      //Look to the SouthEast
+        for (int i = 1; i < stop; i++) {
+            if(grid[y+i][x+i] instanceof Body){
+                newInputs[3] = i;
+                break;
+            }
+        }
+        stop = gameGrid.gridMat.length - y;                                             //Look to the South
+        for (int i = 1; i < stop; i++) {       //Look the the South
+            if(grid[y+i][x] instanceof Body){
+                newInputs[4] = i;
+                break;
+            }
+        }
+        stop = Math.min(gameGrid.gridMat.length - y, x);                                //Look to the SouthWest
+        for (int i = 1; i < stop; i++) {       //Look the the SouthWest
+            if(grid[y+i][x-i] instanceof Body){
+                newInputs[5] = i;
+                break;
+            }
+        }
+        stop = x;                                                                       //Look to the West
+        for (int i = 1; i < stop; i++) {
+            if(grid[y][x-i] instanceof Body){
+                newInputs[6] = i;
+                break;
+            }
+        }
+        stop = Math.min(y, x);                                //Look to the NorthWest
+        for (int i = 1; i < stop; i++) {
+            if(grid[y-i][x-i] instanceof Body){
+                newInputs[7] = i;
                 break;
             }
         }
