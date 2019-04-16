@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class GameEngine implements ActionListener {
+public class GameEngine implements ActionListener, Drawable {
     private Timer time;
     private final int refreshRate = 60;        //Delay in milliseconds between game ticks
 
@@ -18,6 +18,8 @@ public class GameEngine implements ActionListener {
     AppleMaker food;
 
     private LinkedList<Actor> actors = new LinkedList<Actor>();
+    private LinkedList<Drawable> drawables = new LinkedList<Drawable>();
+
 
     GameEngine()
     {
@@ -64,5 +66,18 @@ public class GameEngine implements ActionListener {
         System.out.printf("Code %d (%s) pressed %n", code, (char)code + "");
 
         inputs.put(code, true);
+    }
+
+    public void drawMe(Graphics g) {
+
+        g.setColor(Color.MAGENTA);
+        g.fillRect(0,0,2000,1500);
+
+        Iterator it = drawables.listIterator();
+        Drawable tempDrawable;
+        while (it.hasNext()){
+            tempDrawable = (Drawable) it.next();
+            tempDrawable.drawMe(g);
+        }
     }
 }
