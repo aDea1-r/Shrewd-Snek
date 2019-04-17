@@ -25,8 +25,6 @@ public class GameEngine implements ActionListener, Drawable {
     {
         time = new Timer(refreshRate, this); //sets delay to 15 millis and calls the actionPerformed of this class.
 
-        inputs = new LinkedHashMap<Integer, Boolean>();
-
         //Grid setup----------------------------------------------------------------------------------------
 //        double startXPercent = 0.05;          //% of the total screen which the play screen will start at
 //        double startYPercent = 0.05;          //% of the total screen which the play screen will start at
