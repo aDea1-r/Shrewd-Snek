@@ -1,10 +1,8 @@
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.event.*;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 public class GameEngine implements ActionListener, Drawable {
     private Timer time;
@@ -64,6 +62,7 @@ public class GameEngine implements ActionListener, Drawable {
     }
 
     public void gameTick(){
+        lookAround(snake1);
         snake1.act(inputs);
     }
 
@@ -94,7 +93,7 @@ public class GameEngine implements ActionListener, Drawable {
     private int[] lookAround(SnakeHead head){
         int x = head.x;
         int y = head.y;
-        Actor[][] grid = (Actor[][])gameGrid.gridMat;
+        Object[][] grid = gameGrid.gridMat;
 
         int[] newInputs = new int[14];
             //first 8 is nearest snake body: N-NE-E-SE-S-SW-W-NW
@@ -176,6 +175,8 @@ public class GameEngine implements ActionListener, Drawable {
 
         newInputs[12] = food.x - snake1.x;              //x vector to food, if food is to the right of snake, positive
         newInputs[13] = food.y - snake1.y;              //y vector to food, if food is below the snake, positive
+
+        System.out.println(Arrays.toString(newInputs));
 
         return newInputs;
     }
