@@ -4,15 +4,19 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public class SnakeHead extends Actor {
-    private LinkedList<Body> bodyParts;
-    private int length;
-    private int direction;  //0 = north, 1 = east, ect
+    public LinkedList<Body> bodyParts;
+    public int length;
+    public int direction;  //0 = north, 1 = east, ect
+
     public SnakeHead(Color c, int x, int y, Grid grid, int id){
         super(c, x, y, grid, id);
         bodyParts = new LinkedList<Body>();
         length = 4;
         direction = 1;
 //        typeID = 1;
+    }
+    public SnakeHead() {
+        this(Color.CYAN, 0, 0, new Grid(0,0,0,0,null), 0);
     }
 
     public boolean move(){
@@ -100,7 +104,7 @@ public class SnakeHead extends Actor {
         length += growBy;
     }
 
-    private boolean makeBody(){
+    public boolean makeBody(){
         Body temp = new Body(color ,x, y, grid, id);
         bodyParts.add(temp);
         if(grid.gridMat[x][y] == null) {

@@ -25,7 +25,7 @@ public class GameEngine implements ActionListener, Drawable {
     {
         time = new Timer(refreshRate, this); //sets delay to 15 millis and calls the actionPerformed of this class.
 
-        //Grid setup----------------------------------------------------------------------------------------
+//        Grid setup----------------------------------------------------------------------------------------
 //        double startXPercent = 0.05;          //% of the total screen which the play screen will start at
 //        double startYPercent = 0.05;          //% of the total screen which the play screen will start at
 //        double screenSize = 0.85;      //% of the total screen which the play screen will take up
@@ -36,7 +36,7 @@ public class GameEngine implements ActionListener, Drawable {
         int gridSize = Math.max(Math.min((int)(height * screenSize), (int)(width * screenSize))/numSquares, 1);
 
         gameGrid = new Grid(startX, startY, gridSize, numSquares, Color.BLACK);
-        //end grid setup -----------------------------------------------------------------------------------
+//      end grid setup -----------------------------------------------------------------------------------
 
         SnakeHead snake1 = new SnakeHead(Color.CYAN, 1, 1, gameGrid, 1);
         actors.add(snake1);

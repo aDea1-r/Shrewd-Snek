@@ -12,8 +12,8 @@ import javax.sound.sampled.*; // allows you to use the sound classes
 
 public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private BufferedImage buff;
-    private final int width = 2000;
-    private final int height = 1000;
+    private int width = 2000;
+    private int height = 1000;
 
     private int frames;             //Used to calculate frame rate
     private double avgFrameRate;
@@ -29,6 +29,10 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
     GamePanel()
     {
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        width = (int) screen.getWidth();
+        height = (int) screen.getHeight()-100;
+
         setSize(width, height);
         setVisible(true); //it's like calling the repaint method.
 
