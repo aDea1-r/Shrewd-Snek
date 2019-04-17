@@ -8,24 +8,22 @@ import java.util.Map;
 
 public class GameEngine implements ActionListener, Drawable {
     private Timer time;
-    private final int refreshRate = 60;        //Delay in milliseconds between game ticks
+    public final static int refreshRate = 60;        //Delay in milliseconds between game ticks
 
-    private final int numSquares = 25;          //The size of the grid taking up the play screen
+    public final static int numSquares = 25;          //The size of the grid taking up the play screen
 
     private Grid gameGrid;
     private Map<Integer, Boolean> inputs;
-    //    boolean initInputs = false;
+
     AppleMaker food;
 
     private LinkedList<Actor> actors = new LinkedList<Actor>();
     private LinkedList<Drawable> drawables = new LinkedList<Drawable>();
 
 
-    public GameEngine(double startXPercent, double startYPercent, double screenSize, int height, int width)
+    public GameEngine(double startXPercent, double startYPercent, double screenSize, int height, int width, Map<Integer, Boolean> inputs)
     {
         time = new Timer(refreshRate, this); //sets delay to 15 millis and calls the actionPerformed of this class.
-
-        inputs = new LinkedHashMap<Integer, Boolean>();
 
         //Grid setup----------------------------------------------------------------------------------------
 //        double startXPercent = 0.05;          //% of the total screen which the play screen will start at
@@ -45,6 +43,11 @@ public class GameEngine implements ActionListener, Drawable {
 
         food = new AppleMaker(Color.BLACK,gameGrid,2);
 
+        drawables.add(gameGrid);
+        drawables.add(snake1);
+        drawables.add(food);
+
+        this.inputs = inputs;
         //------------------------------- Snake 1 Code
         inputs.put((int)'w', false);
         inputs.put((int)'d', false);
@@ -57,8 +60,8 @@ public class GameEngine implements ActionListener, Drawable {
 
         time.start();
     }
-    public GameEngine(){
-        this(0, 0, 0, 1, 1);
+    public GameEngine(Map<Integer, Boolean> inputs){
+        this(0, 0, 0, 1, 1, inputs);
     }
 
     public void gameTick(){
@@ -83,9 +86,6 @@ public class GameEngine implements ActionListener, Drawable {
     }
 
     public void drawMe(Graphics g) {
-
-        g.setColor(Color.MAGENTA);
-        g.fillRect(0,0,2000,1500);
 
         Iterator it = drawables.listIterator();
         Drawable tempDrawable;
