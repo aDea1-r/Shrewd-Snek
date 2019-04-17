@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.util.Map;
 
 public class AISnakeHead extends SnakeHead {
 
