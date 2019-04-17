@@ -44,7 +44,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         int gridSize = Math.max(Math.min((int)(height * screenSize), (int)(width * screenSize))/GameEngine.numSquares, 1);
 
         engines = new GameEngine[1];
-        engines[0] = new GameEngine(inputs);
+        engines[0] = new GameEngine(startXPercent, startYPercent, screenSize, height, width, inputs);
     }
 
     public void paintComponent(Graphics stupidG)
