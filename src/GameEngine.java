@@ -16,8 +16,8 @@ public class GameEngine implements ActionListener, Drawable {
     private Map<Integer, Boolean> inputs;
 
     AppleMaker food;
+    SnakeHead snake1;
 
-    private LinkedList<Actor> actors = new LinkedList<Actor>();
     private LinkedList<Drawable> drawables = new LinkedList<Drawable>();
 
 
@@ -38,8 +38,7 @@ public class GameEngine implements ActionListener, Drawable {
         gameGrid = new Grid(startX, startY, gridSize, numSquares, Color.BLACK);
         //end grid setup -----------------------------------------------------------------------------------
 
-        SnakeHead snake1 = new SnakeHead(Color.CYAN, 1, 1, gameGrid, 1);
-        actors.add(snake1);
+        snake1 = new SnakeHead(Color.CYAN, 1, 1, gameGrid, 1);
 
         food = new AppleMaker(Color.BLACK,gameGrid,2);
 
@@ -65,11 +64,7 @@ public class GameEngine implements ActionListener, Drawable {
     }
 
     public void gameTick(){
-        Iterator<Actor> it = actors.listIterator();
-        while(it.hasNext()){
-            Actor tempActor = it.next();
-            tempActor.act(inputs);
-        }
+        snake1.act(inputs);
     }
 
     public void actionPerformed(ActionEvent e)
@@ -103,8 +98,8 @@ public class GameEngine implements ActionListener, Drawable {
 
         int[] newInputs = new int[14];
             //first 8 is nearest snake body: N-NE-E-SE-S-SW-W-NW
-            //next 4 is distance from walls
-            //last 2 is vector to food
+            //next 4 is distance from walls: N-E-S-W
+            //last 2 is vector to food: x-y
 
         //Looking for snake body--------------------------------
         int stop;   //Helper variable for loop stop
@@ -164,7 +159,7 @@ public class GameEngine implements ActionListener, Drawable {
                 break;
             }
         }
-        stop = Math.min(y, x);                                //Look to the NorthWest
+        stop = Math.min(y, x);                                                          //Look to the NorthWest
         newInputs[7] = stop;
         for (int i = 1; i < stop; i++) {
             if(grid[y-i][x-i] instanceof Body){
@@ -172,7 +167,15 @@ public class GameEngine implements ActionListener, Drawable {
                 break;
             }
         }
+        //End looking for snake body---------------------
 
+        newInputs[8] = y;                               //North wall
+        newInputs[9] = gameGrid.gridMat.length - x;     //East wall
+        newInputs[10] = gameGrid.gridMat.length - y;    //South wall
+        newInputs[11] = x;                              //West wall
+
+        newInputs[12] = food.x - snake1.x;              //x vector to food, if food is to the right of snake, positive
+        newInputs[13] = food.y - snake1.y;              //y vector to food, if food is below the snake, positive
 
         return newInputs;
     }
