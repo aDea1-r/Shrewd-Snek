@@ -30,8 +30,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     GamePanel()
     {
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        width = (int) screen.getWidth();
-        height = (int) screen.getHeight()-100;
+        width = (int) screen.getWidth()/2;
+        height = (int) (screen.getHeight()-100)/2;
 
         setSize(width, height);
         setVisible(true); //it's like calling the repaint method.
