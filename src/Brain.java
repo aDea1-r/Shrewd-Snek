@@ -33,7 +33,7 @@ public class Brain {
     }
 
     //Given an input, put through neural net and return the index of the correct output node
-    public int compute(int[] inputs){
+    public double[] compute(int[] inputs){
 
         for (int i = 0; i < inputs.length; i++) {       //Put the inputs into the neural net
             inputNodes[i] = (double)inputs[i];              //TODO: insert bias here
@@ -59,13 +59,15 @@ public class Brain {
         removeNegatives(outputNodes);
         
         
-        int maxIndex = 0;                                   //Find the max of the output nodes
-        for (int i = 1; i < outputNodes.length; i++) {
-            if(outputNodes[i] > outputNodes[maxIndex])
-                maxIndex = i;
-        }
+//        int maxIndex = 0;                                   //Find the max of the output nodes
+//        for (int i = 1; i < outputNodes.length; i++) {
+//            if(outputNodes[i] > outputNodes[maxIndex])
+//                maxIndex = i;
+//        }
+//
+//        return maxIndex;
 
-        return maxIndex;
+        return outputNodes;
     }
 
     private void transferBetweenLayers(double[] thisLayerNodes, double[][] thisLayerWeights, double[] nextLayerNodes, double[] nextLayerBias){
