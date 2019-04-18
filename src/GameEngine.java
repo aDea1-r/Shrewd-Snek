@@ -6,7 +6,7 @@ import java.util.*;
 
 public class GameEngine implements ActionListener, Drawable {
     private Timer time;
-    public final static int refreshRate = 900;        //Delay in milliseconds between game ticks
+    public final static int refreshRate = 2000;        //Delay in milliseconds between game ticks
 
     public final static int numSquares = 5;          //The size of the grid taking up the play screen
 
@@ -18,6 +18,7 @@ public class GameEngine implements ActionListener, Drawable {
 
     private LinkedList<Drawable> drawables = new LinkedList<Drawable>();
 
+//    boolean paused;
 
     public GameEngine(double startXPercent, double startYPercent, double screenSize, int height, int width, Map<Integer, Boolean> inputs)
     {
@@ -46,14 +47,18 @@ public class GameEngine implements ActionListener, Drawable {
 
         this.inputs = inputs;
         //------------------------------- Snake 1 Code
-        inputs.put((int)'w', false);
-        inputs.put((int)'d', false);
-        inputs.put((int)'s', false);
-        inputs.put((int)'a', false);
-        inputs.put((int)'W', false);
-        inputs.put((int)'D', false);
-        inputs.put((int)'S', false);
-        inputs.put((int)'A', false);
+        this.inputs.put((int)'w', false);
+        this.inputs.put((int)'d', false);
+        this.inputs.put((int)'s', false);
+        this.inputs.put((int)'a', false);
+        this.inputs.put((int)'W', false);
+        this.inputs.put((int)'D', false);
+        this.inputs.put((int)'S', false);
+        this.inputs.put((int)'A', false);
+
+
+//        this.inputs.put((int)'P', false);
+//        this.inputs.put((int)'p', false);
 
         time.start();
     }
@@ -62,8 +67,15 @@ public class GameEngine implements ActionListener, Drawable {
     }
 
     public void gameTick(){
-        lookAround(snake1);
-        snake1.act(inputs);
+//        if(!paused) {
+            lookAround(snake1);
+            snake1.act(inputs);
+//        }
+//        if((inputs.containsKey('P') && inputs.get('P')) || (inputs.containsKey('p') && inputs.get('p'))){
+//            paused = !paused;
+//            inputs.put((int)'P', false);
+//            inputs.put((int)'p', false);
+//        }
     }
 
     public void actionPerformed(ActionEvent e)
@@ -95,6 +107,8 @@ public class GameEngine implements ActionListener, Drawable {
         int y = head.y;
         Object[][] grid = gameGrid.gridMat;
 
+        System.out.printf("Grid:%n%s%n", printArr(grid));
+
         int[] newInputs = new int[14];
             //first 8 is nearest snake body: N-NE-E-SE-S-SW-W-NW
             //next 4 is distance from walls: N-E-S-W
@@ -103,7 +117,8 @@ public class GameEngine implements ActionListener, Drawable {
         //Looking for snake body--------------------------------
         int stop;   //Helper variable for loop stop
         stop = y;                                                                       //Look the the North
-        newInputs[0] = stop;
+        newInputs[0] = stop + 1;
+        System.out.printf("Looking %10s: max distance is %d%n", "North", stop);
         for (int i = 1; i < stop; i++) {
             if(grid[y-i][x] instanceof Body){
                 newInputs[0] = i;
@@ -111,7 +126,8 @@ public class GameEngine implements ActionListener, Drawable {
             }
         }
         stop = Math.min(y, gameGrid.gridMat.length - x - 1);                                //Look to the NorthEast
-        newInputs[1] = stop;
+        newInputs[1] = stop + 1;
+        System.out.printf("Looking %10s: max distance is %d%n", "NorthEast", stop);
         for (int i = 1; i < stop; i++) {
             if(grid[y-i][x+i] instanceof Body){
                 newInputs[1] = i;
@@ -119,7 +135,8 @@ public class GameEngine implements ActionListener, Drawable {
             }
         }
         stop = gameGrid.gridMat.length - 1 - x;                                             //Look to the East
-        newInputs[2] = stop;
+        newInputs[2] = stop + 1;
+        System.out.printf("Looking %10s: max distance is %d%n", "East", stop);
         for (int i = 1; i < stop; i++) {
             if(grid[y][x+i] instanceof Body){
                 newInputs[2] = i;
@@ -127,7 +144,8 @@ public class GameEngine implements ActionListener, Drawable {
             }
         }
         stop = Math.min(gameGrid.gridMat.length - 1 - y, gameGrid.gridMat.length - 1 - x);      //Look to the SouthEast
-        newInputs[3] = stop;
+        newInputs[3] = stop + 1;
+        System.out.printf("Looking %10s: max distance is %d%n", "SouthEast", stop);
         for (int i = 1; i < stop; i++) {
             if(grid[y+i][x+i] instanceof Body){
                 newInputs[3] = i;
@@ -135,7 +153,8 @@ public class GameEngine implements ActionListener, Drawable {
             }
         }
         stop = gameGrid.gridMat.length - 1 - y;                                             //Look to the South
-        newInputs[4] = stop;
+        newInputs[4] = stop + 1;
+        System.out.printf("Looking %10s: max distance is %d%n", "South", stop);
         for (int i = 1; i < stop; i++) {       //Look the the South
             if(grid[y+i][x] instanceof Body){
                 newInputs[4] = i;
@@ -143,7 +162,8 @@ public class GameEngine implements ActionListener, Drawable {
             }
         }
         stop = Math.min(gameGrid.gridMat.length - 1 - y, x);                                //Look to the SouthWest
-        newInputs[5] = stop;
+        newInputs[5] = stop + 1;
+        System.out.printf("Looking %10s: max distance is %d%n", "SouthWest", stop);
         for (int i = 1; i < stop; i++) {       //Look the the SouthWest
             if(grid[y+i][x-i] instanceof Body){
                 newInputs[5] = i;
@@ -151,7 +171,8 @@ public class GameEngine implements ActionListener, Drawable {
             }
         }
         stop = x;                                                                       //Look to the West
-        newInputs[6] = stop;
+        newInputs[6] = stop + 1;
+        System.out.printf("Looking %10s: max distance is %d%n", "West", stop);
         for (int i = 1; i < stop; i++) {
             if(grid[y][x-i] instanceof Body){
                 newInputs[6] = i;
@@ -159,7 +180,8 @@ public class GameEngine implements ActionListener, Drawable {
             }
         }
         stop = Math.min(y, x);                                                          //Look to the NorthWest
-        newInputs[7] = stop;
+        newInputs[7] = stop + 1;
+        System.out.printf("Looking %10s: max distance is %d%n", "NorthWest", stop);
         for (int i = 1; i < stop; i++) {
             if(grid[y-i][x-i] instanceof Body){
                 newInputs[7] = i;
@@ -179,5 +201,16 @@ public class GameEngine implements ActionListener, Drawable {
         System.out.println(Arrays.toString(newInputs));
 
         return newInputs;
+    }
+
+    public static String printArr(Object[][] arr){
+        StringBuilder str = new StringBuilder();
+        for(int r = 0; r < arr.length; r++){
+            for(int c = 0; c < arr[r].length; c++){
+                str.append(String.format("%s18,", arr[r][c].toString() + " "));
+            }
+            str.append("\n");
+        }
+        return str.toString();
     }
 }
