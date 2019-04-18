@@ -32,11 +32,11 @@ public class Grid implements Drawable {
         return (in - startY) / size;
     }
 
-    private int getXPixels(int in){      //Gets x pixel location given grid location
+    int getXPixels(int in){      //Gets x pixel location given grid location
         return (in * size) + startX;
     }
 
-    private int getYPixels(int in){      //Gets y pixel location given grid location
+    int getYPixels(int in){      //Gets y pixel location given grid location
         return (in * size) + startY;
     }
 

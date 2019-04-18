@@ -21,6 +21,8 @@ public class GameEngine implements ActionListener, Drawable {
 
     private LinkedList<Drawable> drawables = new LinkedList<Drawable>();
 
+    boolean gameRunning;
+
 
     GameEngine(double startXPercent, double startYPercent, double screenSize, int height, int width, Map<Integer, Boolean> inputs)
     {
@@ -60,6 +62,7 @@ public class GameEngine implements ActionListener, Drawable {
         inputs.put((int)'A', false);
 
         time.start();
+        gameRunning = true;
     }
     public GameEngine(Map<Integer, Boolean> inputs){
         this(0, 0, 0, 1, 1, inputs);
@@ -72,6 +75,7 @@ public class GameEngine implements ActionListener, Drawable {
 
     void kill() {
         time.stop();
+        gameRunning = false;
     }
 
     public void actionPerformed(ActionEvent e)
@@ -94,6 +98,9 @@ public class GameEngine implements ActionListener, Drawable {
         while (it.hasNext()){
             tempDrawable = (Drawable) it.next();
             tempDrawable.drawMe(g);
+        }
+        if(!gameRunning) {
+            g.drawString("Oh I am slain.",gameGrid.getXPixels(gameGrid.numSquares/2),gameGrid.getXPixels(gameGrid.numSquares/2));
         }
     }
 
