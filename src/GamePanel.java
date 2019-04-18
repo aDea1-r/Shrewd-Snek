@@ -61,6 +61,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         g.fillRect(0,0,2000,1500);
 
         engines[0].drawMe(g);
+//        System.out.println(engines[0].scoreTracker.getScore());
+        g.drawString(""+engines[0].scoreTracker.getScore(),10,10);
 
         stupidG.drawImage(buff,0,0,null);
         frames++;
@@ -82,7 +84,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     public void keyPressed(KeyEvent e)
     {
         int code = e.getKeyCode();
-        System.out.printf("Code %d (%s) pressed %n", code, (char)code + "");
+//        System.out.printf("Code %d (%s) pressed %n", code, (char)code + "");
 
         inputs.put(code, true);
     }

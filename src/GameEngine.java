@@ -1,25 +1,30 @@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.Timer;
 import java.awt.event.*;
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 public class GameEngine implements ActionListener, Drawable {
     private Timer time;
-    public final static int refreshRate = 60;        //Delay in milliseconds between game ticks
+    final static int refreshRate = 60;        //Delay in milliseconds between game ticks
 
-    public final static int numSquares = 25;          //The size of the grid taking up the play screen
+    final static int numSquares = 25;          //The size of the grid taking up the play screen
 
     private Grid gameGrid;
+    ScoreTracker scoreTracker;
     private Map<Integer, Boolean> inputs;
 
-    AppleMaker food;
-    SnakeHead snake1;
+    private AppleMaker food;
+    private SnakeHead snake1;
 
     private LinkedList<Drawable> drawables = new LinkedList<Drawable>();
 
+    boolean gameRunning;
 
-    public GameEngine(double startXPercent, double startYPercent, double screenSize, int height, int width, Map<Integer, Boolean> inputs)
+
+    GameEngine(double startXPercent, double startYPercent, double screenSize, int height, int width, Map<Integer, Boolean> inputs)
     {
         time = new Timer(refreshRate, this); //sets delay to 15 millis and calls the actionPerformed of this class.
 
@@ -36,7 +41,8 @@ public class GameEngine implements ActionListener, Drawable {
         gameGrid = new Grid(startX, startY, gridSize, numSquares, Color.BLACK);
 //      end grid setup -----------------------------------------------------------------------------------
 
-        snake1 = new SnakeHead(Color.CYAN, 1, 1, gameGrid, 1);
+        scoreTracker = new ScoreTracker(this);
+        snake1 = new SnakeHead(Color.CYAN, 1, 1, gameGrid, 1,scoreTracker);
 
         food = new AppleMaker(Color.BLACK,gameGrid,2);
 
@@ -56,14 +62,21 @@ public class GameEngine implements ActionListener, Drawable {
         inputs.put((int)'A', false);
 
         time.start();
+        gameRunning = true;
     }
     public GameEngine(Map<Integer, Boolean> inputs){
         this(0, 0, 0, 1, 1, inputs);
     }
 
-    public void gameTick(){
-        lookAround(snake1);
-        snake1.act(inputs);
+    private void gameTick(){
+        if(!snake1.act(inputs))
+            kill();
+        scoreTracker.act(inputs);
+    }
+
+    void kill() {
+        time.stop();
+        gameRunning = false;
     }
 
     public void actionPerformed(ActionEvent e)
@@ -74,7 +87,7 @@ public class GameEngine implements ActionListener, Drawable {
     public void keyPressed(KeyEvent e)
     {
         int code = e.getKeyCode();
-        System.out.printf("Code %d (%s) pressed %n", code, (char)code + "");
+//        System.out.printf("Code %d (%s) pressed %n", code, (char)code + "");
 
         inputs.put(code, true);
     }
@@ -87,13 +100,17 @@ public class GameEngine implements ActionListener, Drawable {
             tempDrawable = (Drawable) it.next();
             tempDrawable.drawMe(g);
         }
+        if(!gameRunning) {
+            g.setColor(Color.MAGENTA);//SUBLIME
+            g.drawString("Thou art slain",gameGrid.getXPixels(gameGrid.numSquares/2),gameGrid.getXPixels(gameGrid.numSquares/2));
+        }
     }
 
     //method which updates the snake's vision
     private int[] lookAround(SnakeHead head){
         int x = head.x;
         int y = head.y;
-        Object[][] grid = gameGrid.gridMat;
+        Actor[][] grid = (Actor[][])gameGrid.gridMat;
 
         int[] newInputs = new int[14];
             //first 8 is nearest snake body: N-NE-E-SE-S-SW-W-NW
@@ -175,8 +192,6 @@ public class GameEngine implements ActionListener, Drawable {
 
         newInputs[12] = food.x - snake1.x;              //x vector to food, if food is to the right of snake, positive
         newInputs[13] = food.y - snake1.y;              //y vector to food, if food is below the snake, positive
-
-        System.out.println(Arrays.toString(newInputs));
 
         return newInputs;
     }

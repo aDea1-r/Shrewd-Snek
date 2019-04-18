@@ -1,3 +1,4 @@
+import javax.management.monitor.GaugeMonitor;
 import java.util.*;
 import java.io.*;
 
@@ -30,6 +31,15 @@ public class Brain {
         hiddenWeights = new double[numHidden][sizeHidden][sizeHidden];
 
         outputNodes = new double[sizeOutput];
+    }
+    //used to create a mutated version of existing Brain
+    public Brain(Brain parent) {
+        this(parent.sizeInput,parent.sizeHidden,parent.numHidden,parent.sizeOutput);
+        System.arraycopy(parent.inputNodes,0,inputNodes,0,inputNodes.length);
+        System.arraycopy(parent.inputWeights,0,inputWeights,0,inputWeights.length);
+        System.arraycopy(parent.hiddenNodes,0,hiddenNodes,0,hiddenNodes.length);
+        System.arraycopy(parent.hiddenWeights,0,hiddenWeights,0,hiddenWeights.length);
+        System.arraycopy(parent.outputNodes,0,outputNodes,0,outputNodes.length);
     }
 
     //Given an input, put through neural net and return the index of the correct output node
@@ -111,5 +121,20 @@ public class Brain {
             layerNodes[i] = Math.max(0, layerNodes[i]);
         }
 
+    }
+
+    private void mutate(double mean, double stanDeviation) {
+        //TODO
+        //should mutate current brain object
+        Random ran = new Random();
+        for (int hiddenLayerNum = 0; hiddenLayerNum < hiddenBias.length; hiddenLayerNum++) {
+            for (int i = 0; i < hiddenBias[hiddenLayerNum].length; i++) {
+                hiddenBias[hiddenLayerNum][i] += (ran.nextGaussian()*stanDeviation)+mean;
+            }
+        }
+
+        for (int hiddenLayerNum = 0; hiddenLayerNum < hiddenWeights.length; hiddenLayerNum++) {
+
+        }
     }
 }

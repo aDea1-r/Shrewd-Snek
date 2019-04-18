@@ -1,11 +1,11 @@
 import java.awt.*;
 import java.util.Map;
 
-public class Body extends Actor {
-    int id;
-    public Body(Color c, int x, int y, Grid grid, int id){
+public class Body extends Actor implements Drawable {
+    private int id;
+    Body(Color c, int x, int y, Grid grid, int id){
         super(c, x, y, grid, id);
-        id = id;
+        this.id = id;
     }
 
     public void kill(){
