@@ -15,7 +15,7 @@ public class ScoreTracker extends Actor {
     public boolean act(Map m) {
         tickCount++;
         idleTickCount++;
-        System.out.println(idleTickCount*GameEngine.refreshRate/1000.0);
+//        System.out.println(idleTickCount*GameEngine.refreshRate/1000.0);
         if(idleTickCount*GameEngine.refreshRate/1000.0 > 10+score*.1)
             game.kill();
         return true;
