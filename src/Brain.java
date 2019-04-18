@@ -1,3 +1,4 @@
+import javax.management.monitor.GaugeMonitor;
 import java.util.*;
 import java.io.*;
 
@@ -39,7 +40,6 @@ public class Brain {
         System.arraycopy(parent.hiddenNodes,0,hiddenNodes,0,hiddenNodes.length);
         System.arraycopy(parent.hiddenWeights,0,hiddenWeights,0,hiddenWeights.length);
         System.arraycopy(parent.outputNodes,0,outputNodes,0,outputNodes.length);
-        mutate();
     }
 
     //Given an input, put through neural net and return the index of the correct output node
@@ -123,9 +123,18 @@ public class Brain {
 
     }
 
-    private void mutate() {
-        //to-do
+    private void mutate(double mean, double stanDeviation) {
+        //TODO
         //should mutate current brain object
-    }
+        Random ran = new Random();
+        for (int hiddenLayerNum = 0; hiddenLayerNum < hiddenBias.length; hiddenLayerNum++) {
+            for (int i = 0; i < hiddenBias[hiddenLayerNum].length; i++) {
+                hiddenBias[hiddenLayerNum][i] += (ran.nextGaussian()*stanDeviation)+mean;
+            }
+        }
 
+        for (int hiddenLayerNum = 0; hiddenLayerNum < hiddenWeights.length; hiddenLayerNum++) {
+
+        }
+    }
 }
