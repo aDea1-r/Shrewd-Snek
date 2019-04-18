@@ -71,7 +71,7 @@ public class GameEngine implements ActionListener, Drawable {
     }
 
     public void kill() {
-        //to-do
+        time.stop();
     }
 
     public void actionPerformed(ActionEvent e)

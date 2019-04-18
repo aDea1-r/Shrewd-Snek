@@ -14,12 +14,14 @@ public class ScoreTracker extends Actor {
     }
     public boolean act(Map m) {
         tickCount++;
-        if(idleTickCount*GameEngine.refreshRate > 10+score*.1)
+        idleTickCount++;
+        System.out.println(idleTickCount*GameEngine.refreshRate/1000.0);
+        if(idleTickCount*GameEngine.refreshRate/1000.0 > 10+score*.1)
             game.kill();
         return true;
     }
     public void ate() {
-        System.out.println("i ate");
+//        System.out.println("i ate");
         score++;
         idleTickCount = 0;
     }

@@ -61,7 +61,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         g.fillRect(0,0,2000,1500);
 
         engines[0].drawMe(g);
-        System.out.println(engines[0].scoreTracker.getScore());
+//        System.out.println(engines[0].scoreTracker.getScore());
         g.drawString(""+engines[0].scoreTracker.getScore(),10,10);
 
         stupidG.drawImage(buff,0,0,null);
