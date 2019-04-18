@@ -31,6 +31,16 @@ public class Brain {
 
         outputNodes = new double[sizeOutput];
     }
+    //used to create a mutated version of existing Brain
+    public Brain(Brain parent) {
+        this(parent.sizeInput,parent.sizeHidden,parent.numHidden,parent.sizeOutput);
+        System.arraycopy(parent.inputNodes,0,inputNodes,0,inputNodes.length);
+        System.arraycopy(parent.inputWeights,0,inputWeights,0,inputWeights.length);
+        System.arraycopy(parent.hiddenNodes,0,hiddenNodes,0,hiddenNodes.length);
+        System.arraycopy(parent.hiddenWeights,0,hiddenWeights,0,hiddenWeights.length);
+        System.arraycopy(parent.outputNodes,0,outputNodes,0,outputNodes.length);
+        mutate();
+    }
 
     //Given an input, put through neural net and return the index of the correct output node
     public double[] compute(int[] inputs){
@@ -112,4 +122,10 @@ public class Brain {
         }
 
     }
+
+    private void mutate() {
+        //to-do
+        //should mutate current brain object
+    }
+
 }
