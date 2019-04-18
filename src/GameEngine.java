@@ -8,21 +8,21 @@ import java.util.Map;
 
 public class GameEngine implements ActionListener, Drawable {
     private Timer time;
-    public final static int refreshRate = 60;        //Delay in milliseconds between game ticks
+    final static int refreshRate = 60;        //Delay in milliseconds between game ticks
 
-    public final static int numSquares = 25;          //The size of the grid taking up the play screen
+    final static int numSquares = 25;          //The size of the grid taking up the play screen
 
     private Grid gameGrid;
     ScoreTracker scoreTracker;
     private Map<Integer, Boolean> inputs;
 
-    AppleMaker food;
-    SnakeHead snake1;
+    private AppleMaker food;
+    private SnakeHead snake1;
 
     private LinkedList<Drawable> drawables = new LinkedList<Drawable>();
 
 
-    public GameEngine(double startXPercent, double startYPercent, double screenSize, int height, int width, Map<Integer, Boolean> inputs)
+    GameEngine(double startXPercent, double startYPercent, double screenSize, int height, int width, Map<Integer, Boolean> inputs)
     {
         time = new Timer(refreshRate, this); //sets delay to 15 millis and calls the actionPerformed of this class.
 
@@ -65,12 +65,12 @@ public class GameEngine implements ActionListener, Drawable {
         this(0, 0, 0, 1, 1, inputs);
     }
 
-    public void gameTick(){
+    private void gameTick(){
         snake1.act(inputs);
         scoreTracker.act(inputs);
     }
 
-    public void kill() {
+    void kill() {
         time.stop();
     }
 

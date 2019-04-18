@@ -6,7 +6,7 @@ public class ScoreTracker extends Actor {
     private int tickCount;
     private int idleTickCount;
 
-    public ScoreTracker(GameEngine game) {
+    ScoreTracker(GameEngine game) {
         this.game = game;
         score = 0;
         tickCount = 0;
@@ -20,7 +20,7 @@ public class ScoreTracker extends Actor {
             game.kill();
         return true;
     }
-    public void ate() {
+    void ate() {
 //        System.out.println("i ate");
         score++;
         idleTickCount = 0;
@@ -30,7 +30,7 @@ public class ScoreTracker extends Actor {
         double maxDuration = 10 - 10*Double.MIN_VALUE;
         return score + Math.min(duration,maxDuration)/10;
     }
-    public int getScore() {
+    int getScore() {
         return score;
     }
 }

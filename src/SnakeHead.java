@@ -4,12 +4,12 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public class SnakeHead extends Actor implements Drawable {
-    public LinkedList<Body> bodyParts;
-    public int length;
-    public int direction;  //0 = north, 1 = east, ect
-    ScoreTracker scoreTracker;
+    LinkedList<Body> bodyParts;
+    int length;
+    int direction;  //0 = north, 1 = east, ect
+    private ScoreTracker scoreTracker;
 
-    public SnakeHead(Color c, int x, int y, Grid grid, int id, ScoreTracker score){
+    SnakeHead(Color c, int x, int y, Grid grid, int id, ScoreTracker score){
         super(c, x, y, grid, id);
         bodyParts = new LinkedList<Body>();
         length = 4;
@@ -21,7 +21,7 @@ public class SnakeHead extends Actor implements Drawable {
         this(Color.CYAN, 0, 0, new Grid(0,0,0,0,null), 0, null);
     }
 
-    public boolean move(){
+    boolean move(){
 //        System.out.printf("Direction = %d%n", direction);
         if(direction == 0){
             if(y > 0 && !(grid.gridMat[x][y-1] instanceof Body)){
@@ -95,19 +95,17 @@ public class SnakeHead extends Actor implements Drawable {
 
     @Override
     public void drawMe(Graphics g) {
-        Iterator<Body> it = bodyParts.listIterator();
-        while(it.hasNext()){
-            Body temp = it.next();
+        for (Body temp : bodyParts) {
             temp.drawMe(g);
         }
     }
 
-    public void grow(int growBy){     //increases length
+    void grow(int growBy){     //increases length
         length += growBy;
         scoreTracker.ate();
     }
 
-    public boolean makeBody(){
+    boolean makeBody(){
         Body temp = new Body(color ,x, y, grid, id);
         bodyParts.add(temp);
         if(grid.gridMat[x][y] == null) {

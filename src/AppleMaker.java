@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.util.*;
 
 public class AppleMaker extends Actor implements Drawable {
-    public int foodVal = 1;     //length snake gains when eats
+    private final int foodVal = 1;     //length snake gains when eats
     private static BufferedImage image;
 
-    public AppleMaker(Color c, Grid grid, int id){
+    AppleMaker(Color c, Grid grid, int id){
         super(c, -1, -1, grid, id);
 //        typeID = 2;
 
@@ -23,21 +23,22 @@ public class AppleMaker extends Actor implements Drawable {
         int boostedSize = (int)(grid.getSize()*1.45);
         image = createResizedCopy(image,boostedSize,boostedSize);
     }
-    public int eat(SnakeHead other){       //Method will be called by snakeHead when it eats this apple
+    void eat(SnakeHead other){       //Method will be called by snakeHead when it eats this apple
         place();
         other.grow(foodVal);
 //        System.out.printf("Snake id: %d, has eaten Apple id: %d, and grown by %d%n",
 //                other.id,
 //                this.id,
 //                foodVal);
-        return foodVal;
     }
     private void place() { //assigns x and y positions a value
         int x1 = x;
         int y1 = y;
         try {
             grid.gridMat[x][y] = null;
-        } catch (IndexOutOfBoundsException e) {}
+        } catch (IndexOutOfBoundsException e) {
+            System.out.print("");
+        }
 
         do {
             x = (int)(Math.random()*grid.numSquares);
