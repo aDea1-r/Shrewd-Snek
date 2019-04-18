@@ -26,7 +26,10 @@ public class AppleMaker extends Actor implements Drawable {
     public int eat(SnakeHead other){       //Method will be called by snakeHead when it eats this apple
         place();
         other.grow(foodVal);
-        System.out.printf("Snake id: %d, has eaten Apple id: %d, and grown by %d%n", other.id, this.id, foodVal);
+        System.out.printf("Snake id: %d, has eaten Apple id: %d, and grown by %d%n",
+                other.id,
+                this.id,
+                foodVal);
         return foodVal;
     }
     private void place() { //assigns x and y positions a value

@@ -7,16 +7,18 @@ public class SnakeHead extends Actor implements Drawable {
     public LinkedList<Body> bodyParts;
     public int length;
     public int direction;  //0 = north, 1 = east, ect
+    ScoreTracker scoreTracker;
 
-    public SnakeHead(Color c, int x, int y, Grid grid, int id){
+    public SnakeHead(Color c, int x, int y, Grid grid, int id, ScoreTracker score){
         super(c, x, y, grid, id);
         bodyParts = new LinkedList<Body>();
         length = 4;
         direction = 1;
 //        typeID = 1;
+        scoreTracker = score;
     }
     public SnakeHead() {
-        this(Color.CYAN, 0, 0, new Grid(0,0,0,0,null), 0);
+        this(Color.CYAN, 0, 0, new Grid(0,0,0,0,null), 0, null);
     }
 
     public boolean move(){
@@ -45,7 +47,7 @@ public class SnakeHead extends Actor implements Drawable {
                 return true;
             }
         }
-        System.out.printf("Snake id = %d, cannot move in direction %d%n", id, direction);
+//        System.out.printf("Snake id = %d, cannot move in direction %d%n", id, direction);
         return false;
     }
 
@@ -55,28 +57,28 @@ public class SnakeHead extends Actor implements Drawable {
         if(inputs.get((int)'w') || inputs.get((int)'W')){
             if(direction != 2)
                 direction = 0;
-            System.out.printf("Direction changed to %d%n", 0);
+//            System.out.printf("Direction changed to %d%n", 0);
             inputs.put((int)'w', false);
             inputs.put((int)'W', false);
         }
         else if(inputs.get((int)'d') || inputs.get((int)'D')){
             if(direction != 3)
                 direction = 1;
-            System.out.printf("Direction changed to %d%n", 1);
+//            System.out.printf("Direction changed to %d%n", 1);
             inputs.put((int)'d', false);
             inputs.put((int)'D', false);
         }
         else if(inputs.get((int)'s') || inputs.get((int)'S')){
             if(direction != 0)
                 direction = 2;
-            System.out.printf("Direction changed to %d%n", 2);
+//            System.out.printf("Direction changed to %d%n", 2);
             inputs.put((int)'s', false);
             inputs.put((int)'S', false);
         }
         else if(inputs.get((int)'a') || inputs.get((int)'A')){
             if(direction != 1)
                 direction = 3;
-            System.out.printf("Direction changed to %d%n", 3);
+//            System.out.printf("Direction changed to %d%n", 3);
             inputs.put((int)'a', false);
             inputs.put((int)'A', false);
         }
@@ -102,6 +104,7 @@ public class SnakeHead extends Actor implements Drawable {
 
     public void grow(int growBy){     //increases length
         length += growBy;
+        scoreTracker.ate();
     }
 
     public boolean makeBody(){

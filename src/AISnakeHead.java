@@ -2,8 +2,8 @@ import java.awt.*;
 
 public class AISnakeHead extends SnakeHead {
 
-    public AISnakeHead(Color c, int x, int y, Grid grid, int id) {
-        super(c,x,y,grid,id);
+    public AISnakeHead(Color c, int x, int y, Grid grid, int id, ScoreTracker trak) {
+        super(c,x,y,grid,id,trak);
     }
     public boolean act(double[] inputs) {
         int maxSpot = 0;

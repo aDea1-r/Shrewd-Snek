@@ -2,7 +2,7 @@ import java.util.Map;
 
 public class ScoreTracker extends Actor {
     private GameEngine game;
-    private double score;
+    private int score;
     private int tickCount;
     private int idleTickCount;
 
@@ -19,12 +19,16 @@ public class ScoreTracker extends Actor {
         return true;
     }
     public void ate() {
+        System.out.println("i ate");
         score++;
         idleTickCount = 0;
     }
-    public double getScore() {
+    public double getFitness() {
         double duration = tickCount*GameEngine.refreshRate;
         double maxDuration = 10 - 10*Double.MIN_VALUE;
         return score + Math.min(duration,maxDuration)/10;
+    }
+    public int getScore() {
+        return score;
     }
 }

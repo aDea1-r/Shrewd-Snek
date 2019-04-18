@@ -13,6 +13,7 @@ public class GameEngine implements ActionListener, Drawable {
     public final static int numSquares = 25;          //The size of the grid taking up the play screen
 
     private Grid gameGrid;
+    ScoreTracker scoreTracker;
     private Map<Integer, Boolean> inputs;
 
     AppleMaker food;
@@ -38,7 +39,8 @@ public class GameEngine implements ActionListener, Drawable {
         gameGrid = new Grid(startX, startY, gridSize, numSquares, Color.BLACK);
 //      end grid setup -----------------------------------------------------------------------------------
 
-        snake1 = new SnakeHead(Color.CYAN, 1, 1, gameGrid, 1);
+        scoreTracker = new ScoreTracker(this);
+        snake1 = new SnakeHead(Color.CYAN, 1, 1, gameGrid, 1,scoreTracker);
 
         food = new AppleMaker(Color.BLACK,gameGrid,2);
 
@@ -65,6 +67,7 @@ public class GameEngine implements ActionListener, Drawable {
 
     public void gameTick(){
         snake1.act(inputs);
+        scoreTracker.act(inputs);
     }
 
     public void kill() {
@@ -79,7 +82,7 @@ public class GameEngine implements ActionListener, Drawable {
     public void keyPressed(KeyEvent e)
     {
         int code = e.getKeyCode();
-        System.out.printf("Code %d (%s) pressed %n", code, (char)code + "");
+//        System.out.printf("Code %d (%s) pressed %n", code, (char)code + "");
 
         inputs.put(code, true);
     }
