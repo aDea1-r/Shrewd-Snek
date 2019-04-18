@@ -67,6 +67,10 @@ public class GameEngine implements ActionListener, Drawable {
         snake1.act(inputs);
     }
 
+    public void kill() {
+        //to-do
+    }
+
     public void actionPerformed(ActionEvent e)
     {
         gameTick();
