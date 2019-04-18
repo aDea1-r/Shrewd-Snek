@@ -28,6 +28,7 @@ public class Brain {
         inputWeights = new double[sizeInput][sizeHidden];
 
         hiddenNodes = new double[numHidden][sizeHidden];
+        hiddenBias = new double[numHidden][sizeHidden];
         hiddenWeights = new double[numHidden][sizeHidden][sizeHidden];
 
         outputNodes = new double[sizeOutput];
@@ -49,7 +50,7 @@ public class Brain {
             inputNodes[i] = (double)inputs[i];              //TODO: insert bias here
         }
         
-        transferBetweenLayers(inputNodes, inputWeights, hiddenNodes[0], null);      //Transfer info from inputs to 1st hidden layer
+        transferBetweenLayers(inputNodes, inputWeights, hiddenNodes[0], hiddenBias[0]);      //Transfer info from inputs to 1st hidden layer
         removeNegatives(hiddenNodes[0]);
 
         
@@ -127,14 +128,27 @@ public class Brain {
         //TODO
         //should mutate current brain object
         Random ran = new Random();
-        for (int hiddenLayerNum = 0; hiddenLayerNum < hiddenBias.length; hiddenLayerNum++) {
-            for (int i = 0; i < hiddenBias[hiddenLayerNum].length; i++) {
-                hiddenBias[hiddenLayerNum][i] += (ran.nextGaussian()*stanDeviation)+mean;
+        for (int i = 0; i < inputWeights.length; i++) {             //input weights
+            for (int j = 0; j < inputWeights[i].length; j++) {
+                if(inputWeights[i][j] != -999.999)
+                    inputWeights[i][j] += (ran.nextGaussian()*stanDeviation)+mean;
             }
         }
 
-        for (int hiddenLayerNum = 0; hiddenLayerNum < hiddenWeights.length; hiddenLayerNum++) {
+        for (int hiddenLayerNum = 0; hiddenLayerNum < hiddenBias.length; hiddenLayerNum++) {    //hidden biases
+            for (int i = 0; i < hiddenBias[hiddenLayerNum].length; i++) {
+                if (hiddenBias[hiddenLayerNum][i] != -999.999)
+                    hiddenBias[hiddenLayerNum][i] += (ran.nextGaussian()*stanDeviation)+mean;
+            }
+        }
 
+        for (int hiddenLayerNum = 0; hiddenLayerNum < hiddenWeights.length; hiddenLayerNum++) {     //hidden weights
+            for (int i = 0; i < hiddenWeights[hiddenLayerNum].length; i++) {
+                for (int j = 0; j < hiddenWeights[hiddenLayerNum][i].length; j++) {
+                    if(hiddenWeights[hiddenLayerNum][i][j] != -999.999)
+                        hiddenWeights[hiddenLayerNum][i][j] += (ran.nextGaussian()*stanDeviation)+mean;
+                }
+            }
         }
     }
 }
