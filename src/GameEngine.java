@@ -69,7 +69,8 @@ public class GameEngine implements ActionListener, Drawable {
     }
 
     private void gameTick(){
-        snake1.act(inputs);
+        if(!snake1.act(inputs))
+            kill();
         scoreTracker.act(inputs);
     }
 
@@ -100,7 +101,8 @@ public class GameEngine implements ActionListener, Drawable {
             tempDrawable.drawMe(g);
         }
         if(!gameRunning) {
-            g.drawString("Oh I am slain.",gameGrid.getXPixels(gameGrid.numSquares/2),gameGrid.getXPixels(gameGrid.numSquares/2));
+            g.setColor(Color.MAGENTA);//SUBLIME
+            g.drawString("Thou art slain",gameGrid.getXPixels(gameGrid.numSquares/2),gameGrid.getXPixels(gameGrid.numSquares/2));
         }
     }
 
