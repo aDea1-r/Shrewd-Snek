@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.util.*;
 
-public abstract class Actor implements Drawable {
+public abstract class Actor {
     public Color color;
     public int x;      //in terms of grid
     public int y;      //in terms of grid
@@ -14,6 +14,9 @@ public abstract class Actor implements Drawable {
         this.y = y;
         this.grid = grid;
         this.id = id;
+    }
+    public Actor() {
+        this(null,0,0,null,0);
     }
     public abstract boolean act(Map<Integer, Boolean> inputs);
 }

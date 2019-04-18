@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class AppleMaker extends Actor {
+public class AppleMaker extends Actor implements Drawable {
     public int foodVal = 1;     //length snake gains when eats
     private static BufferedImage image;
 

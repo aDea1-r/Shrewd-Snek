@@ -3,7 +3,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class SnakeHead extends Actor {
+public class SnakeHead extends Actor implements Drawable {
     public LinkedList<Body> bodyParts;
     public int length;
     public int direction;  //0 = north, 1 = east, ect
