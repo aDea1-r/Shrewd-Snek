@@ -32,6 +32,9 @@ public class Brain {
 
         outputNodes = new double[sizeOutput];
     }
+    public Brain() {
+        this(14,10,1,4);
+    }
     //used to create a copy version of existing Brain
     public Brain(Brain parent) {
         this(parent.sizeInput,parent.sizeHidden,parent.numHidden,parent.sizeOutput);
@@ -123,7 +126,7 @@ public class Brain {
 
     }
 
-    private void mutate(double mean, double stanDeviation) {
+    void mutate(double mean, double stanDeviation) {
         //TODO
         //should mutate current brain object
         Random ran = new Random();

@@ -42,7 +42,7 @@ public class GameEngine implements ActionListener, Drawable {
 //      end grid setup -----------------------------------------------------------------------------------
 
         scoreTracker = new ScoreTracker(this);
-        snake1 = new SnakeHead(Color.CYAN, 1, 1, gameGrid, 1,scoreTracker);
+        snake1 = new AISnakeHead(Color.CYAN, 1, 1, gameGrid, 1,scoreTracker);
 
         food = new AppleMaker(Color.BLACK,gameGrid,2);
 
@@ -69,7 +69,7 @@ public class GameEngine implements ActionListener, Drawable {
     }
 
     private void gameTick(){
-        if(!snake1.act(inputs))
+        if(!((AISnakeHead)snake1).act(lookAround(snake1)))
             kill();
         scoreTracker.act(inputs);
     }
@@ -110,7 +110,7 @@ public class GameEngine implements ActionListener, Drawable {
     private int[] lookAround(SnakeHead head){
         int x = head.x;
         int y = head.y;
-        Actor[][] grid = (Actor[][])gameGrid.gridMat;
+        Object[][] grid = gameGrid.gridMat;
 
         int[] newInputs = new int[14];
             //first 8 is nearest snake body: N-NE-E-SE-S-SW-W-NW
