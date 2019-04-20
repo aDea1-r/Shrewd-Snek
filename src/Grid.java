@@ -8,7 +8,7 @@ public class Grid implements Drawable {
     int numSquares;
     private Color color = Color.BLACK;
 
-    Object[][] gridMat;  //Let -1 be empty
+    public Object[][] gridMat;  //Let -1 be empty   //is x, y
 
     Grid(int x, int y, int s, int nS, Color c){
         startX = x;

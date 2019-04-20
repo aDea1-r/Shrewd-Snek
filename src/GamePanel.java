@@ -30,8 +30,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     GamePanel()
     {
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        width = (int) screen.getWidth();
-        height = (int) screen.getHeight()-100;
+        width = (int) screen.getWidth()/2;
+        height = (int) (screen.getHeight()-100)/2;
 
         setSize(width, height);
         setVisible(true); //it's like calling the repaint method.
@@ -46,6 +46,9 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         int startY = (int)(height * startYPercent);
 
         int gridSize = Math.max(Math.min((int)(height * screenSize), (int)(width * screenSize))/GameEngine.numSquares, 1);
+
+        inputs.put((int)'P', false);
+        inputs.put((int)'p', false);
 
         engines = new GameEngine[1];
         engines[0] = new GameEngine(startXPercent, startYPercent, screenSize, height, width, inputs);
