@@ -42,7 +42,7 @@ public class GameEngine implements ActionListener, Drawable {
 //      end grid setup -----------------------------------------------------------------------------------
 
         scoreTracker = new ScoreTracker(this);
-        snake1 = new AISnakeHead(Color.CYAN, 1, 1, gameGrid, 1,scoreTracker);
+        snake1 = new AISnakeHead(Color.CYAN, gameGrid.numSquares/2, gameGrid.numSquares/2, gameGrid, 1,scoreTracker);
 
         food = new AppleMaker(Color.BLACK,gameGrid,2);
 
