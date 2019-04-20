@@ -3,7 +3,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 class AppleMaker extends AppleStuff {
-    PrintWriter log;
+    private PrintWriter log;
+
     AppleMaker(Color c, Grid grid, int id) {
         super(c,grid,id);
     }
