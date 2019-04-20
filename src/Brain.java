@@ -57,7 +57,7 @@ public class Brain implements Drawable {
         }
     }
     public Brain() {
-        this(14,10,1,4, 0.1, 1, 1, 1, 1, 1);
+        this(14,10,1,4, 0.0, 1, 0, 0.2, 0, 2);
     }
     //used to create a copy version of existing Brain
     public Brain(Brain parent) {
@@ -208,7 +208,7 @@ public class Brain implements Drawable {
         int spaceBetweenOutputs = totalGridSize/outputNodes.length;
         for (int i = 0; i < outputNodes.length; i++) {
 //            g.drawString(""+outputNodes[i], startXPixels + fontSizeTitles*5, startYPixels + (spaceBetweenOutputs*(i+1)) - totalGridSize/50);
-            g.drawString(String.format("%.3f", outputNodes[i]), startXPixels + fontSizeTitles*5, startYPixels + (spaceBetweenOutputs*(i+1)) - spaceBetweenOutputs/2);
+            g.drawString(String.format("% .3f", outputNodes[i]), startXPixels + fontSizeTitles*5, startYPixels + (spaceBetweenOutputs*(i+1)) - spaceBetweenOutputs/2);
         }
     }
 }
