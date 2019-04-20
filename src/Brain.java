@@ -208,7 +208,7 @@ public class Brain implements Drawable {
         int spaceBetweenOutputs = totalGridSize/outputNodes.length;
         for (int i = 0; i < outputNodes.length; i++) {
 //            g.drawString(""+outputNodes[i], startXPixels + fontSizeTitles*5, startYPixels + (spaceBetweenOutputs*(i+1)) - totalGridSize/50);
-            g.drawString(String.format("%.3f", outputNodes[i]), startXPixels + fontSizeTitles*5, startYPixels + (spaceBetweenOutputs*(i+1)) - totalGridSize/50);
+            g.drawString(String.format("%.3f", outputNodes[i]), startXPixels + fontSizeTitles*5, startYPixels + (spaceBetweenOutputs*(i+1)) - spaceBetweenOutputs/2);
         }
     }
 }
