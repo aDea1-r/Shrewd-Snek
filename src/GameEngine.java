@@ -120,74 +120,89 @@ public class GameEngine implements ActionListener, Drawable {
         newInputs[0] = stop + 1;
         System.out.printf("Looking %10s: max distance is %d%n", "North", stop);
         for (int i = 1; i < stop; i++) {
-            if(grid[y-i][x] instanceof Body){
+            if(grid[x][y-i] instanceof Body){
                 newInputs[0] = i;
                 break;
             }
         }
+        System.out.printf("   Looking %10s: distance is %d%n", "North", newInputs[0]);
+
         stop = Math.min(y, gameGrid.gridMat.length - x - 1);                                //Look to the NorthEast
         newInputs[1] = stop + 1;
         System.out.printf("Looking %10s: max distance is %d%n", "NorthEast", stop);
         for (int i = 1; i < stop; i++) {
-            if(grid[y-i][x+i] instanceof Body){
+            if(grid[x+i][y-i] instanceof Body){
                 newInputs[1] = i;
                 break;
             }
         }
+        System.out.printf("   Looking %10s: distance is %d%n", "NorthEast", newInputs[1]);
+
         stop = gameGrid.gridMat.length - 1 - x;                                             //Look to the East
         newInputs[2] = stop + 1;
         System.out.printf("Looking %10s: max distance is %d%n", "East", stop);
         for (int i = 1; i < stop; i++) {
-            if(grid[y][x+i] instanceof Body){
+            if(grid[x+i][y] instanceof Body){
                 newInputs[2] = i;
                 break;
             }
         }
+        System.out.printf("   Looking %10s: distance is %d%n", "East", newInputs[2]);
+
         stop = Math.min(gameGrid.gridMat.length - 1 - y, gameGrid.gridMat.length - 1 - x);      //Look to the SouthEast
         newInputs[3] = stop + 1;
         System.out.printf("Looking %10s: max distance is %d%n", "SouthEast", stop);
         for (int i = 1; i < stop; i++) {
-            if(grid[y+i][x+i] instanceof Body){
+            if(grid[x+i][y+i] instanceof Body){
                 newInputs[3] = i;
                 break;
             }
         }
+        System.out.printf("   Looking %10s: distance is %d%n", "SouthEast", newInputs[3]);
+
         stop = gameGrid.gridMat.length - 1 - y;                                             //Look to the South
         newInputs[4] = stop + 1;
         System.out.printf("Looking %10s: max distance is %d%n", "South", stop);
         for (int i = 1; i < stop; i++) {       //Look the the South
-            if(grid[y+i][x] instanceof Body){
+            if(grid[x][y+i] instanceof Body){
                 newInputs[4] = i;
                 break;
             }
         }
+        System.out.printf("   Looking %10s: distance is %d%n", "South", newInputs[4]);
+
         stop = Math.min(gameGrid.gridMat.length - 1 - y, x);                                //Look to the SouthWest
         newInputs[5] = stop + 1;
         System.out.printf("Looking %10s: max distance is %d%n", "SouthWest", stop);
         for (int i = 1; i < stop; i++) {       //Look the the SouthWest
-            if(grid[y+i][x-i] instanceof Body){
+            if(grid[x-i][y+i] instanceof Body){
                 newInputs[5] = i;
                 break;
             }
         }
+        System.out.printf("   Looking %10s: distance is %d%n", "SouthWest", newInputs[5]);
+
         stop = x;                                                                       //Look to the West
         newInputs[6] = stop + 1;
         System.out.printf("Looking %10s: max distance is %d%n", "West", stop);
         for (int i = 1; i < stop; i++) {
-            if(grid[y][x-i] instanceof Body){
+            if(grid[x-i][y] instanceof Body){
                 newInputs[6] = i;
                 break;
             }
         }
+        System.out.printf("   Looking %10s: distance is %d%n", "West", newInputs[6]);
+
         stop = Math.min(y, x);                                                          //Look to the NorthWest
         newInputs[7] = stop + 1;
         System.out.printf("Looking %10s: max distance is %d%n", "NorthWest", stop);
         for (int i = 1; i < stop; i++) {
-            if(grid[y-i][x-i] instanceof Body){
+            if(grid[x-i][y-i] instanceof Body){
                 newInputs[7] = i;
                 break;
             }
         }
+        System.out.printf("   Looking %10s: distance is %d%n", "NorthWest", newInputs[7]);
         //End looking for snake body---------------------
 
         newInputs[8] = y;                               //North wall
@@ -205,9 +220,9 @@ public class GameEngine implements ActionListener, Drawable {
 
     public static String printArr(Object[][] arr){
         StringBuilder str = new StringBuilder();
-        for(int r = 0; r < arr.length; r++){
-            for(int c = 0; c < arr[r].length; c++){
-                str.append(String.format("%s18,", arr[r][c].toString() + " "));
+        for(int c = 0; c < arr.length; c++){
+            for(int r = 0; r < arr[c].length; r++){
+                str.append(String.format("%18s,", arr[r][c] + " "));
             }
             str.append("\n");
         }
