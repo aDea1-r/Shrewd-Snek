@@ -57,7 +57,7 @@ public class Brain implements Drawable {
         }
     }
     public Brain() {
-        this(14,10,1,4, 0.0, 1, 0, 0.2, 0, 2);
+        this(14,10,2,4, 0.0, 1, 0, 0.2, 0, 2);
     }
     //used to create a copy version of existing Brain
     public Brain(Brain parent) {
