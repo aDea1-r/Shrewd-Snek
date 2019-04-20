@@ -32,7 +32,7 @@ public class Brain {
 
         outputNodes = new double[sizeOutput];
     }
-    //used to create a mutated version of existing Brain
+    //used to create a copy version of existing Brain
     public Brain(Brain parent) {
         this(parent.sizeInput,parent.sizeHidden,parent.numHidden,parent.sizeOutput);
         System.arraycopy(parent.inputNodes,0,inputNodes,0,inputNodes.length);
