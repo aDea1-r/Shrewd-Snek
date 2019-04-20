@@ -101,9 +101,13 @@ public class GameEngine implements ActionListener, Drawable {
             tempDrawable.drawMe(g);
         }
         if(!gameRunning) {
+            Color ctemp = g.getColor();
+            Font ftemp =g.getFont();
             g.setColor(Color.RED);//SUBLIME
             g.setFont(new Font("TimesRoman", Font.BOLD, (gameGrid.size*gameGrid.numSquares)/12));
             g.drawString("Thou art slain",gameGrid.getXPixels(gameGrid.numSquares/4),gameGrid.getXPixels(gameGrid.numSquares/2));
+            g.setColor(ctemp);
+            g.setFont(ftemp);
         }
     }
 
