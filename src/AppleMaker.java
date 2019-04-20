@@ -15,13 +15,15 @@ public class AppleMaker extends Actor implements Drawable {
 
         place();
 
-        try {
-            image = ImageIO.read(new File("food.png"));
-        } catch (IOException e) {
-            System.out.println("Image not found");
+        if(image==null) {
+            try {
+                image = ImageIO.read(new File("food.png"));
+            } catch (IOException e) {
+                System.out.println("Image not found");
+            }
+            int boostedSize = (int)(grid.getSize()*1.45);
+            image = createResizedCopy(image,boostedSize,boostedSize);
         }
-        int boostedSize = (int)(grid.getSize()*1.45);
-        image = createResizedCopy(image,boostedSize,boostedSize);
     }
     void eat(SnakeHead other){       //Method will be called by snakeHead when it eats this apple
         place();
