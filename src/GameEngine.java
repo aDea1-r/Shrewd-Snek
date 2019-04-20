@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class GameEngine implements ActionListener, Drawable {
     private Timer time;
-    final static int refreshRate = 60;        //Delay in milliseconds between game ticks
+    final static int refreshRate = 220;        //Delay in milliseconds between game ticks
 
     final static int numSquares = 25;          //The size of the grid taking up the play screen
 
@@ -221,11 +221,17 @@ public class GameEngine implements ActionListener, Drawable {
         newInputs[12] = food.x - snake1.x;              //x vector to food, if food is to the right of snake, positive
         newInputs[13] = food.y - snake1.y;              //y vector to food, if food is below the snake, positive
 
-//        System.out.println(Arrays.toString(newInputs));
+        System.out.printf("[%s]%n%n", printArr(newInputs));
 
         return newInputs;
     }
-
+    public static String printArr(int[] arr){
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < arr.length; i++) {
+            str.append(arr[i] + " ");
+        }
+        return str.toString();
+    }
     public static String printArr(Object[][] arr){
         StringBuilder str = new StringBuilder();
         for(int c = 0; c < arr.length; c++){

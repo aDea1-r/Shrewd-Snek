@@ -24,4 +24,10 @@ public class AISnakeHead extends SnakeHead {
         }
         return true;
     }
+
+    @Override
+    public void drawMe(Graphics g){
+        super.drawMe(g);
+        brain.drawMe(g, grid);
+    }
 }
