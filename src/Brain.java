@@ -26,11 +26,6 @@ public class Brain {
 
         inputNodes = new double[sizeInput];
         inputWeights = new double[sizeInput][sizeHidden];
-        for (int r = 0; r < inputWeights.length; r++) {         //Init all weights to 0.1
-            for (int c = 0; c < inputWeights[r].length; c++) {
-                inputWeights[r][c] = 0.1;
-            }
-        }
 
         hiddenNodes = new double[numHidden][sizeHidden];
         hiddenWeights = new double[numHidden][sizeHidden][sizeHidden];
