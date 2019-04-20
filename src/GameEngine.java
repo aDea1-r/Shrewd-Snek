@@ -101,8 +101,9 @@ public class GameEngine implements ActionListener, Drawable {
             tempDrawable.drawMe(g);
         }
         if(!gameRunning) {
-            g.setColor(Color.MAGENTA);//SUBLIME
-            g.drawString("Thou art slain",gameGrid.getXPixels(gameGrid.numSquares/2),gameGrid.getXPixels(gameGrid.numSquares/2));
+            g.setColor(Color.RED);//SUBLIME
+            g.setFont(new Font("TimesRoman", Font.BOLD, (gameGrid.size*gameGrid.numSquares)/12));
+            g.drawString("Thou art slain",gameGrid.getXPixels(gameGrid.numSquares/4),gameGrid.getXPixels(gameGrid.numSquares/2));
         }
     }
 
@@ -216,7 +217,7 @@ public class GameEngine implements ActionListener, Drawable {
         newInputs[12] = food.x - snake1.x;              //x vector to food, if food is to the right of snake, positive
         newInputs[13] = food.y - snake1.y;              //y vector to food, if food is below the snake, positive
 
-        System.out.println(Arrays.toString(newInputs));
+//        System.out.println(Arrays.toString(newInputs));
 
         return newInputs;
     }
