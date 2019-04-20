@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class GameEngine implements ActionListener, Drawable {
     private Timer time;
-    final static int refreshRate = 220;        //Delay in milliseconds between game ticks
+    final static int refreshRate = 60;        //Delay in milliseconds between game ticks
 
     final static int numSquares = 25;          //The size of the grid taking up the play screen
 
@@ -42,7 +42,7 @@ public class GameEngine implements ActionListener, Drawable {
 //      end grid setup -----------------------------------------------------------------------------------
 
         scoreTracker = new ScoreTracker(this);
-        snake1 = new AISnakeHead(Color.CYAN, 1, 1, gameGrid, 1,scoreTracker);
+        snake1 = new AISnakeHead(Color.CYAN, gameGrid.numSquares/3, gameGrid.numSquares/2, gameGrid, 1,scoreTracker);
 
         food = new AppleMaker(Color.BLACK,gameGrid,2);
 
