@@ -49,7 +49,7 @@ public class Brain {
             inputNodes[i] = (double)inputs[i];              //TODO: insert bias here
         }
         
-        transferBetweenLayers(inputNodes, inputWeights, hiddenNodes[0], null);      //Transfer info from inputs to 1st hidden layer
+        transferBetweenLayers(inputNodes, inputWeights, sizeHidden, hiddenNodes[0], null);      //Transfer info from inputs to 1st hidden layer
         removeNegatives(hiddenNodes[0]);
 
         
@@ -59,13 +59,13 @@ public class Brain {
             double[] layerNodes = hiddenNodes[i];
             double[][] layerWeights = hiddenWeights[i];
 
-            transferBetweenLayers(layerNodes, layerWeights, hiddenNodes[i + 1], hiddenBias[i + 1]);
+            transferBetweenLayers(layerNodes, layerWeights, sizeHidden, hiddenNodes[i + 1], hiddenBias[i + 1]);
             removeNegatives(hiddenNodes[i + 1]);
 
         }
         
         
-        transferBetweenLayers(hiddenNodes[numHidden - 1], hiddenWeights[numHidden - 1], outputNodes, null);    //Transfer info in last hidden layer to output layer
+        transferBetweenLayers(hiddenNodes[numHidden - 1], hiddenWeights[numHidden - 1], sizeOutput, outputNodes, null);    //Transfer info in last hidden layer to output layer
         removeNegatives(outputNodes);
         
         
@@ -80,12 +80,14 @@ public class Brain {
         return outputNodes;
     }
 
-    private void transferBetweenLayers(double[] thisLayerNodes, double[][] thisLayerWeights, double[] nextLayerNodes, double[] nextLayerBias){
+    private void transferBetweenLayers(double[] thisLayerNodes, double[][] thisLayerWeights, int thisLayerNodeWeightsLength, double[] nextLayerNodes, double[] nextLayerBias){
         /*
         Given the nodes of a layer, thisLayerNodes
         the weights of a layer, thisLayerWeights
         and the nodes of the next layer, nextLayerNodes
         this method updates all the nods of the nextLayer
+
+        Added: thisLayerNodeWeightsLength
 
         In addition: when it is on the first node, it will reinitialize the values of every node in nextLayerNodes to bias
          */
@@ -95,7 +97,7 @@ public class Brain {
             double nodeVal = thisLayerNodes[nodeNum];
             double[] thisNodeWeights = thisLayerWeights[nodeNum];
 
-            for (int weightNum = 0; weightNum < thisNodeWeights.length; weightNum++) {  //Loop through weights
+            for (int weightNum = 0; weightNum < thisLayerNodeWeightsLength; weightNum++) {  //Loop through weights
                 double weight = thisNodeWeights[weightNum];
                 if(weight != -999.999){
                     if(nextLayerBias != null && nodeNum == 0){          //Biases
