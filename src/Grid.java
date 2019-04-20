@@ -4,11 +4,11 @@ import java.awt.image.BufferedImage;
 public class Grid implements Drawable {
     private int startX;
     private int startY;
-    private int size;       //pixel width of a single spot
+    int size;       //pixel width of a single spot
     int numSquares;
     private Color color = Color.BLACK;
 
-    Object[][] gridMat;  //Let -1 be empty
+    public Object[][] gridMat;  //Let -1 be empty   //is x, y
 
     Grid(int x, int y, int s, int nS, Color c){
         startX = x;
