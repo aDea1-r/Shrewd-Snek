@@ -17,15 +17,19 @@ public class NumberSelector implements Drawable{
         increase = new Button(x,y,width,bHeight,"^") {
             @Override
             public void press() {
-                currentVal++;
-                middle.setText(Integer.toString(currentVal));
+                if(currentVal<max) {
+                    currentVal++;
+                    middle.setText(Integer.toString(currentVal));
+                }
             }
         };
         decrease = new Button(x, y+2*bHeight, width, bHeight, "v") {
             @Override
             public void press() {
-                currentVal--;
-                middle.setText(Integer.toString(currentVal));
+                if(currentVal>min) {
+                    currentVal--;
+                    middle.setText(Integer.toString(currentVal));
+                }
             }
         };
         middle = new Button(x,y+bHeight,width,bHeight,Integer.toString(currentVal)) {
@@ -37,6 +41,7 @@ public class NumberSelector implements Drawable{
     void addtoList(List<Button> list) {
         list.add(increase);
         list.add(decrease);
+        list.add(middle);
     }
     void setCurrentVal(int x) {
         if(x>max) {
@@ -54,5 +59,7 @@ public class NumberSelector implements Drawable{
         middle.drawMe(g);
         decrease.drawMe(g);
     }
-
+    int getCurrentValue() {
+        return currentVal;
+    }
 }
