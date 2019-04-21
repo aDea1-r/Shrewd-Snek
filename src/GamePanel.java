@@ -126,9 +126,9 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         System.out.printf("Average framerate is %.2f%n", avgFrameRate);
     }
     void startPlayer() {
-        engines[0] = new GameEngine(startXPercent, startYPercent, screenSize, height, width, inputs);
+        engines[0] = new GameEngine(startXPercent, startYPercent, screenSize, height, width, inputs,true);
     }
     void startAI() {
-        engines[0] = new GameEngine(startXPercent, startYPercent, screenSize, height, width, inputs);
+        engines[0] = new GameEngine(startXPercent, startYPercent, screenSize, height, width, inputs,false);
     }
 }

@@ -22,10 +22,12 @@ public class GameEngine implements ActionListener, Drawable {
     private LinkedList<Drawable> drawables = new LinkedList<Drawable>();
 
     private boolean gameRunning;
+    private boolean usePlayerInput;
 
 
-    GameEngine(double startXPercent, double startYPercent, double screenSize, int height, int width, Map<Integer, Boolean> inputs)
+    GameEngine(double startXPercent, double startYPercent, double screenSize, int height, int width, Map<Integer, Boolean> inputs, boolean upi)
     {
+        usePlayerInput = upi;
         time = new Timer(refreshRate, this); //sets delay to 15 millis and calls the actionPerformed of this class.
 
 //        Grid setup----------------------------------------------------------------------------------------
@@ -42,7 +44,10 @@ public class GameEngine implements ActionListener, Drawable {
 //      end grid setup -----------------------------------------------------------------------------------
 
         scoreTracker = new ScoreTracker(this);
-        snake1 = new AISnakeHead(Color.CYAN, gameGrid.numSquares/3, gameGrid.numSquares/2, gameGrid, 1,scoreTracker);
+        if(usePlayerInput)
+            snake1 = new SnakeHead(Color.CYAN, gameGrid.numSquares/3, gameGrid.numSquares/2, gameGrid, 1,scoreTracker);
+        else
+            snake1 = new AISnakeHead(Color.CYAN, gameGrid.numSquares/3, gameGrid.numSquares/2, gameGrid, 1,scoreTracker);
 
         food = new AppleMaker(Color.BLACK,gameGrid,2);
 
@@ -65,11 +70,13 @@ public class GameEngine implements ActionListener, Drawable {
         gameRunning = true;
     }
     public GameEngine(Map<Integer, Boolean> inputs){
-        this(0, 0, 0, 1, 1, inputs);
+        this(0, 0, 0, 1, 1, inputs, false);
     }
 
     private void gameTick(){
-        if(!((AISnakeHead)snake1).act(lookAround(snake1)))
+        if(!usePlayerInput && !((AISnakeHead)snake1).act(lookAround(snake1)))
+            kill();
+        else if (usePlayerInput && !snake1.act(inputs))
             kill();
         scoreTracker.act(inputs);
     }

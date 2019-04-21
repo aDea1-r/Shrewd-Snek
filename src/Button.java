@@ -18,12 +18,13 @@ public abstract class Button implements Drawable {
         buttonColor = b;
         textColor = t;
     }
-    public void drawMe(Graphics g) {
-        Color temp = g.getColor();
+    public void drawMe(Graphics stupidG) {
+        Graphics g = stupidG.create();
+
         g.setColor(buttonColor);
         g.fillRect((int)hitbox.getX(),(int)hitbox.getY(),(int)hitbox.getWidth(),(int)hitbox.getHeight());
         g.setColor(textColor);
-        g.setFont(new Font("Comic Sans",Font.PLAIN,12));
+        g.setFont(new Font("Comic Sans",Font.PLAIN,50));
 
         Rectangle rect = new Rectangle((int)(hitbox.getX()+hitbox.width*0.1),
                 (int)(hitbox.getY()+hitbox.getHeight()*.1),
@@ -42,7 +43,7 @@ public abstract class Button implements Drawable {
         g.setClip(shape);
         ((Graphics2D)g).fill(shape.getBounds());
 
-        g.setColor(temp);
+        g.dispose();
     }
     public boolean isPressed(int x, int y) {
         return hitbox.contains(new Point(x,y));
