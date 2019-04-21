@@ -9,6 +9,6 @@ public class startButton extends Button {
         super(x, y, width, height, text, b, t);
     }
     public void press(GamePanel gp) {
-        gp.start();
+        gp.startPlayer();
     }
 }

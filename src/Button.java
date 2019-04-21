@@ -33,7 +33,7 @@ public abstract class Button implements Drawable {
         FontRenderContext frc = ((Graphics2D)g).getFontRenderContext();
         TextLayout tl = new TextLayout(text, g.getFont(), frc);
         AffineTransform transform = new AffineTransform();
-        transform.setToTranslation(rect.getX(), rect.getY());
+        transform.setToTranslation(rect.getX(), rect.getY()+rect.getHeight());
         double scaleY =
                 rect.getHeight() / (double) (tl.getOutline(null).getBounds().getMaxY()
                         - tl.getOutline(null).getBounds().getMinY());

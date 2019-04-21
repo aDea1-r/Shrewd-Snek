@@ -6,6 +6,7 @@ import java.awt.image.*;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.util.*;
+import javax.swing.SwingUtilities;
 
 public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private BufferedImage buff;
@@ -46,7 +47,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         int gridSize = Math.max(Math.min((int)(height * screenSize), (int)(width * screenSize))/GameEngine.numSquares, 1);
 
         buttonList = new ArrayList<Button>();
-        Button start = new startButton(1200, 100, 200, 80, "start");
+
+        Button start = new startButton((getWidth()*8) /10, getHeight()/10, 200, 80, "Player");
         buttonList.add(start);
 
         inputs.put((int)'P', false);
@@ -83,6 +85,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
     public void mouseClicked(MouseEvent e)
     {
+        e = SwingUtilities.convertMouseEvent(e.getComponent(),e,this);
         for (Button b: buttonList) {
             if(b.isPressed(e.getX(), e.getY()))
                 b.press(this);
@@ -120,7 +123,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         frames = 0;
         System.out.printf("Average framerate is %.2f%n", avgFrameRate);
     }
-    void start() {
+    void startPlayer() {
         engines[0] = new GameEngine(startXPercent, startYPercent, screenSize, height, width, inputs);
     }
 }
