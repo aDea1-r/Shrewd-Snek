@@ -1,3 +1,2 @@
 *.xml
-workspace.xml
-misc.xml
+*.iml
