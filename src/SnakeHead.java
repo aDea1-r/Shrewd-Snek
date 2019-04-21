@@ -25,25 +25,25 @@ public class SnakeHead extends Actor implements Drawable {
 //        System.out.printf("Direction = %d%n", direction);
         if(direction == 0){
             if(y > 0 && !(grid.gridMat[x][y-1] instanceof Body)){
-                y = y - 1;
+                y = y - 1; //north
                 return true;
             }
         }
         else if(direction == 1){
             if(x < grid.gridMat.length - 1 && !(grid.gridMat[x+1][y] instanceof Body)){
-                x = x + 1;
+                x = x + 1; //east
                 return true;
             }
         }
         else if(direction == 2){
             if(y < grid.gridMat.length - 1 && !(grid.gridMat[x][y+1] instanceof Body)){
-                y = y + 1;
+                y = y + 1; //south
                 return true;
             }
         }
         else if(direction == 3){
             if(x > 0 && !(grid.gridMat[x-1][y] instanceof Body)){
-                x = x - 1;
+                x = x - 1; //west
                 return true;
             }
         }

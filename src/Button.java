@@ -42,8 +42,6 @@ public abstract class Button implements Drawable {
         g.setClip(shape);
         ((Graphics2D)g).fill(shape.getBounds());
 
-        g.setColor(Color.white);
-        g.drawRect((int)hitbox.getX(),(int)hitbox.getY(),(int)hitbox.getWidth(),(int)hitbox.getHeight());
         g.setColor(temp);
     }
     public boolean isPressed(int x, int y) {

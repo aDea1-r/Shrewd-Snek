@@ -48,8 +48,10 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
         buttonList = new ArrayList<Button>();
 
-        Button start = new startButton((getWidth()*8) /10, getHeight()/10, 200, 80, "Player");
-        buttonList.add(start);
+        Button player = new PlayerStartButton((getWidth()*17) /20, getHeight()/10, 200, 80, "Player");
+        buttonList.add(player);
+        Button AI = new AIStartButton((getWidth()*17) /20, getHeight()*2/10, 200, 80, "Computer");
+        buttonList.add(AI);
 
         inputs.put((int)'P', false);
         inputs.put((int)'p', false);
@@ -124,6 +126,9 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         System.out.printf("Average framerate is %.2f%n", avgFrameRate);
     }
     void startPlayer() {
+        engines[0] = new GameEngine(startXPercent, startYPercent, screenSize, height, width, inputs);
+    }
+    void startAI() {
         engines[0] = new GameEngine(startXPercent, startYPercent, screenSize, height, width, inputs);
     }
 }
