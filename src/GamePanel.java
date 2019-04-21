@@ -25,6 +25,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private List<Button> buttonList;
 
     private GameEngine[] engines;
+    private int renderEngineIndex;
 
     GamePanel()
     {
@@ -50,23 +51,29 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
         Button player = new Button((getWidth()*17) /20, getHeight()/10, 200, 80, "Player") {
             @Override
-            public void press(GamePanel gp) {
-                gp.startPlayer();
+            public void press() {
+                startPlayer();
             }
         };
         buttonList.add(player);
         Button AI = new Button((getWidth()*17) /20, getHeight()*2/10, 200, 80, "Computer") {
             @Override
-            public void press(GamePanel gp) {
-                gp.startAI();
+            public void press() {
+                startAI();
             }
         };
         buttonList.add(AI);
+        Button runGeneration = new Button((getWidth()*17) /20, getHeight()*3/10, 200, 80, "Generation") {
+            @Override
+            public void press() {
+                startGeneration();
+            }
+        };
+        buttonList.add(runGeneration);
 
         inputs.put((int)'P', false);
         inputs.put((int)'p', false);
 
-        engines = new GameEngine[1];
     }
 
     public void paintComponent(Graphics stupidG)
@@ -78,11 +85,19 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         g.setColor(Color.MAGENTA);
         g.fillRect(0,0,2000,1500);
 
-        if(engines[0]!=null) {
-            engines[0].drawMe(g);
+        if(engines!=null) {
+            if(!engines[renderEngineIndex].gameRunning) {
+                int nextEngine = renderEngineIndex;
+                while (!engines[nextEngine].gameRunning && nextEngine<engines.length-1)
+                    nextEngine++;
+                if(engines[nextEngine].gameRunning)
+                    renderEngineIndex = nextEngine;
+            }
+
+            engines[renderEngineIndex].drawMe(g);
 
 //        System.out.println(engines[0].scoreTracker.getScore());
-            g.drawString("" + engines[0].scoreTracker.getScore(), 10, 60);
+            g.drawString("" + engines[renderEngineIndex].scoreTracker.getScore(), 10, 60);
         }
 
         for (Button b: buttonList) {
@@ -100,7 +115,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         e = SwingUtilities.convertMouseEvent(e.getComponent(),e,this);
         for (Button b: buttonList) {
             if(b.isPressed(e.getX(), e.getY()))
-                b.press(this);
+                b.press();
         }
     }
     public void mousePressed(MouseEvent e){}
@@ -136,9 +151,20 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         System.out.printf("Average framerate is %.2f%n", avgFrameRate);
     }
     private void startPlayer() {
+        engines = new GameEngine[1];
         engines[0] = new GameEngine(startXPercent, startYPercent, screenSize, height, width, inputs,true);
+        renderEngineIndex = 0;
     }
     private void startAI() {
+        engines = new GameEngine[1];
         engines[0] = new GameEngine(startXPercent, startYPercent, screenSize, height, width, inputs,false);
+        renderEngineIndex = 0;
+    }
+    private void startGeneration() {
+        engines = new GameEngine[1000];
+        for (int i = 0; i < engines.length; i++) {
+            engines[i] = new GameEngine(startXPercent, startYPercent, screenSize, height, width, inputs,false);
+        }
+        renderEngineIndex = 0;
     }
 }

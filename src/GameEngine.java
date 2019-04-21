@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class GameEngine implements ActionListener, Drawable {
     private Timer time;
-    final static int refreshRate = 60;        //Delay in milliseconds between game ticks
+    final static int refreshRate = 1;        //Delay in milliseconds between game ticks
 
     final static int numSquares = 25;          //The size of the grid taking up the play screen
 
@@ -21,7 +21,7 @@ public class GameEngine implements ActionListener, Drawable {
 
     private LinkedList<Drawable> drawables = new LinkedList<Drawable>();
 
-    private boolean gameRunning;
+    boolean gameRunning;
     private boolean usePlayerInput;
 
 
