@@ -14,7 +14,7 @@ public class NumberSelector implements Drawable{
         this.min = min;
         this.max = max;
         currentVal = (min+max)/2;
-        increase = new Button(x,y,width,bHeight,"^") {
+        increase = new Button(x,y,width,bHeight,"+") {
             @Override
             public void press() {
                 if(currentVal<max) {
@@ -23,7 +23,7 @@ public class NumberSelector implements Drawable{
                 }
             }
         };
-        decrease = new Button(x, y+2*bHeight, width, bHeight, "v") {
+        decrease = new Button(x, y+2*bHeight, width, bHeight, "-") {
             @Override
             public void press() {
                 if(currentVal>min) {
