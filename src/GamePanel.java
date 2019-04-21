@@ -48,9 +48,19 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
         buttonList = new ArrayList<Button>();
 
-        Button player = new PlayerStartButton((getWidth()*17) /20, getHeight()/10, 200, 80, "Player");
+        Button player = new Button((getWidth()*17) /20, getHeight()/10, 200, 80, "Player") {
+            @Override
+            public void press(GamePanel gp) {
+                gp.startPlayer();
+            }
+        };
         buttonList.add(player);
-        Button AI = new AIStartButton((getWidth()*17) /20, getHeight()*2/10, 200, 80, "Computer");
+        Button AI = new Button((getWidth()*17) /20, getHeight()*2/10, 200, 80, "Computer") {
+            @Override
+            public void press(GamePanel gp) {
+                gp.startAI();
+            }
+        };
         buttonList.add(AI);
 
         inputs.put((int)'P', false);
