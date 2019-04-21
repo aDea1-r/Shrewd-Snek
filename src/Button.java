@@ -45,8 +45,11 @@ public abstract class Button implements Drawable {
 
         g.dispose();
     }
-    public boolean isPressed(int x, int y) {
+    boolean isPressed(int x, int y) {
         return hitbox.contains(new Point(x,y));
+    }
+    void setText(String s) {
+        text = s;
     }
     public abstract void press();
 }
