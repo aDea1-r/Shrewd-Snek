@@ -1,8 +1,9 @@
 import javax.management.monitor.GaugeMonitor;
+import java.awt.*;
 import java.util.*;
 import java.io.*;
 
-public class Brain implements Serializable {
+public class Brain implements Drawable, Serializable {
     private int sizeInput;          //Num nodes in input layer
     private int sizeHidden;         //Num nodes in hidden layer
     private int numHidden;          //Number of hidden layers
@@ -18,7 +19,7 @@ public class Brain implements Serializable {
 
     private double[] outputNodes;           //Array that holds the values of all output nodes
 
-    private Brain(int sI, int sH, int nH, int sO){
+    private Brain(int sI, int sH, int nH, int sO, double initialWeight, double initialBias, double initialMutateMean, double initialMutateStanDev, double initialBiasMutateMean, double initialBiasMutateStanDev){
         sizeInput = sI;
         sizeHidden = sH;
         numHidden = nH;
@@ -26,14 +27,37 @@ public class Brain implements Serializable {
 
         inputNodes = new double[sizeInput];
         inputWeights = new double[sizeInput][sizeHidden];
+        for (int r = 0; r < inputWeights.length; r++) {
+            for (int c = 0; c < inputWeights[r].length; c++) {
+                inputWeights[r][c] = initialWeight;
+            }
+        }
 
         hiddenNodes = new double[numHidden][sizeHidden];
         hiddenWeights = new double[numHidden][sizeHidden][sizeHidden];
+        for (int i = 0; i < numHidden; i++) {                           //init weights
+            for (int r = 0; r < hiddenWeights[i].length; r++) {
+                for (int c = 0; c < hiddenWeights[i][r].length; c++) {
+                    hiddenWeights[i][r][c] = initialWeight;
+                }
+            }
+        }
+        hiddenBias = new double[numHidden][sizeHidden];
+        for (int i = 0; i < numHidden; i++) {
+            for (int j = 0; j < hiddenBias[i].length; j++) {
+                hiddenBias[i][j] = initialBias;
+            }
+        }
 
         outputNodes = new double[sizeOutput];
+
+        if(!(initialMutateMean == 0 && initialMutateStanDev == 0 && initialBiasMutateMean == 0 && initialBiasMutateStanDev == 0)) {
+            //if statement to prevent mutation when cloning brains
+            this.mutate(initialMutateMean, initialMutateStanDev, initialBiasMutateMean, initialBiasMutateStanDev);
+        }
     }
     Brain() {
-        this(14,10,1,4);
+        this(14,10,2,4, 0.0, 1, 0, 0.2, 0, 2);
     }
 
     public static Brain brainReader(int gen, int num) {
@@ -49,7 +73,7 @@ public class Brain implements Serializable {
     }
     //used to create a copy version of existing Brain
     public Brain(Brain parent) {
-        this(parent.sizeInput,parent.sizeHidden,parent.numHidden,parent.sizeOutput);
+        this(parent.sizeInput,parent.sizeHidden,parent.numHidden,parent.sizeOutput, 0, 0, 0, 0, 0, 0);
         System.arraycopy(parent.inputNodes,0,inputNodes,0,inputNodes.length);
         System.arraycopy(parent.inputWeights,0,inputWeights,0,inputWeights.length);
         System.arraycopy(parent.hiddenNodes,0,hiddenNodes,0,hiddenNodes.length);
@@ -140,18 +164,63 @@ public class Brain implements Serializable {
 
     }
 
-    void mutate(double mean, double stanDeviation) {
+    void mutate(double mean, double stanDeviation, double biasMean, double biasStanDeviation) {
         //TODO
         //should mutate current brain object
         Random ran = new Random();
-        for (int hiddenLayerNum = 0; hiddenLayerNum < hiddenBias.length; hiddenLayerNum++) {
-            for (int i = 0; i < hiddenBias[hiddenLayerNum].length; i++) {
-                hiddenBias[hiddenLayerNum][i] += (ran.nextGaussian()*stanDeviation)+mean;
+        for (int inputLayerNodeNum = 0; inputLayerNodeNum < inputWeights.length; inputLayerNodeNum++){      //Input weights
+            for (int weightNum = 0; weightNum < inputWeights[inputLayerNodeNum].length; weightNum++) {
+                inputWeights[inputLayerNodeNum][weightNum] += (ran.nextGaussian()*stanDeviation)+mean;
+            }
+        }
+
+        for (int hiddenLayerNum = 0; hiddenLayerNum < hiddenBias.length; hiddenLayerNum++) {                //Hidden Layer
+            //Biases
+            for (int hiddenBiasNumber = 0; hiddenBiasNumber < hiddenBias[hiddenLayerNum].length; hiddenBiasNumber++) {
+                hiddenBias[hiddenLayerNum][hiddenBiasNumber] += (ran.nextGaussian()*biasStanDeviation)+biasMean;
+            }
+
+            //Weights
+            for (int hiddenLayerNodeNum = 0; hiddenLayerNodeNum < hiddenWeights[hiddenLayerNum].length; hiddenLayerNodeNum++) {
+                for (int weightNum = 0; weightNum < hiddenWeights[hiddenLayerNum][hiddenLayerNodeNum].length; weightNum++) {
+                    hiddenWeights[hiddenLayerNum][hiddenLayerNodeNum][weightNum] += (ran.nextGaussian()*stanDeviation)+mean;
+                }
             }
         }
 
         for (int hiddenLayerNum = 0; hiddenLayerNum < hiddenWeights.length; hiddenLayerNum++) {
 
+        }
+    }
+
+    @Override
+    public void drawMe(Graphics g) {
+        System.out.println("Dummy Brain draw");
+    }
+
+    public void drawMe(Graphics g, Grid grid){
+        g.setColor(Color.cyan);
+
+        int totalGridSize = grid.numSquares*grid.size;
+//        System.out.println(totalGridSize);
+
+        int fontSizeTitles = totalGridSize/18;
+        g.setFont(new Font("TimesRoman", Font.BOLD, fontSizeTitles));
+        int startXPixels = grid.getXPixels((int)(grid.numSquares * 1.25));
+        int startYPixels = grid.getYPixels(0);
+        g.drawString(String.format("Inputs%8sOutputs", ""),startXPixels, startYPixels);
+
+        int fontSizeInputs = totalGridSize/(6+inputNodes.length);
+        int spaceBetweenInputs = totalGridSize/inputNodes.length;
+        for (int i = 0; i < inputNodes.length; i++) {
+            g.drawString(inputNodes[i]+"", startXPixels, startYPixels + (spaceBetweenInputs*(i+1)));
+        }
+
+        int fontSizeOutputs = totalGridSize/(6+outputNodes.length);
+        int spaceBetweenOutputs = totalGridSize/outputNodes.length;
+        for (int i = 0; i < outputNodes.length; i++) {
+//            g.drawString(""+outputNodes[i], startXPixels + fontSizeTitles*5, startYPixels + (spaceBetweenOutputs*(i+1)) - totalGridSize/50);
+            g.drawString(String.format("% .3f", outputNodes[i]), startXPixels + fontSizeTitles*5, startYPixels + (spaceBetweenOutputs*(i+1)) - spaceBetweenOutputs/2);
         }
     }
     void log(int generation, int brainID) {

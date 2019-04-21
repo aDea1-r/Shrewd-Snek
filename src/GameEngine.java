@@ -42,7 +42,7 @@ public class GameEngine implements ActionListener, Drawable {
 //      end grid setup -----------------------------------------------------------------------------------
 
         scoreTracker = new ScoreTracker(this);
-        snake1 = new SnakeHead(Color.CYAN, 1, 1, gameGrid, 1,scoreTracker);
+        snake1 = new AISnakeHead(Color.CYAN, gameGrid.numSquares/3, gameGrid.numSquares/2, gameGrid, 1,scoreTracker);
 
         food = new AppleMaker(Color.BLACK,gameGrid,2);
 
@@ -69,7 +69,7 @@ public class GameEngine implements ActionListener, Drawable {
     }
 
     private void gameTick(){
-        if(!snake1.act(inputs))
+        if(!((AISnakeHead)snake1).act(lookAround(snake1)))
             kill();
         scoreTracker.act(inputs);
     }
@@ -221,11 +221,17 @@ public class GameEngine implements ActionListener, Drawable {
         newInputs[12] = food.x - snake1.x;              //x vector to food, if food is to the right of snake, positive
         newInputs[13] = food.y - snake1.y;              //y vector to food, if food is below the snake, positive
 
-//        System.out.println(Arrays.toString(newInputs));
+        System.out.printf("[%s]%n%n", printArr(newInputs));
 
         return newInputs;
     }
-
+    public static String printArr(int[] arr){
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < arr.length; i++) {
+            str.append(arr[i] + " ");
+        }
+        return str.toString();
+    }
     public static String printArr(Object[][] arr){
         StringBuilder str = new StringBuilder();
         for(int c = 0; c < arr.length; c++){
