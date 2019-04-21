@@ -3,7 +3,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 
-public class Button implements Drawable {
+public abstract class Button implements Drawable {
     private String text;
     private Rectangle hitbox;
     private Color buttonColor;
@@ -42,9 +42,12 @@ public class Button implements Drawable {
         g.setClip(shape);
         ((Graphics2D)g).fill(shape.getBounds());
 
+        g.setColor(Color.white);
+        g.drawRect((int)hitbox.getX(),(int)hitbox.getY(),(int)hitbox.getWidth(),(int)hitbox.getHeight());
         g.setColor(temp);
     }
     public boolean isPressed(int x, int y) {
         return hitbox.contains(new Point(x,y));
     }
+    public abstract void press(GamePanel gp);
 }
