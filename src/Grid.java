@@ -8,7 +8,7 @@ public class Grid implements Drawable {
     int numSquares;
     private Color color = Color.BLACK;
 
-    public Object[][] gridMat;  //Let -1 be empty   //is x, y
+    Object[][] gridMat;  //Let -1 be empty   //is x, y
 
     Grid(int x, int y, int s, int nS, Color c){
         startX = x;
@@ -36,7 +36,7 @@ public class Grid implements Drawable {
         return (in * size) + startX;
     }
 
-    int getYPixels(int in){      //Gets y pixel location given grid location
+    private int getYPixels(int in){      //Gets y pixel location given grid location
         return (in * size) + startY;
     }
 

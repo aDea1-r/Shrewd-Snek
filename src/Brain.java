@@ -3,7 +3,7 @@ import java.awt.*;
 import java.util.*;
 import java.io.*;
 
-public class Brain implements Drawable {
+public class Brain implements Drawable, Serializable {
     private int sizeInput;          //Num nodes in input layer
     private int sizeHidden;         //Num nodes in hidden layer
     private int numHidden;          //Number of hidden layers
@@ -19,7 +19,7 @@ public class Brain implements Drawable {
 
     private double[] outputNodes;           //Array that holds the values of all output nodes
 
-    public Brain(int sI, int sH, int nH, int sO, double initialWeight, double initialBias, double initialMutateMean, double initialMutateStanDev, double initialBiasMutateMean, double initialBiasMutateStanDev){
+    private Brain(int sI, int sH, int nH, int sO, double initialWeight, double initialBias, double initialMutateMean, double initialMutateStanDev, double initialBiasMutateMean, double initialBiasMutateStanDev){
         sizeInput = sI;
         sizeHidden = sH;
         numHidden = nH;
@@ -56,8 +56,20 @@ public class Brain implements Drawable {
             this.mutate(initialMutateMean, initialMutateStanDev, initialBiasMutateMean, initialBiasMutateStanDev);
         }
     }
-    public Brain() {
+    Brain() {
         this(14,10,2,4, 0.0, 1, 0, 0.2, 0, 2);
+    }
+
+    public static Brain brainReader(int gen, int num) {
+        String path = "/"+gen+"/"+num+"/brain.dat";
+        try (FileInputStream f = new FileInputStream(path)) {
+            ObjectInputStream s = new ObjectInputStream(f);
+            Brain temp = (Brain) s.readObject();
+            s.close();
+            return temp;
+        } catch (Exception e) {
+            return new Brain();
+        }
     }
     //used to create a copy version of existing Brain
     public Brain(Brain parent) {
@@ -70,7 +82,7 @@ public class Brain implements Drawable {
     }
 
     //Given an input, put through neural net and return the index of the correct output node
-    public double[] compute(int[] inputs){
+    double[] compute(int[] inputs){
 
         for (int i = 0; i < inputs.length; i++) {       //Put the inputs into the neural net
             inputNodes[i] = (double)inputs[i];              //TODO: insert bias here
@@ -209,6 +221,15 @@ public class Brain implements Drawable {
         for (int i = 0; i < outputNodes.length; i++) {
 //            g.drawString(""+outputNodes[i], startXPixels + fontSizeTitles*5, startYPixels + (spaceBetweenOutputs*(i+1)) - totalGridSize/50);
             g.drawString(String.format("% .3f", outputNodes[i]), startXPixels + fontSizeTitles*5, startYPixels + (spaceBetweenOutputs*(i+1)) - spaceBetweenOutputs/2);
+        }
+    }
+    void log(int generation, int brainID) {
+        try (FileOutputStream f = new FileOutputStream("/" + generation + "/" + brainID + "/brain.dat")){
+            ObjectOutputStream s = new ObjectOutputStream(f);
+            s.writeObject(this);
+            s.close();
+        } catch (IOException e) {
+            System.out.println("bad error");
         }
     }
 }

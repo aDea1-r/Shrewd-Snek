@@ -21,7 +21,7 @@ public class GameEngine implements ActionListener, Drawable {
 
     private LinkedList<Drawable> drawables = new LinkedList<Drawable>();
 
-    boolean gameRunning;
+    private boolean gameRunning;
 
 
     GameEngine(double startXPercent, double startYPercent, double screenSize, int height, int width, Map<Integer, Boolean> inputs)

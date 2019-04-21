@@ -1,4 +1,5 @@
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 public class ScoreTracker extends Actor {
     private GameEngine game;
@@ -20,6 +21,7 @@ public class ScoreTracker extends Actor {
             game.kill();
         return true;
     }
+
     void ate() {
 //        System.out.println("i ate");
         score++;
