@@ -2,7 +2,7 @@ import javax.management.monitor.GaugeMonitor;
 import java.util.*;
 import java.io.*;
 
-public class Brain {
+public class Brain implements Serializable {
     private int sizeInput;          //Num nodes in input layer
     private int sizeHidden;         //Num nodes in hidden layer
     private int numHidden;          //Number of hidden layers
@@ -17,6 +17,8 @@ public class Brain {
                                             //Sentinel value is -999.999 for unused weights
 
     private double[] outputNodes;           //Array that holds the values of all output nodes
+
+    int fitness;
 
     public Brain(int sI, int sH, int nH, int sO){
         sizeInput = sI;
@@ -34,6 +36,18 @@ public class Brain {
     }
     public Brain() {
         this(14,10,1,4);
+    }
+
+    public static Brain brainReader(int gen, int num) {
+        String path = "/"+gen+"/"+num+"/brain.dat";
+        try (FileInputStream f = new FileInputStream(path)) {
+            ObjectInputStream s = new ObjectInputStream(f);
+            Brain temp = (Brain) s.readObject();
+            s.close();
+            return temp;
+        } catch (Exception e) {
+            return new Brain();
+        }
     }
     //used to create a copy version of existing Brain
     public Brain(Brain parent) {
@@ -141,5 +155,18 @@ public class Brain {
         for (int hiddenLayerNum = 0; hiddenLayerNum < hiddenWeights.length; hiddenLayerNum++) {
 
         }
+    }
+    void log(int generation, int brainID) {
+        try (FileOutputStream f = new FileOutputStream("/" + generation + "/" + brainID + "/brain.dat")){
+            ObjectOutputStream s = new ObjectOutputStream(f);
+            s.writeObject(this);
+            s.close();
+        } catch (IOException e) {
+            System.out.println("bad error");
+        }
+    }
+    void kill(int gen, int num, int score) {
+        fitness = score;
+        log(gen,num);
     }
 }
