@@ -18,9 +18,7 @@ public class Brain implements Serializable {
 
     private double[] outputNodes;           //Array that holds the values of all output nodes
 
-    int fitness;
-
-    public Brain(int sI, int sH, int nH, int sO){
+    private Brain(int sI, int sH, int nH, int sO){
         sizeInput = sI;
         sizeHidden = sH;
         numHidden = nH;
@@ -34,7 +32,7 @@ public class Brain implements Serializable {
 
         outputNodes = new double[sizeOutput];
     }
-    public Brain() {
+    Brain() {
         this(14,10,1,4);
     }
 
@@ -60,7 +58,7 @@ public class Brain implements Serializable {
     }
 
     //Given an input, put through neural net and return the index of the correct output node
-    public double[] compute(int[] inputs){
+    double[] compute(int[] inputs){
 
         for (int i = 0; i < inputs.length; i++) {       //Put the inputs into the neural net
             inputNodes[i] = (double)inputs[i];              //TODO: insert bias here
@@ -164,9 +162,5 @@ public class Brain implements Serializable {
         } catch (IOException e) {
             System.out.println("bad error");
         }
-    }
-    void kill(int gen, int num, int score) {
-        fitness = score;
-        log(gen,num);
     }
 }
