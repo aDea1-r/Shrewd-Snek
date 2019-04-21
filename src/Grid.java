@@ -36,7 +36,7 @@ public class Grid implements Drawable {
         return (in * size) + startX;
     }
 
-    private int getYPixels(int in){      //Gets y pixel location given grid location
+    int getYPixels(int in){      //Gets y pixel location given grid location
         return (in * size) + startY;
     }
 
