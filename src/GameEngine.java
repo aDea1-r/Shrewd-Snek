@@ -6,29 +6,25 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class GameEngine implements ActionListener, Drawable {
-    private Timer time;
-    static int refreshRate = 1;        //Delay in milliseconds between game ticks
+public abstract class GameEngine implements Drawable {
 
     final static int numSquares = 25;          //The size of the grid taking up the play screen
 
     private Grid gameGrid;
     ScoreTracker scoreTracker;
-    private Map<Integer, Boolean> inputs;
 
-    private AppleMaker food;
-    private SnakeHead snake1;
+    AppleMaker food;
+    SnakeHead snake1;
 
     private LinkedList<Drawable> drawables = new LinkedList<Drawable>();
 
     boolean gameRunning;
-    private boolean usePlayerInput;
+    boolean usePlayerInput;
 
 
-    GameEngine(double startXPercent, double startYPercent, double screenSize, int height, int width, Map<Integer, Boolean> inputs, boolean upi)
+    GameEngine(double startXPercent, double startYPercent, double screenSize, int height, int width, boolean upi)
     {
         usePlayerInput = upi;
-        time = new Timer(refreshRate, this); //sets delay to 15 millis and calls the actionPerformed of this class.
 
 //        Grid setup----------------------------------------------------------------------------------------
 //        double startXPercent = 0.05;          //% of the total screen which the play screen will start at
@@ -55,49 +51,15 @@ public class GameEngine implements ActionListener, Drawable {
         drawables.add(snake1);
         drawables.add(food);
 
-        this.inputs = inputs;
-        //------------------------------- Snake 1 Code
-        inputs.put((int)'w', false);
-        inputs.put((int)'d', false);
-        inputs.put((int)'s', false);
-        inputs.put((int)'a', false);
-        inputs.put((int)'W', false);
-        inputs.put((int)'D', false);
-        inputs.put((int)'S', false);
-        inputs.put((int)'A', false);
-
-        time.start();
         gameRunning = true;
     }
-    public GameEngine(Map<Integer, Boolean> inputs){
-        this(0, 0, 0, 1, 1, inputs, false);
+    public GameEngine(){
+        this(0, 0, 0, 1, 1, false);
     }
 
-    private void gameTick(){
-        if(!usePlayerInput && !((AISnakeHead)snake1).act(lookAround(snake1)))
-            kill();
-        else if (usePlayerInput && !snake1.act(inputs))
-            kill();
-        scoreTracker.act(inputs);
-    }
+    abstract void gameTick();
 
-    void kill() {
-        time.stop();
-        gameRunning = false;
-    }
-
-    public void actionPerformed(ActionEvent e)
-    {
-        gameTick();
-    }
-
-    public void keyPressed(KeyEvent e)
-    {
-        int code = e.getKeyCode();
-//        System.out.printf("Code %d (%s) pressed %n", code, (char)code + "");
-
-        inputs.put(code, true);
-    }
+    abstract void kill();
 
     public void drawMe(Graphics g) {
 
@@ -119,7 +81,7 @@ public class GameEngine implements ActionListener, Drawable {
     }
 
     //method which updates the snake's vision
-    private int[] lookAround(SnakeHead head){
+    int[] lookAround(SnakeHead head){
         int x = head.x;
         int y = head.y;
         Object[][] grid = gameGrid.gridMat;
@@ -232,7 +194,7 @@ public class GameEngine implements ActionListener, Drawable {
 
         return newInputs;
     }
-    public static String printArr(int[] arr){
+    private static String printArr(int[] arr){
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < arr.length; i++) {
             str.append(arr[i] + " ");

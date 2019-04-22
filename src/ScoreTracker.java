@@ -17,7 +17,7 @@ public class ScoreTracker extends Actor {
         tickCount++;
         idleTickCount++;
 //        System.out.println(idleTickCount*GameEngine.refreshRate/1000.0);
-        if(idleTickCount*GameEngine.refreshRate/1000.0 > 10+score*.1)
+        if(idleTickCount*GameEngineFixedTickRate.refreshRate/1000.0 > 10+score*.1)
             game.kill();
         return true;
     }
@@ -28,7 +28,7 @@ public class ScoreTracker extends Actor {
         idleTickCount = 0;
     }
     public double getFitness() {
-        double duration = tickCount*GameEngine.refreshRate;
+        double duration = tickCount*GameEngineFixedTickRate.refreshRate;
         double maxDuration = 10 - 10*Double.MIN_VALUE;
         return score + Math.min(duration,maxDuration)/10;
     }

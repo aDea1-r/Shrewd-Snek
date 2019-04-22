@@ -140,7 +140,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     public void keyTyped(KeyEvent e){}
 
     private void frameRateTest(){
-        int tempFrameRate = frames * (1000/GameEngine.refreshRate);
+        int tempFrameRate = frames * (1000/GameEngineFixedTickRate.refreshRate);
         if(frames != 0) {
             if (avgFrameRate == -1.0) {
                 avgFrameRate = tempFrameRate;
@@ -155,22 +155,21 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         System.out.printf("Average framerate is %.2f%n", avgFrameRate);
     }
     private void startPlayer() {
-        GameEngine.refreshRate = tickRateSelector.getCurrentValue();
+        GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
         engines = new GameEngine[1];
-        engines[0] = new GameEngine(startXPercent, startYPercent, screenSize, height, width, inputs,true);
+        engines[0] = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,true);
         renderEngineIndex = 0;
     }
     private void startAI() {
-        GameEngine.refreshRate = tickRateSelector.getCurrentValue();
+        GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
         engines = new GameEngine[1];
-        engines[0] = new GameEngine(startXPercent, startYPercent, screenSize, height, width, inputs,false);
+        engines[0] = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,false);
         renderEngineIndex = 0;
     }
     private void startGeneration() {
-        GameEngine.refreshRate = tickRateSelector.getCurrentValue();
-        engines = new GameEngine[1000];
+        engines = new GameEngine[10000];
         for (int i = 0; i < engines.length; i++) {
-            engines[i] = new GameEngine(startXPercent, startYPercent, screenSize, height, width, inputs,false);
+            engines[i] = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false);
         }
         renderEngineIndex = 0;
     }
