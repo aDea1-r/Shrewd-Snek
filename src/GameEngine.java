@@ -95,91 +95,91 @@ public abstract class GameEngine implements Drawable {
         int stop;   //Helper variable for loop stop
         stop = y;                                                                       //Look the the North
         newInputs[0] = stop + 1;
-        System.out.printf("Looking %10s: max distance is %d%n", "North", stop);
+//        System.out.printf("Looking %10s: max distance is %d%n", "North", stop);
         for (int i = 1; i < stop; i++) {
             if(grid[x][y-i] instanceof Body){
                 newInputs[0] = i;
                 break;
             }
         }
-        System.out.printf("   Looking %10s: distance is %d%n", "North", newInputs[0]);
+//        System.out.printf("   Looking %10s: distance is %d%n", "North", newInputs[0]);
 
         stop = Math.min(y, gameGrid.gridMat.length - x - 1);                                //Look to the NorthEast
         newInputs[1] = stop + 1;
-        System.out.printf("Looking %10s: max distance is %d%n", "NorthEast", stop);
+//        System.out.printf("Looking %10s: max distance is %d%n", "NorthEast", stop);
         for (int i = 1; i < stop; i++) {
             if(grid[x+i][y-i] instanceof Body){
                 newInputs[1] = i;
                 break;
             }
         }
-        System.out.printf("   Looking %10s: distance is %d%n", "NorthEast", newInputs[1]);
+//        System.out.printf("   Looking %10s: distance is %d%n", "NorthEast", newInputs[1]);
 
         stop = gameGrid.gridMat.length - 1 - x;                                             //Look to the East
         newInputs[2] = stop + 1;
-        System.out.printf("Looking %10s: max distance is %d%n", "East", stop);
+//        System.out.printf("Looking %10s: max distance is %d%n", "East", stop);
         for (int i = 1; i < stop; i++) {
             if(grid[x+i][y] instanceof Body){
                 newInputs[2] = i;
                 break;
             }
         }
-        System.out.printf("   Looking %10s: distance is %d%n", "East", newInputs[2]);
+//        System.out.printf("   Looking %10s: distance is %d%n", "East", newInputs[2]);
 
         stop = Math.min(gameGrid.gridMat.length - 1 - y, gameGrid.gridMat.length - 1 - x);      //Look to the SouthEast
         newInputs[3] = stop + 1;
-        System.out.printf("Looking %10s: max distance is %d%n", "SouthEast", stop);
+//        System.out.printf("Looking %10s: max distance is %d%n", "SouthEast", stop);
         for (int i = 1; i < stop; i++) {
             if(grid[x+i][y+i] instanceof Body){
                 newInputs[3] = i;
                 break;
             }
         }
-        System.out.printf("   Looking %10s: distance is %d%n", "SouthEast", newInputs[3]);
+//        System.out.printf("   Looking %10s: distance is %d%n", "SouthEast", newInputs[3]);
 
         stop = gameGrid.gridMat.length - 1 - y;                                             //Look to the South
         newInputs[4] = stop + 1;
-        System.out.printf("Looking %10s: max distance is %d%n", "South", stop);
+//        System.out.printf("Looking %10s: max distance is %d%n", "South", stop);
         for (int i = 1; i < stop; i++) {       //Look the the South
             if(grid[x][y+i] instanceof Body){
                 newInputs[4] = i;
                 break;
             }
         }
-        System.out.printf("   Looking %10s: distance is %d%n", "South", newInputs[4]);
+//        System.out.printf("   Looking %10s: distance is %d%n", "South", newInputs[4]);
 
         stop = Math.min(gameGrid.gridMat.length - 1 - y, x);                                //Look to the SouthWest
         newInputs[5] = stop + 1;
-        System.out.printf("Looking %10s: max distance is %d%n", "SouthWest", stop);
+//        System.out.printf("Looking %10s: max distance is %d%n", "SouthWest", stop);
         for (int i = 1; i < stop; i++) {       //Look the the SouthWest
             if(grid[x-i][y+i] instanceof Body){
                 newInputs[5] = i;
                 break;
             }
         }
-        System.out.printf("   Looking %10s: distance is %d%n", "SouthWest", newInputs[5]);
+//        System.out.printf("   Looking %10s: distance is %d%n", "SouthWest", newInputs[5]);
 
         stop = x;                                                                       //Look to the West
         newInputs[6] = stop + 1;
-        System.out.printf("Looking %10s: max distance is %d%n", "West", stop);
+//        System.out.printf("Looking %10s: max distance is %d%n", "West", stop);
         for (int i = 1; i < stop; i++) {
             if(grid[x-i][y] instanceof Body){
                 newInputs[6] = i;
                 break;
             }
         }
-        System.out.printf("   Looking %10s: distance is %d%n", "West", newInputs[6]);
+//        System.out.printf("   Looking %10s: distance is %d%n", "West", newInputs[6]);
 
         stop = Math.min(y, x);                                                          //Look to the NorthWest
         newInputs[7] = stop + 1;
-        System.out.printf("Looking %10s: max distance is %d%n", "NorthWest", stop);
+//        System.out.printf("Looking %10s: max distance is %d%n", "NorthWest", stop);
         for (int i = 1; i < stop; i++) {
             if(grid[x-i][y-i] instanceof Body){
                 newInputs[7] = i;
                 break;
             }
         }
-        System.out.printf("   Looking %10s: distance is %d%n", "NorthWest", newInputs[7]);
+//        System.out.printf("   Looking %10s: distance is %d%n", "NorthWest", newInputs[7]);
         //End looking for snake body---------------------
 
         newInputs[8] = y;                               //North wall
@@ -190,7 +190,7 @@ public abstract class GameEngine implements Drawable {
         newInputs[12] = food.x - snake1.x;              //x vector to food, if food is to the right of snake, positive
         newInputs[13] = food.y - snake1.y;              //y vector to food, if food is below the snake, positive
 
-        System.out.printf("[%s]%n%n", printArr(newInputs));
+//        System.out.printf("[%s]%n%n", printArr(newInputs));
 
         return newInputs;
     }

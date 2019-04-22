@@ -1,5 +1,6 @@
 public class GameEngineVariableTickRate extends GameEngine implements Runnable {
-    Thread thread;
+    private Thread thread;
+    int genID;
 
     GameEngineVariableTickRate(double startXPercent, double startYPercent, double screenSize, int height, int width, boolean upi) {
         super(startXPercent,startYPercent,screenSize,height,width,upi);
@@ -18,5 +19,6 @@ public class GameEngineVariableTickRate extends GameEngine implements Runnable {
     }
     void kill() {
         gameRunning = false;
+        System.out.println("Dead is "+genID);
     }
 }
