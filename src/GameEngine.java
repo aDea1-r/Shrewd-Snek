@@ -13,7 +13,7 @@ public abstract class GameEngine implements Drawable {
     private Grid gameGrid;
     ScoreTracker scoreTracker;
 
-    AppleMaker food;
+    private AppleMaker food;
     SnakeHead snake1;
 
     private LinkedList<Drawable> drawables = new LinkedList<Drawable>();

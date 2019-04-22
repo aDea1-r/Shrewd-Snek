@@ -168,6 +168,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     }
     private void startGeneration() {
         engines = new GameEngine[100000];
+        GameEngineVariableTickRate.genNum = 0;
         for (int i = 0; i < engines.length; i++) {
             engines[i] = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false);
             ((GameEngineVariableTickRate)engines[i]).genID = i;
