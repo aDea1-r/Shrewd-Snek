@@ -11,8 +11,20 @@ public class SnakeSorters implements Serializable {
         this.genSize = genSize;
         pq = new PriorityQueue<SnakeSorter>();
     }
-    public void add(){
-
+    public void add(SnakeSorter s){
+        pq.add(s);
+    }
+    private void initArr(){
+        arr = new SnakeSorter[genSize];
+        for (int i = 0; i < genSize; i++) {
+            arr[i] = pq.poll();
+        }
+        pq = null;
+    }
+    public SnakeSorter getNth(int n){
+        if(arr == null)
+            initArr();
+        return arr[n];
     }
     public void log() {
         pq = null;
