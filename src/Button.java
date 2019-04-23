@@ -24,7 +24,7 @@ public abstract class Button implements Drawable {
         g.setColor(buttonColor);
         g.fillRect((int)hitbox.getX(),(int)hitbox.getY(),(int)hitbox.getWidth(),(int)hitbox.getHeight());
         g.setColor(textColor);
-        g.setFont(new Font("Comic Sans",Font.PLAIN,50));
+        g.setFont(new Font("Comic Sans MS",Font.PLAIN,50));
 
         Rectangle rect = new Rectangle((int)(hitbox.getX()+hitbox.width*0.1),
                 (int)(hitbox.getY()+hitbox.getHeight()*.1),
