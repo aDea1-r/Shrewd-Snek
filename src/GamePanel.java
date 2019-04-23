@@ -73,7 +73,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         };
         buttonList.add(runGeneration);
 
-        tickRateSelector = new NumberSelector((getWidth()*17) /20, getHeight()*4/10, 50, 160, 1,60);
+        tickRateSelector = new NumberSelector((getWidth()*17) /20, getHeight()*4/10, 50, 160, 1,120);
         tickRateSelector.addtoList(buttonList);
 
         inputs.put((int)'P', false);
@@ -172,9 +172,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         for (int i = 0; i < engines.length; i++) {
             engines[i] = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false);
             ((GameEngineVariableTickRate)engines[i]).genID = i;
-            ((GameEngineVariableTickRate)engines[i]).start();
         }
         renderEngineIndex = 0;
     }
-
 }

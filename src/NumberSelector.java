@@ -23,7 +23,7 @@ public class NumberSelector implements Drawable{
                 }
             }
         };
-        decrease = new Button(x, y+2*bHeight, width, bHeight, "-") {
+        decrease = new Button(x, y+2*bHeight, width, bHeight, "v") {
             @Override
             public void press() {
                 if(currentVal>min) {
