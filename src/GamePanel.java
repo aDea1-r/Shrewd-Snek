@@ -102,7 +102,6 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             engines[renderEngineIndex].drawMe(g);
 
 //        System.out.println(engines[0].scoreTracker.getScore());
-            g.drawString("" + engines[renderEngineIndex].scoreTracker.getScore(), 10, 60);
         }
 
         for (Button b: buttonList) {
