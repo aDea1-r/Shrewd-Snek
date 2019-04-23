@@ -224,14 +224,14 @@ public class Brain implements Drawable, Serializable {
         }
     }
     void log(int generation, int brainID) {
-        File file = new File(generation + "/" + brainID + "/brain.dat");
+        File file = new File(generation + "/" + brainID + "/");
         file.mkdirs();
         try {
-            file.createNewFile();
-            FileOutputStream f = new FileOutputStream(file);
+            FileOutputStream f = new FileOutputStream(generation + "/" + brainID + "/brain.dat");
             ObjectOutputStream s = new ObjectOutputStream(f);
             s.writeObject(this);
             s.close();
+            System.out.println("logged "+brainID);
         } catch (IOException e) {
             System.out.println("bad error");
         }
