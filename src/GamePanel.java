@@ -1,14 +1,12 @@
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import javax.imageio.*;
-import java.io.*;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import javax.sound.sampled.*; // allows you to use the sound classes
+import java.awt.Graphics;
+import java.awt.Color;
+import java.util.*;
+import javax.swing.SwingUtilities;
 
 public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private BufferedImage buff;
@@ -24,6 +22,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private final double screenSize = 0.85;      //% of the total screen which the play screen will take up
 
     private Map<Integer, Boolean> inputs;
+    private List<Button> buttonList;
 
     private GameEngine[] engines;
 
@@ -31,7 +30,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     {
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         width = (int) screen.getWidth();
-        height = (int) screen.getHeight()-100;
+        height = (int) (screen.getHeight()-100);
 
         setSize(width, height);
         setVisible(true); //it's like calling the repaint method.
@@ -47,8 +46,27 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
         int gridSize = Math.max(Math.min((int)(height * screenSize), (int)(width * screenSize))/GameEngine.numSquares, 1);
 
+        buttonList = new ArrayList<Button>();
+
+        Button player = new Button((getWidth()*17) /20, getHeight()/10, 200, 80, "Player") {
+            @Override
+            public void press(GamePanel gp) {
+                gp.startPlayer();
+            }
+        };
+        buttonList.add(player);
+        Button AI = new Button((getWidth()*17) /20, getHeight()*2/10, 200, 80, "Computer") {
+            @Override
+            public void press(GamePanel gp) {
+                gp.startAI();
+            }
+        };
+        buttonList.add(AI);
+
+        inputs.put((int)'P', false);
+        inputs.put((int)'p', false);
+
         engines = new GameEngine[1];
-        engines[0] = new GameEngine(startXPercent, startYPercent, screenSize, height, width, inputs);
     }
 
     public void paintComponent(Graphics stupidG)
@@ -60,20 +78,30 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         g.setColor(Color.MAGENTA);
         g.fillRect(0,0,2000,1500);
 
-        engines[0].drawMe(g);
+        if(engines[0]!=null) {
+            engines[0].drawMe(g);
+
 //        System.out.println(engines[0].scoreTracker.getScore());
-        g.drawString(""+engines[0].scoreTracker.getScore(),10,10);
+            g.drawString("" + engines[0].scoreTracker.getScore(), 10, 60);
+        }
+
+        for (Button b: buttonList) {
+            b.drawMe(g);
+        }
 
         stupidG.drawImage(buff,0,0,null);
+
         frames++;
         repaint();
     }
 
     public void mouseClicked(MouseEvent e)
     {
-        int x = e.getX();
-        int y = e.getY();
-        //System.out.println("Ball added at " + x + " " + y);
+        e = SwingUtilities.convertMouseEvent(e.getComponent(),e,this);
+        for (Button b: buttonList) {
+            if(b.isPressed(e.getX(), e.getY()))
+                b.press(this);
+        }
     }
     public void mousePressed(MouseEvent e){}
     public void mouseReleased(MouseEvent e){}
@@ -106,5 +134,11 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         System.out.printf("Framerate is %d%n", tempFrameRate);
         frames = 0;
         System.out.printf("Average framerate is %.2f%n", avgFrameRate);
+    }
+    private void startPlayer() {
+        engines[0] = new GameEngine(startXPercent, startYPercent, screenSize, height, width, inputs,true);
+    }
+    private void startAI() {
+        engines[0] = new GameEngine(startXPercent, startYPercent, screenSize, height, width, inputs,false);
     }
 }
