@@ -1,4 +1,4 @@
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
 public class SnakeSorters implements Serializable {
@@ -25,5 +25,19 @@ public class SnakeSorters implements Serializable {
         if(arr == null)
             initArr();
         return arr[n];
+    }
+    public void log() {
+        pq = null;
+        File file = new File(genNum + "/");
+        file.mkdirs();
+        try {
+            FileOutputStream f = new FileOutputStream(genNum + "/scores.dat");
+            ObjectOutputStream s = new ObjectOutputStream(f);
+            s.writeObject(this);
+            s.close();
+            System.out.println("logged scores of gen"+genNum);
+        } catch (IOException e) {
+            System.out.println("bad error");
+        }
     }
 }
