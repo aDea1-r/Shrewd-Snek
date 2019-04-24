@@ -10,13 +10,13 @@ public abstract class GameEngine implements Drawable {
 
     final static int numSquares = 25;          //The size of the grid taking up the play screen
 
-    private Grid gameGrid;
+    Grid gameGrid;
     ScoreTracker scoreTracker;
 
-    private AppleMaker food;
+    AppleMaker food;
     SnakeHead snake1;
 
-    private LinkedList<Drawable> drawables = new LinkedList<Drawable>();
+    LinkedList<Drawable> drawables = new LinkedList<Drawable>();
 
     boolean gameRunning;
     boolean usePlayerInput;
@@ -45,11 +45,8 @@ public abstract class GameEngine implements Drawable {
         else
             snake1 = new AISnakeHead(Color.CYAN, gameGrid.numSquares/3, gameGrid.numSquares/2, gameGrid, 1,scoreTracker);
 
-        food = new AppleMaker(Color.BLACK,gameGrid,2);
-
         drawables.add(gameGrid);
         drawables.add(snake1);
-        drawables.add(food);
 
         gameRunning = true;
     }
@@ -67,7 +64,11 @@ public abstract class GameEngine implements Drawable {
         Drawable tempDrawable;
         while (it.hasNext()){
             tempDrawable = (Drawable) it.next();
-            tempDrawable.drawMe(g);
+            if(tempDrawable!=null) {
+                tempDrawable.drawMe(g);
+            }
+            else
+                System.out.println(drawables);
         }
         g.setColor(Color.cyan);
         g.setFont(new Font("TimesRoman", Font.BOLD, gameGrid.size*2));
