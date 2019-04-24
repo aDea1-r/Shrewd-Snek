@@ -3,7 +3,7 @@ public class GameEngineVariableTickRate extends GameEngine implements Runnable {
     int genID; //ID of engine in current generation
     static int genNum; //current generation number
 
-    GameEngineVariableTickRate(double startXPercent, double startYPercent, double screenSize, int height, int width, boolean upi) {
+    GameEngineVariableTickRate(double startXPercent, double startYPercent, double screenSize, int height, int width, boolean upi, int genID) {
         super(startXPercent,startYPercent,screenSize,height,width,upi);
         thread = new Thread(this,"Brain "+genNum);
     }
@@ -24,5 +24,6 @@ public class GameEngineVariableTickRate extends GameEngine implements Runnable {
         gameRunning = false;
 //        System.out.println("Dead is "+genID);
         ((AISnakeHead)snake1).getBrain().log(genNum,genID);
+        Game.m.removeEngine(this);
     }
 }
