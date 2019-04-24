@@ -23,6 +23,7 @@ public class GameEngineVariableTickRate extends GameEngine implements Runnable {
     void kill() {
         gameRunning = false;
 //        System.out.println("Dead is "+genID);
+        System.out.printf("Score is: %d, fitness is %f%n", scoreTracker.getScore(), scoreTracker.getFitness());
         ((AISnakeHead)snake1).getBrain().log(genNum,genID);
     }
 }

@@ -6,6 +6,7 @@ public class ScoreTracker extends Actor {
     private int score;
     private int tickCount;
     private int idleTickCount;
+    static int timeOutTime = 167;         //The time it takes to die from timeout
 
     ScoreTracker(GameEngine game) {
         this.game = game;
@@ -17,7 +18,7 @@ public class ScoreTracker extends Actor {
         tickCount++;
         idleTickCount++;
 //        System.out.println(idleTickCount*GameEngine.refreshRate/1000.0);
-        if(idleTickCount*GameEngineFixedTickRate.refreshRate/1000.0 > 10+score*.1)
+        if(idleTickCount > timeOutTime+score*(timeOutTime*0.1))
             game.kill();
         return true;
     }
@@ -28,9 +29,10 @@ public class ScoreTracker extends Actor {
         idleTickCount = 0;
     }
     public double getFitness() {
-        double duration = tickCount*GameEngineFixedTickRate.refreshRate;
-        double maxDuration = 10 - 10*Double.MIN_VALUE;
-        return score + Math.min(duration,maxDuration)/10;
+        System.out.printf("Scoretracker getFit called score = %d, idleTickCount = %d%n", score, idleTickCount);
+        double duration = idleTickCount;
+        double maxDuration = timeOutTime - timeOutTime*Double.MIN_VALUE;
+        return score + Math.min(duration,maxDuration)/timeOutTime;
     }
     int getScore() {
         return score;
