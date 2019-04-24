@@ -71,7 +71,8 @@ public abstract class GameEngine implements Drawable {
         }
         g.setColor(Color.cyan);
         g.setFont(new Font("TimesRoman", Font.BOLD, gameGrid.size*2));
-        g.drawString("" + scoreTracker.getScore(), gameGrid.getXPixels(-1)-gameGrid.size/2, gameGrid.getYPixels(1));
+        int xOffset = gameGrid.size/2 + ( (Integer.toString(scoreTracker.getScore()).length() - 1) * gameGrid.size);
+        g.drawString("" + scoreTracker.getScore(), gameGrid.getXPixels(-1)-xOffset, gameGrid.getYPixels(1));
 
         if(!gameRunning) {
             Color ctemp = g.getColor();
