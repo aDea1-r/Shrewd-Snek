@@ -5,15 +5,26 @@ So that we can delete snakes from memory
 public class SnakeSorter implements Comparable {
     int genNum;
     int genID;
-    int score;
-    public SnakeSorter(int gN, int gI, int s){
+    double score;
+    public SnakeSorter(int gN, int gI, double s){
         genNum = gN;
         genID = gI;
         score = s;
     }
 
+    public SnakeSorter(GameEngineVariableTickRate in){
+        genNum = in.genNum;
+        genID = in.genID;
+        score = in.scoreTracker.getFitness();
+    }
+
     @Override
     public int compareTo(Object o) {
-        return this.score - ((SnakeSorter)o).score;
+        if(this.score < ((SnakeSorter)o).score)
+            return -1;
+        else if(this.score > ((SnakeSorter)o).score)
+            return 1;
+        else
+            return 0;
     }
 }

@@ -78,9 +78,15 @@ public abstract class GameEngine implements Drawable {
         if(!gameRunning) {
             Color ctemp = g.getColor();
             Font ftemp =g.getFont();
+
             g.setColor(Color.RED);//SUBLIME
-            g.setFont(new Font("TimesRoman", Font.BOLD, (gameGrid.size*gameGrid.numSquares)/12));
+            g.setFont(new Font("TimesRoman", Font.BOLD, (gameGrid.size)*2));
             g.drawString("Thou art slain",gameGrid.getXPixels(gameGrid.numSquares/4),gameGrid.getXPixels(gameGrid.numSquares/2));
+
+//            System.out.printf("Score is: %d, fitness is %f%n", scoreTracker.getScore(), scoreTracker.getFitness());
+//            g.setFont(new Font("TimesRoman", Font.BOLD, (gameGrid.size*gameGrid.numSquares)/12));
+//            g.drawString(str,gameGrid.getXPixels(gameGrid.numSquares/4),gameGrid.getXPixels(gameGrid.numSquares/2 + gameGrid.numSquares/5));
+
             g.setColor(ctemp);
             g.setFont(ftemp);
         }
