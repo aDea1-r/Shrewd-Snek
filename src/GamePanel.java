@@ -27,7 +27,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private Set<GameEngine> engines;
     private GameEngine renderEngine;
     private NumberSelector tickRateSelector;
-    private static int numPerGeneration = 10000;
+    private static int numPerGeneration = 10;
     private SnakeSorters snekSort;
 
     GamePanel()
@@ -98,7 +98,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             b.drawMe(g);
         }
 
-        if(engines.isEmpty()){
+        if(engines !=null && engines.isEmpty()){
             //TODO
         }
 
@@ -161,9 +161,9 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         GameEngineVariableTickRate.genNum = 0;
         snekSort = new SnakeSorters(GameEngineVariableTickRate.genNum, numPerGeneration);
         for (int i = 0; i < numPerGeneration; i++) {
-            GameEngine temp = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false,i);
+            GameEngineVariableTickRate temp = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false,i);
             engines.add(temp);
-            ((GameEngineVariableTickRate)temp).start();
+            temp.start();
         }
         Iterator itr = engines.iterator();
         renderEngine = (GameEngine) itr.next();

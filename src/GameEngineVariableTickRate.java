@@ -2,7 +2,7 @@ import java.awt.*;
 
 public class GameEngineVariableTickRate extends GameEngine implements Runnable {
     private Thread thread;
-    private int genID; //ID of engine in current generation
+    int genID; //ID of engine in current generation
     static int genNum; //current generation number
 
     GameEngineVariableTickRate(double startXPercent, double startYPercent, double screenSize, int height, int width, boolean upi, int genID) {
