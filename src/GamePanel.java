@@ -24,8 +24,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private Map<Integer, Boolean> inputs;
     private List<Button> buttonList;
 
-    private GameEngine[] engines;
-    private int renderEngineIndex;
+    private Set<GameEngine> engines;
+    private GameEngine renderEngine;
     private NumberSelector tickRateSelector;
     private static int numPerGeneration = 10000;
 
@@ -90,19 +90,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         g.setColor(Color.MAGENTA);
         g.fillRect(0,0,2000,1500);
 
-        if(engines!=null) {
-            if(!engines[renderEngineIndex].gameRunning) {
-                int nextEngine = renderEngineIndex;
-                while (!engines[nextEngine].gameRunning && nextEngine<engines.length-1)
-                    nextEngine++;
-                if(engines[nextEngine].gameRunning)
-                    renderEngineIndex = nextEngine;
-            }
-
-            engines[renderEngineIndex].drawMe(g);
-
-//        System.out.println(engines[0].scoreTracker.getScore());
-        }
+        if(renderEngine!=null)
+            renderEngine.drawMe(g);
 
         for (Button b: buttonList) {
             b.drawMe(g);
@@ -156,23 +145,24 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     }
     private void startPlayer() {
         GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
-        engines = new GameEngine[1];
-        engines[0] = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,true);
-        renderEngineIndex = 0;
+        renderEngine = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,true);
     }
     private void startAI() {
         GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
-        engines = new GameEngine[1];
-        engines[0] = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,false);
-        renderEngineIndex = 0;
+        renderEngine = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,false);
     }
     private void startGeneration() {
-        engines = new GameEngine[numPerGeneration];
+        engines = new HashSet<GameEngine>(numPerGeneration);
         GameEngineVariableTickRate.genNum = 0;
-        for (int i = 0; i < engines.length; i++) {
-            engines[i] = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false);
-            ((GameEngineVariableTickRate)engines[i]).genID = i;
+        for (int i = 0; i < numPerGeneration; i++) {
+            GameEngine temp = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false,i);
+            engines.add(temp);
+            ((GameEngineVariableTickRate)temp).start();
         }
-        renderEngineIndex = 0;
+        Iterator itr = engines.iterator();
+        renderEngine = (GameEngine) itr.next();
+    }
+    void removeEngine(GameEngine gm) {
+        engines.remove(gm);
     }
 }
