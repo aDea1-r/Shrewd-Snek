@@ -22,11 +22,14 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private Map<Integer, Boolean> inputs;
     private List<Button> buttonList;
 
-    private Set<GameEngine> engines;
     private GameEngine renderEngine;
     private NumberSelector tickRateSelector;
+
     private static int numPerGeneration = 10;
+    private Set<GameEngine> engines;
     private SnakeSorters snekSort;
+
+    private double percentOldToKeep;                //the percent of the previous generation we will keep and mutate
 
     private int currentTask;        //Track what it is currently doing
                                         //0 = idle
@@ -81,6 +84,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         };
         buttonList.add(runGeneration);
 
+        percentOldToKeep = 1/30.0;
+
         tickRateSelector = new NumberSelector((getWidth()*17) /20, getHeight()*4/10, 50, 160, 1,120);
         tickRateSelector.addtoList(buttonList);
 
@@ -105,6 +110,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             b.drawMe(g);
         }
 
+        //--------------------------------------------------------------------------------------------------------------
         String titleCard = "Default Title";
 
         if(currentTask == 0){                               //Idle
@@ -118,15 +124,22 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         }
         else if(currentTask == 3){                          //Generation
             titleCard = "Running generation";
+            if(engines.isEmpty()){
+                System.out.printf("Generation #%d has finished running%n", GameEngineVariableTickRate.genNum);
+                currentTask = 4;
+            }
         }
-        else if(currentTask == 4){                          //Generation Processing
-            titleCard = "Running generation";
+        else if(currentTask == 4){                          //Generation Processing TODO
+            titleCard = "Processing generation";
+            int numToKeep = (int)(numPerGeneration*percentOldToKeep);
+            snekSort.getNth(0);
         }
 
         int fontSize = width/50;
         g.setFont(new Font(Font.MONOSPACED, Font.BOLD, fontSize));
         g.setColor(Color.yellow);
         g.drawString(titleCard, width/4 - (titleCard.length()*fontSize/4), 0+fontSize);
+        //--------------------------------------------------------------------------------------------------------------
 
         stupidG.drawImage(buff,0,0,null);   //Double buffer stuff
 
