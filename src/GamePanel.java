@@ -1,11 +1,9 @@
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.awt.Graphics;
-import java.awt.Color;
 import java.util.*;
+import java.util.List;
 import javax.swing.SwingUtilities;
 
 public class GamePanel extends JPanel implements MouseListener, KeyListener {
@@ -30,6 +28,13 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private static int numPerGeneration = 10;
     private SnakeSorters snekSort;
 
+    private int currentTask;        //Track what it is currently doing
+                                        //0 = idle
+                                        //1 = running player
+                                        //2 = running single ai
+                                        //3 = running generation
+                                        //4 = processing generation
+
     GamePanel()
     {
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -42,6 +47,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         frames = 0;
         avgFrameRate = -1.0;
         numPastFrameAverages = 0;
+
+        currentTask = 0;
 
         inputs = new LinkedHashMap<Integer, Boolean>();
 
@@ -88,21 +95,40 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             buff = (BufferedImage)(createImage(getWidth(),getHeight()));
         Graphics g = buff.createGraphics();
 
-        g.setColor(Color.MAGENTA);
+        g.setColor(Color.MAGENTA);                      //Background
         g.fillRect(0,0,2000,1500);
 
-        if(renderEngine!=null)
+        if(renderEngine!=null)                          //Draw last
             renderEngine.drawMe(g);
 
-        for (Button b: buttonList) {
+        for (Button b: buttonList) {                    //Draw buttons
             b.drawMe(g);
         }
 
-        if(engines !=null && engines.isEmpty()){
-            //TODO
+        String titleCard = "Default Title";
+
+        if(currentTask == 0){                               //Idle
+            titleCard = "Welcome! Choose an activity";
+        }
+        else if(currentTask == 1){                          //Player
+            titleCard = "Welcome Player! WASD to control the snake";
+        }
+        else if(currentTask == 2){                          //Single AI
+            titleCard = "AI loaded, playing";
+        }
+        else if(currentTask == 3){                          //Generation
+            titleCard = "Running generation";
+        }
+        else if(currentTask == 4){                          //Generation Processing
+            titleCard = "Running generation";
         }
 
-        stupidG.drawImage(buff,0,0,null);
+        int fontSize = width/50;
+        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, fontSize));
+        g.setColor(Color.yellow);
+        g.drawString(titleCard, width/4 - (titleCard.length()*fontSize/4), 0+fontSize);
+
+        stupidG.drawImage(buff,0,0,null);   //Double buffer stuff
 
         frames++;
         repaint();
@@ -150,16 +176,19 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     }
     private void startPlayer() {
         GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
+        currentTask = 1;
         renderEngine = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,true);
     }
     private void startAI() {
         GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
         renderEngine = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,false);
+        currentTask = 2;
     }
     private void startGeneration() {
         engines = new HashSet<GameEngine>(numPerGeneration);
         GameEngineVariableTickRate.genNum = 0;
         snekSort = new SnakeSorters(GameEngineVariableTickRate.genNum, numPerGeneration);
+        currentTask = 3;
         for (int i = 0; i < numPerGeneration; i++) {
             GameEngineVariableTickRate temp = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false,i);
             engines.add(temp);
@@ -168,7 +197,19 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         Iterator itr = engines.iterator();
         renderEngine = (GameEngine) itr.next();
     }
-    void removeEngine(GameEngine gm) {
+    void killAnEngine(GameEngine gm){
+        if(currentTask == 1 || currentTask == 2){
+            currentTask = 0;
+        }
+        else if(currentTask == 3){
+            removeAIEngine((GameEngineVariableTickRate)gm);
+        }
+        else if(currentTask == 4){
+            System.out.printf("Wait wtf happened, killAnEngine in gamePanel%n");
+        }
+    }
+    void removeAIEngine(GameEngineVariableTickRate gm) {
+        System.out.printf("Removing GameEngine: %s%n", gm.genID);
         engines.remove(gm);
         snekSort.add(new SnakeSorter((GameEngineVariableTickRate) gm));
     }
