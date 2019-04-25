@@ -133,6 +133,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             titleCard = "Processing generation";
             int numToKeep = (int)(numPerGeneration*percentOldToKeep);
             snekSort.getNth(0);
+            System.out.printf("Sorted Array of gen #%d is now: %s%n", GameEngineVariableTickRate.genNum, Arrays.toString(snekSort.arr));
         }
 
         int fontSize = width/50;
