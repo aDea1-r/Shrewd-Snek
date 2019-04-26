@@ -5,8 +5,8 @@ public class GameEngineVariableTickRate extends GameEngine implements Runnable {
     int genID; //ID of engine in current generation
     static int genNum; //current generation number
 
-    GameEngineVariableTickRate(double startXPercent, double startYPercent, double screenSize, int height, int width, boolean upi, int genID) {
-        super(startXPercent,startYPercent,screenSize,height,width,upi);
+    GameEngineVariableTickRate(double startXPercent, double startYPercent, double screenSize, int height, int width, boolean upi, int genID, Brain brain) {
+        super(startXPercent,startYPercent,screenSize,height,width,upi, brain);
         thread = new Thread(this,"Brain "+genNum);
         this.genID = genID;
 

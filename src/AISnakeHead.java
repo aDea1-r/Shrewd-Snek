@@ -3,9 +3,12 @@ import java.awt.*;
 public class AISnakeHead extends SnakeHead {
     private Brain brain;
 
-    AISnakeHead(Color c, int x, int y, Grid grid, int id, ScoreTracker trak) {
+    AISnakeHead(Color c, int x, int y, Grid grid, int id, ScoreTracker trak, Brain brain) {
         super(c,x,y,grid,id,trak);
-        this.brain = new Brain();
+        if(brain == null)
+            this.brain = new Brain();
+        else
+            this.brain = brain;
     }
     boolean act(int[] vision) {
         double[] inputs = brain.compute(vision);

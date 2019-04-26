@@ -10,8 +10,8 @@ public class GameEngineFixedTickRate extends GameEngine implements ActionListene
 
     private Map<Integer, Boolean> inputs;
 
-    GameEngineFixedTickRate(double startXPercent, double startYPercent, double screenSize, int height, int width, Map<Integer, Boolean> inputs, boolean upi) {
-        super(startXPercent,startYPercent,screenSize,height,width,upi);
+    GameEngineFixedTickRate(double startXPercent, double startYPercent, double screenSize, int height, int width, Map<Integer, Boolean> inputs, boolean upi, Brain brain) {
+        super(startXPercent,startYPercent,screenSize,height,width,upi, brain);
 
         super.food = new AppleMaker(Color.BLACK,gameGrid,2);
         drawables.add(food);

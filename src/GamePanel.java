@@ -191,11 +191,11 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private void startPlayer() {
         GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
         currentTask = 1;
-        renderEngine = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,true);
+        renderEngine = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,true, null);
     }
     private void startAI() {
         GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
-        renderEngine = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,false);
+        renderEngine = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,false, null);
         currentTask = 2;
     }
     private void startGeneration() {
@@ -204,7 +204,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         snekSort = new SnakeSorters(GameEngineVariableTickRate.genNum, numPerGeneration);
         currentTask = 3;
         for (int i = 0; i < numPerGeneration; i++) {
-            GameEngineVariableTickRate temp = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false,i);
+            GameEngineVariableTickRate temp = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false, i, null);
             engines.add(temp);
             temp.start();
         }

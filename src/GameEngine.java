@@ -22,7 +22,7 @@ public abstract class GameEngine implements Drawable {
     boolean usePlayerInput;
 
 
-    GameEngine(double startXPercent, double startYPercent, double screenSize, int height, int width, boolean upi)
+    GameEngine(double startXPercent, double startYPercent, double screenSize, int height, int width, boolean upi, Brain brain)
     {
         usePlayerInput = upi;
 
@@ -43,7 +43,7 @@ public abstract class GameEngine implements Drawable {
         if(usePlayerInput)
             snake1 = new SnakeHead(Color.CYAN, gameGrid.numSquares/3, gameGrid.numSquares/2, gameGrid, 1,scoreTracker);
         else
-            snake1 = new AISnakeHead(Color.CYAN, gameGrid.numSquares/3, gameGrid.numSquares/2, gameGrid, 1,scoreTracker);
+            snake1 = new AISnakeHead(Color.CYAN, gameGrid.numSquares/3, gameGrid.numSquares/2, gameGrid, 1,scoreTracker, brain);
 
         drawables.add(gameGrid);
         drawables.add(snake1);
@@ -51,7 +51,7 @@ public abstract class GameEngine implements Drawable {
         gameRunning = true;
     }
     public GameEngine(){
-        this(0, 0, 0, 1, 1, false);
+        this(0, 0, 0, 1, 1, false, null);
     }
 
     abstract void gameTick();
