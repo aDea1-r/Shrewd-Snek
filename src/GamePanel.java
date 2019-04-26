@@ -25,7 +25,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private GameEngine renderEngine;
     private NumberSelector tickRateSelector;
 
-    private static int numPerGeneration = 10;
+    private static int numPerGeneration = 1000;
     private Set<GameEngine> engines;
     private SnakeSorters snekSort;
 
