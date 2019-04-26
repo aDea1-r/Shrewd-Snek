@@ -62,21 +62,21 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
         buttonList = new ArrayList<Button>();
 
-        Button player = new Button((getWidth()*17) /20, getHeight()/10, 200, 80, "Player") {
+        Button player = new Button((width*17) /20, height/10, width/10, height/12, "Player") {
             @Override
             public void press() {
                 startPlayer();
             }
         };
         buttonList.add(player);
-        Button AI = new Button((getWidth()*17) /20, getHeight()*2/10, 200, 80, "Computer") {
+        Button AI = new Button((width*17) /20, height*2/10, width/10, height/12, "Computer") {
             @Override
             public void press() {
                 startAI();
             }
         };
         buttonList.add(AI);
-        Button runGeneration = new Button((getWidth()*17) /20, getHeight()*3/10, 200, 80, "Generation") {
+        Button runGeneration = new Button((width*17) /20, height*3/10, width/10, height/12, "Generation") {
             @Override
             public void press() {
                 startGeneration();
@@ -86,7 +86,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
         percentOldToKeep = 1/30.0;
 
-        tickRateSelector = new NumberSelector((getWidth()*17) /20, getHeight()*4/10, 50, 160, 1,120);
+        tickRateSelector = new NumberSelector((width*17) /20, height*4/10, width/40, height/4, 1,120);
         tickRateSelector.addtoList(buttonList);
 
         inputs.put((int)'P', false);
