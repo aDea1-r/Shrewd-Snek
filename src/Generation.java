@@ -23,7 +23,7 @@ public class Generation implements Drawable {
     private SnakeSorters snekSort;
     private double percentOldToKeep;                //the percent of the previous generation we will keep and mutate
 
-    static int maximumSimultaneousThreads = 100;
+    static int maximumSimultaneousThreads = 10;
 
 
     //Drawing stuff--------------------------------------------
@@ -100,9 +100,15 @@ public class Generation implements Drawable {
 
         gameGrid.drawMe(g);
 
+        g.setColor(Color.yellow);
+        int fontSize = gameGrid.size;
+        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, fontSize));
+        String title = String.format("Generation: %s", generationName);
+        g.drawString(title, gameGrid.getXPixels(gameGrid.numSquares/2) - (title.length()*gameGrid.size/4), gameGrid.getYPixels(2) + gameGrid.size/2);
+
         g.setColor(Color.CYAN);
         int startX = gameGrid.getXPixels(1);
-        int startY = gameGrid.getYPixels(1);
+        int startY = gameGrid.getYPixels(3);
         //Draws border of bounding box
         g.drawRect(startX - 1, startY - 1, gameGrid.size*(gameGrid.numSquares-2) + 2, gameGrid.size*2 + 2);
 
