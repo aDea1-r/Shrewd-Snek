@@ -26,8 +26,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private NumberSelector tickRateSelector;
 
     private static int numPerGeneration = 1000;
-    private Set<GameEngine> engines;
-    private SnakeSorters snekSort;
+    Generation currentGeneration;
 
     private double percentOldToKeep;                //the percent of the previous generation we will keep and mutate
 
@@ -54,11 +53,6 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         currentTask = 0;
 
         inputs = new LinkedHashMap<Integer, Boolean>();
-
-        int startX = (int)(width * startXPercent);
-        int startY = (int)(height * startYPercent);
-
-        int gridSize = Math.max(Math.min((int)(height * screenSize), (int)(width * screenSize))/GameEngine.numSquares, 1);
 
         buttonList = new ArrayList<Button>();
 
@@ -124,7 +118,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         }
         else if(currentTask == 3){                          //Generation
             titleCard = "Running generation";
-            if(engines.isEmpty()){
+            currentGeneration.drawMe(g);
+            if(currentGeneration.isDone()){
                 System.out.printf("Generation #%d has finished running%n", GameEngineVariableTickRate.genNum);
                 currentTask = 4;
             }
@@ -132,8 +127,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         else if(currentTask == 4){                          //Generation Processing TODO
             titleCard = "Processing generation";
             int numToKeep = (int)(numPerGeneration*percentOldToKeep);
-            snekSort.getNth(0);
-            System.out.printf("Sorted Array of gen #%d is now: %s%n", GameEngineVariableTickRate.genNum, Arrays.toString(snekSort.arr));
+//            snekSort.getNth(0);
+//            System.out.printf("Sorted Array of gen #%d is now: %s%n", GameEngineVariableTickRate.genNum, Arrays.toString(snekSort.arr));
         }
 
         int fontSize = width/50;
@@ -199,32 +194,29 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         currentTask = 2;
     }
     private void startGeneration() {
-        engines = new HashSet<GameEngine>(numPerGeneration);
-        GameEngineVariableTickRate.genNum = 0;
-        snekSort = new SnakeSorters(GameEngineVariableTickRate.genNum, numPerGeneration);
+//        engines = new HashSet<GameEngine>(numPerGeneration);
+//        GameEngineVariableTickRate.genNum = 0;
+//        snekSort = new SnakeSorters(GameEngineVariableTickRate.genNum, numPerGeneration);
+//        currentTask = 3;
+//        for (int i = 0; i < numPerGeneration; i++) {
+//            GameEngineVariableTickRate temp = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false, i, null);
+//            engines.add(temp);
+//            temp.start();
+//        }
+//        Iterator itr = engines.iterator();
+//        renderEngine = (GameEngine) itr.next();
         currentTask = 3;
-        for (int i = 0; i < numPerGeneration; i++) {
-            GameEngineVariableTickRate temp = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false, i, null);
-            engines.add(temp);
-            temp.start();
-        }
-        Iterator itr = engines.iterator();
-        renderEngine = (GameEngine) itr.next();
+        currentGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, "Testing", 0, numPerGeneration);
     }
     void killAnEngine(GameEngine gm){
         if(currentTask == 1 || currentTask == 2){
             currentTask = 0;
         }
         else if(currentTask == 3){
-            removeAIEngine((GameEngineVariableTickRate)gm);
+            currentGeneration.removeEngine((GameEngineVariableTickRate)gm);
         }
         else if(currentTask == 4){
             System.out.printf("Wait wtf happened, killAnEngine in gamePanel%n");
         }
-    }
-    void removeAIEngine(GameEngineVariableTickRate gm) {
-        System.out.printf("Removing GameEngine: %s%n", gm.genID);
-        engines.remove(gm);
-        snekSort.add(new SnakeSorter((GameEngineVariableTickRate) gm));
     }
 }
