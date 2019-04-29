@@ -29,7 +29,7 @@ public class ScoreTracker extends Actor {
         idleTickCount = 0;
     }
     public double getFitness() {
-        System.out.printf("Scoretracker getFit called score = %d, idleTickCount = %d%n", score, idleTickCount);
+//        System.out.printf("Scoretracker getFit called score = %d, idleTickCount = %d%n", score, idleTickCount);
         double duration = idleTickCount;
         double maxDuration = timeOutTime - timeOutTime*Double.MIN_VALUE;
         return score + Math.min(duration,maxDuration)/timeOutTime;

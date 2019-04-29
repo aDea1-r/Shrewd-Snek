@@ -142,6 +142,9 @@ public class Brain implements Drawable, Serializable {
                     if(nextLayerBias != null && nodeNum == 0){          //Biases
                         nextLayerNodes[weightNum] = (nodeVal * weight) + nextLayerBias[weightNum];
                     }
+                    else if(nodeNum == 0){
+                        nextLayerNodes[weightNum] = (nodeVal * weight);
+                    }
                     else {
                         nextLayerNodes[weightNum] += (nodeVal * weight);
                     }

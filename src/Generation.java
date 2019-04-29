@@ -12,7 +12,7 @@ import java.awt.*;
 
 public class Generation implements Drawable {
 
-    private String generationName;
+    private String speciesName;
     private int generationNum;
 
     private static int numPerGeneration = 1000;
@@ -23,7 +23,11 @@ public class Generation implements Drawable {
     private SnakeSorters snekSort;
     private double percentOldToKeep;                //the percent of the previous generation we will keep and mutate
 
-    static int maximumSimultaneousThreads = 10;
+    static int maximumSimultaneousThreads = 50;
+    static int maxThreadsToStartAtOnce = 5;
+        //TODO: glitch where one or two gameEngines never finish
+        //TODO: seems to occur more when this variable is bigger, possibly due to simultaneous running?
+        //TODO: Glitch seems fixed? NVM its still broken
 
 
     //Drawing stuff--------------------------------------------
@@ -36,7 +40,7 @@ public class Generation implements Drawable {
     private double screenSize;      //% of the total screen which the play screen will take up
     private Grid gameGrid;
 
-    public Generation(double startXPercent, double startYPercent, double screenSize, int height, int width, String generationName, int generationNum, int numPerGeneration){
+    public Generation(double startXPercent, double startYPercent, double screenSize, int height, int width, String speciesName, int generationNum, int numPerGeneration){
 
         this.startXPercent = startXPercent;
         this.startYPercent = startYPercent;
@@ -53,7 +57,7 @@ public class Generation implements Drawable {
         gameGrid = new Grid(startX, startY, gridSize, GameEngine.numSquares, Color.BLACK);
         //---------------
 
-        this.generationName = generationName;
+        this.speciesName = speciesName;
         this.generationNum = generationNum;
 
         Generation.numPerGeneration = numPerGeneration;
@@ -75,7 +79,7 @@ public class Generation implements Drawable {
     }
 
     public void removeEngine(GameEngineVariableTickRate gm){
-        System.out.printf("Removing GameEngine: %s%n", gm.genID);
+//        System.out.printf("Removing GameEngine: %s%n", gm.genID);
         enginesCurrentlyRunning.remove(gm);
         snekSort.add(new SnakeSorter(gm));
     }
@@ -94,16 +98,30 @@ public class Generation implements Drawable {
     public void drawMe(Graphics g) {
 
         //Act---------------------------------
-        if(!enginesWaitingToRun.isEmpty() && enginesCurrentlyRunning.size() < maximumSimultaneousThreads)
-            startEngine();
-        //------------------------------------
+//        for (int i = 0; i < maxThreadsToStartAtOnce; i++) {
+        //TODO: for loop commented out because of weird glitch
+            if (!enginesWaitingToRun.isEmpty() && enginesCurrentlyRunning.size() < maximumSimultaneousThreads) {
+                //IMPORTANT: cannot call method here because it causes glitch noted above
+//                startEngine();
+                GameEngineVariableTickRate temp = (GameEngineVariableTickRate) enginesWaitingToRun.poll();
+                enginesCurrentlyRunning.add(temp);
+                temp.start();
+            }
+//        }
 
+        //TODO: While loop seems to have fixed it, needs more testing tho
+        while (!enginesWaitingToRun.isEmpty() && enginesCurrentlyRunning.size() < maximumSimultaneousThreads){
+            startEngine();
+        }
+        //------------------------------------
+        System.out.printf("Species name: %s, enginesCurrentlyRunning = %d%n", speciesName, enginesCurrentlyRunning.size());
+        
         gameGrid.drawMe(g);
 
         g.setColor(Color.yellow);
         int fontSize = gameGrid.size;
         g.setFont(new Font(Font.MONOSPACED, Font.BOLD, fontSize));
-        String title = String.format("Generation: %s", generationName);
+        String title = String.format("Species: %s", speciesName);
         g.drawString(title, gameGrid.getXPixels(gameGrid.numSquares/2) - (title.length()*gameGrid.size/4), gameGrid.getYPixels(2) + gameGrid.size/2);
 
         g.setColor(Color.CYAN);
