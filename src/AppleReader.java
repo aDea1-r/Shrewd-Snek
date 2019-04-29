@@ -10,10 +10,11 @@ public class AppleReader extends AppleStuff{
     AppleReader(Color c, Grid grid, int id, int generation, int brainID) {
         super(c,grid,id);
         try {
-            buff = new BufferedReader(new FileReader("/" + generation + "/" + brainID + "/apple.dat"));
+            buff = new BufferedReader(new FileReader("Training Data/" +generation + "/" + brainID + "/apple.dat"));
         } catch (FileNotFoundException e) {
             System.out.println("Apple log not found");
         }
+        this.place();
     }
     void place() {
         try {

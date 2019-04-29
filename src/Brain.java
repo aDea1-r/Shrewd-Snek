@@ -61,7 +61,7 @@ public class Brain implements Drawable, Serializable {
     }
 
     public static Brain brainReader(int gen, int num) {
-        String path = "/"+gen+"/"+num+"/brain.dat";
+        String path = "Training Data/" +gen+"/"+num+"/brain.dat";
         try (FileInputStream f = new FileInputStream(path)) {
             ObjectInputStream s = new ObjectInputStream(f);
             Brain temp = (Brain) s.readObject();
@@ -227,10 +227,10 @@ public class Brain implements Drawable, Serializable {
         }
     }
     void log(int generation, int brainID) {
-        File file = new File(generation + "/" + brainID + "/");
+        File file = new File("Training Data/" +generation + "/" + brainID + "/");
         file.mkdirs();
         try {
-            FileOutputStream f = new FileOutputStream(generation + "/" + brainID + "/brain.dat");
+            FileOutputStream f = new FileOutputStream("Training Data/" +generation + "/" + brainID + "/brain.dat");
             ObjectOutputStream s = new ObjectOutputStream(f);
             s.writeObject(this);
             s.close();

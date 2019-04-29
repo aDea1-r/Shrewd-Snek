@@ -13,7 +13,6 @@ public abstract class AppleStuff extends Actor implements Drawable {
         super(c, -1, -1, grid, id);
 //        typeID = 2;
 
-        this.place();
 
         if(image==null) {
             try {
