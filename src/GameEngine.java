@@ -16,7 +16,7 @@ public abstract class GameEngine implements Drawable {
     AppleMaker food;
     SnakeHead snake1;
 
-    LinkedList<Drawable> drawables = new LinkedList<Drawable>();
+    LinkedList<Drawable> drawables = new LinkedList<>();
 
     boolean gameRunning;
     boolean usePlayerInput;

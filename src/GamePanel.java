@@ -82,14 +82,26 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         percentOldToKeep = 1/30.0;
 
         tickRateSelector = new NumberSelector((width*17) /20, height*4/10, width/40, height/4, 1,120);
-        tickRateSelector.addtoList(buttonList);
+        tickRateSelector.addToList(buttonList);
 
         inputs.put((int)'P', false);
         inputs.put((int)'p', false);
 
-        playerName = System.getProperty("user.name");
-        playerName = playerName.substring(0,1).toUpperCase() + playerName.substring(1);
+        setPlayerName();
+    }
 
+    private void setPlayerName() {
+        String str = System.getProperty("user.name");
+        str = str.substring(0,1).toUpperCase() + str.substring(1); //capitalizes first letter of name
+        if (str.contains("_"))
+            str = str.substring(0,str.indexOf("_"));
+        for (int i = 0; i < str.length()-1; i++) {
+            if (str.charAt(i)==' ')
+                str = str.substring(0,i+1) + str.substring(i+1,i+2).toUpperCase() + str.substring(i+2);
+        }
+        if(str.charAt(str.length()-1)==' ')
+            str = str.substring(0,str.length()-1);
+        playerName = str;
     }
 
     public void paintComponent(Graphics stupidG)

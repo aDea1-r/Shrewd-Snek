@@ -38,7 +38,7 @@ public class NumberSelector implements Drawable{
         };
 
     }
-    void addtoList(List<Button> list) {
+    void addToList(List<Button> list) {
         list.add(increase);
         list.add(decrease);
         list.add(middle);
