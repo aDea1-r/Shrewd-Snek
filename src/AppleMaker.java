@@ -8,6 +8,7 @@ class AppleMaker extends AppleStuff {
 
     AppleMaker(Color c, Grid grid, int id) {
         super(c,grid,id);
+        this.place();
     }
     AppleMaker(Color c, Grid grid, int id, int generation, int brainID) {
         super(c,grid,id);
