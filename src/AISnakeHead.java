@@ -3,11 +3,14 @@ import java.awt.*;
 public class AISnakeHead extends SnakeHead {
     private Brain brain;
 
-    public AISnakeHead(Color c, int x, int y, Grid grid, int id, ScoreTracker trak) {
+    AISnakeHead(Color c, int x, int y, Grid grid, int id, ScoreTracker trak, Brain brain) {
         super(c,x,y,grid,id,trak);
-        this.brain = new Brain();
+        if(brain == null)
+            this.brain = new Brain();
+        else
+            this.brain = brain;
     }
-    public boolean act(int[] vision) {
+    boolean act(int[] vision) {
         double[] inputs = brain.compute(vision);
         int maxSpot = 0;
         for(int i=1; i<inputs.length; i++) {
@@ -30,5 +33,9 @@ public class AISnakeHead extends SnakeHead {
     public void drawMe(Graphics g){
         super.drawMe(g);
         brain.drawMe(g, grid);
+    }
+
+    public Brain getBrain() {
+        return brain;
     }
 }

@@ -61,7 +61,7 @@ public class Brain implements Drawable, Serializable {
     }
 
     public static Brain brainReader(int gen, int num) {
-        String path = "/"+gen+"/"+num+"/brain.dat";
+        String path = "Training Data/" +gen+"/"+num+"/brain.dat";
         try (FileInputStream f = new FileInputStream(path)) {
             ObjectInputStream s = new ObjectInputStream(f);
             Brain temp = (Brain) s.readObject();
@@ -141,6 +141,9 @@ public class Brain implements Drawable, Serializable {
                 if(weight != -999.999){
                     if(nextLayerBias != null && nodeNum == 0){          //Biases
                         nextLayerNodes[weightNum] = (nodeVal * weight) + nextLayerBias[weightNum];
+                    }
+                    else if(nodeNum == 0){
+                        nextLayerNodes[weightNum] = (nodeVal * weight);
                     }
                     else {
                         nextLayerNodes[weightNum] += (nodeVal * weight);
@@ -224,10 +227,14 @@ public class Brain implements Drawable, Serializable {
         }
     }
     void log(int generation, int brainID) {
-        try (FileOutputStream f = new FileOutputStream("/" + generation + "/" + brainID + "/brain.dat")){
+        File file = new File("Training Data/" +generation + "/" + brainID + "/");
+        file.mkdirs();
+        try {
+            FileOutputStream f = new FileOutputStream("Training Data/" +generation + "/" + brainID + "/brain.dat");
             ObjectOutputStream s = new ObjectOutputStream(f);
             s.writeObject(this);
             s.close();
+            System.out.println("logged "+brainID);
         } catch (IOException e) {
             System.out.println("bad error");
         }

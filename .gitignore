@@ -1,4 +1,6 @@
 .idea/workspace.xml
 .idea/usage.statistics.xml
 .idea/tasks.xml
+.idea/misc.xml
 out/*
+Training Data/*

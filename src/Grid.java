@@ -2,8 +2,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Grid implements Drawable {
-    private int startX;
-    private int startY;
+    int startX;
+    int startY;
     int size;       //pixel width of a single spot
     int numSquares;
     private Color color = Color.BLACK;

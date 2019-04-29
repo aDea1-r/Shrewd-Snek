@@ -9,10 +9,10 @@ public abstract class Button implements Drawable {
     private Color buttonColor;
     private Color textColor;
 
-    public Button(int x, int y, int width, int height, String text) {
+    Button(int x, int y, int width, int height, String text) {
         this(x,y,width,height,text,Color.yellow, Color.black);
     }
-    public Button(int x, int y, int width, int height, String text, Color b, Color t) {
+    Button(int x, int y, int width, int height, String text, Color b, Color t) {
         this.text = text;
         hitbox = new Rectangle(x,y,width,height);
         buttonColor = b;
@@ -24,7 +24,7 @@ public abstract class Button implements Drawable {
         g.setColor(buttonColor);
         g.fillRect((int)hitbox.getX(),(int)hitbox.getY(),(int)hitbox.getWidth(),(int)hitbox.getHeight());
         g.setColor(textColor);
-        g.setFont(new Font("Comic Sans",Font.PLAIN,50));
+        g.setFont(new Font("Comic Sans MS",Font.PLAIN,(int)hitbox.getHeight()));
 
         Rectangle rect = new Rectangle((int)(hitbox.getX()+hitbox.width*0.1),
                 (int)(hitbox.getY()+hitbox.getHeight()*.1),
@@ -45,8 +45,11 @@ public abstract class Button implements Drawable {
 
         g.dispose();
     }
-    public boolean isPressed(int x, int y) {
+    boolean isPressed(int x, int y) {
         return hitbox.contains(new Point(x,y));
     }
-    public abstract void press(GamePanel gp);
+    void setText(String s) {
+        text = s;
+    }
+    public abstract void press();
 }

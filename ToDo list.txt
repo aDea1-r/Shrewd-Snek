@@ -1,0 +1,26 @@
+Data Storage Stuff:
+Use Hashset instead of Array for storing GameEngines
+Remove gameengine from gameengines set after execution (save memory)
+Retrieve fitness of Brain from ScoreTracker when shutting down gameEngine
+Create data structure to store gameIDs and fitnesses of engines. (PQ of FinishedGame objects, FG stores 1 game of data)
+Write the PQ to a file (PQ implements serializable) (Maybe write as a list/array instead? Needs to be sorted, but also need to be able to linear search by ID)
+Build method to retrieve Brain given genID and genNum
+Build method to retrieve number of elapsed generations
+Fix and Enable AppleMaker logging (might need to create directory first)
+
+GUI:
+Add button to display ordered results of a given gen
+Add button to replay given gen and genID
+Add button a play best in a given gen
+Add train next gen button (and display next genNum)
+Fix score being tiny in player mode
+Add rapid train button to auto-advance X generations
+Add rapid train button to auto-advance generations until stopped (more useful for afk)
+
+Neural Net:
+Write method to sort prev gen, and determine parents
+Write method to init next gen
+
+Performance:
+Limit total number of threads
+Give main thread higher priority so it doesn't go unresponsive when training (and so auto-advance can be stopped)
