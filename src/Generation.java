@@ -114,8 +114,15 @@ public class Generation implements Drawable {
             startEngine();
         }
         //------------------------------------
-        System.out.printf("Species name: %s, enginesCurrentlyRunning = %d%n", speciesName, enginesCurrentlyRunning.size());
-        
+        System.out.printf("Species name: %s, enginesCurrentlyRunning = %d, active thread count = %s%n", speciesName, enginesCurrentlyRunning.size(),Thread.activeCount());
+        if(enginesCurrentlyRunning.size() == 1 || enginesCurrentlyRunning.size() == 2 || enginesCurrentlyRunning.size() == 3) {
+            Iterator itr = enginesCurrentlyRunning.iterator();
+            if(itr.hasNext())
+                System.out.println(itr.next().toString());
+            else
+                System.out.println(enginesCurrentlyRunning);
+        }
+
         gameGrid.drawMe(g);
 
         g.setColor(Color.yellow);

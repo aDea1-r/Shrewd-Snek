@@ -33,4 +33,7 @@ public class GameEngineVariableTickRate extends GameEngine implements Runnable {
         ((AISnakeHead)snake1).getBrain().log(genNum,genID);
         Game.m.killAnEngine(this);
     }
+    public String toString() {
+        return "GameEngine "+genNum+" "+genID;
+    }
 }
