@@ -36,6 +36,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
                                         //2 = running single ai
                                         //3 = running generation
                                         //4 = processing generation
+    String playerName;
 
     GamePanel()
     {
@@ -86,6 +87,9 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         inputs.put((int)'P', false);
         inputs.put((int)'p', false);
 
+        playerName = System.getProperty("user.name");
+        playerName = playerName.substring(0,1).toUpperCase() + playerName.substring(1);
+
     }
 
     public void paintComponent(Graphics stupidG)
@@ -111,7 +115,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             titleCard = "Welcome! Choose an activity";
         }
         else if(currentTask == 1){                          //Player
-            titleCard = "Welcome Player! WASD to control the snake";
+            titleCard = "Welcome "+playerName+"! WASD to control the snake";
         }
         else if(currentTask == 2){                          //Single AI
             titleCard = "AI loaded, playing";
