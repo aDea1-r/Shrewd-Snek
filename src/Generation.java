@@ -9,6 +9,7 @@ Can be drawn:
 
 import java.util.*;
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Generation implements Drawable {
 
@@ -18,7 +19,10 @@ public class Generation implements Drawable {
     private static int numPerGeneration = 1000;
 
     private Queue<GameEngine> enginesWaitingToRun;        //Set of engines which are in the queue to run
-    private Set<GameEngine> enginesCurrentlyRunning;    //Set of engines currently being run
+//    private Set<GameEngine> enginesCurrentlyRunning;    //Set of engines currently being run
+    private GameEngine[] enginesCurrentlyRunning;
+//    private int enginesCurrentlyRunningLength;
+    private final AtomicInteger enginesCurrentlyRunningLength = new AtomicInteger();
 
     private SnakeSorters snekSort;
     private double percentOldToKeep;                //the percent of the previous generation we will keep and mutate
@@ -68,7 +72,11 @@ public class Generation implements Drawable {
         enginesWaitingToRun = new LinkedList<GameEngine>();
         GameEngineVariableTickRate.genNum = generationNum;
         snekSort = new SnakeSorters(GameEngineVariableTickRate.genNum, numPerGeneration);
-        enginesCurrentlyRunning = new HashSet<GameEngine>(maximumSimultaneousThreads);
+//        enginesCurrentlyRunning = new HashSet<GameEngine>(maximumSimultaneousThreads);
+
+        enginesCurrentlyRunning = new GameEngine[numPerGeneration];
+//        enginesCurrentlyRunningLength = 0;
+        enginesCurrentlyRunningLength.set(0);
 
         if(generationNum == 0){
             for (int i = 0; i < numPerGeneration; i++) {
@@ -80,18 +88,20 @@ public class Generation implements Drawable {
 
     public void removeEngine(GameEngineVariableTickRate gm){
 //        System.out.printf("Removing GameEngine: %s%n", gm.genID);
-        enginesCurrentlyRunning.remove(gm);
+        enginesCurrentlyRunning[gm.genID] = null;
+        enginesCurrentlyRunningLength.decrementAndGet();
         snekSort.add(new SnakeSorter(gm));
     }
 
     private void startEngine(){
         GameEngineVariableTickRate temp = (GameEngineVariableTickRate) enginesWaitingToRun.poll();
-        enginesCurrentlyRunning.add(temp);
+        enginesCurrentlyRunning[temp.genID] = temp;
+        enginesCurrentlyRunningLength.incrementAndGet();
         temp.start();
     }
 
     public boolean isDone(){
-        return enginesCurrentlyRunning.isEmpty() && enginesWaitingToRun.isEmpty();
+        return enginesCurrentlyRunningLength.get() == 0 && enginesWaitingToRun.isEmpty();
     }
 
     @Override
@@ -100,21 +110,19 @@ public class Generation implements Drawable {
         //Act---------------------------------
 //        for (int i = 0; i < maxThreadsToStartAtOnce; i++) {
         //TODO: for loop commented out because of weird glitch
-            if (!enginesWaitingToRun.isEmpty() && enginesCurrentlyRunning.size() < maximumSimultaneousThreads) {
+            if (!enginesWaitingToRun.isEmpty() && enginesCurrentlyRunningLength.get() < maximumSimultaneousThreads) {
                 //IMPORTANT: cannot call method here because it causes glitch noted above
 //                startEngine();
-                GameEngineVariableTickRate temp = (GameEngineVariableTickRate) enginesWaitingToRun.poll();
-                enginesCurrentlyRunning.add(temp);
-                temp.start();
+                startEngine();
             }
 //        }
 
         //TODO: While loop seems to have fixed it, needs more testing tho
-        while (!enginesWaitingToRun.isEmpty() && enginesCurrentlyRunning.size() < maximumSimultaneousThreads){
+        while (!enginesWaitingToRun.isEmpty() && enginesCurrentlyRunningLength.get() < maximumSimultaneousThreads){
             startEngine();
         }
         //------------------------------------
-        System.out.printf("Species name: %s, enginesCurrentlyRunning = %d%n", speciesName, enginesCurrentlyRunning.size());
+        System.out.printf("Species name: %s, enginesCurrentlyRunning = %d%n", speciesName, enginesCurrentlyRunningLength.get());
         
         gameGrid.drawMe(g);
 
@@ -131,7 +139,7 @@ public class Generation implements Drawable {
         g.drawRect(startX - 1, startY - 1, gameGrid.size*(gameGrid.numSquares-2) + 2, gameGrid.size*2 + 2);
 
         //Draws progress bar
-        int width = gameGrid.size*(gameGrid.numSquares-2) - (int)(pixelWidthProgress*(enginesWaitingToRun.size() + enginesCurrentlyRunning.size()));
-        g.fillRect(startX, startY, width, gameGrid.size*2);
+        int width = gameGrid.size*(gameGrid.numSquares-2) - (int)(pixelWidthProgress*(enginesWaitingToRun.size() + enginesCurrentlyRunningLength.get()));
+        g.fillRect(startX, startY, width, gameGrid.size*2 + 1);
     }
 }
