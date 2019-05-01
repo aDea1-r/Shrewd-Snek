@@ -59,21 +59,21 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
         Button player = new Button((width*17) /20, height/10, width/10, height/12, "Player") {
             @Override
-            public void press() {
+            public void action() {
                 startPlayer();
             }
         };
         buttonList.add(player);
         Button AI = new Button((width*17) /20, height*2/10, width/10, height/12, "Computer") {
             @Override
-            public void press() {
+            public void action() {
                 startAI();
             }
         };
         buttonList.add(AI);
         Button runGeneration = new Button((width*17) /20, height*3/10, width/10, height/12, "Generation") {
             @Override
-            public void press() {
+            public void action() {
                 startGeneration();
             }
         };

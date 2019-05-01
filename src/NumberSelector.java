@@ -16,7 +16,7 @@ public class NumberSelector implements Drawable{
         currentVal = (min+max)/2;
         increase = new Button(x,y,width,bHeight,"t") {
             @Override
-            public void press() {
+            public void action() {
                 if(currentVal<max) {
                     currentVal++;
                     middle.setText(Integer.toString(currentVal));
@@ -25,7 +25,7 @@ public class NumberSelector implements Drawable{
         };
         decrease = new Button(x, y+2*bHeight, width, bHeight, "v") {
             @Override
-            public void press() {
+            public void action() {
                 if(currentVal>min) {
                     currentVal--;
                     middle.setText(Integer.toString(currentVal));
@@ -34,7 +34,7 @@ public class NumberSelector implements Drawable{
         };
         middle = new Button(x,y+bHeight,width,bHeight,Integer.toString(currentVal)) {
             @Override
-            public void press() { }
+            public void action() { }
         };
 
     }

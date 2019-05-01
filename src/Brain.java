@@ -60,8 +60,9 @@ public class Brain implements Drawable, Serializable {
         this(14,10,2,4, 0.0, 1, 0, 0.2, 0, 2);
     }
 
-    public static Brain brainReader(int gen, int num) {
-        String path = "Training Data/" +gen+"/"+num+"/brain.dat";
+    public static Brain brainReader(int gen, int num, String genName) {
+//        String path = "Training Data/" +gen+"/"+num+"/brain.dat";
+        String path = String.format("Training Data/%s/%d/%d/brain.dat", genName, gen, num);
         try (FileInputStream f = new FileInputStream(path)) {
             ObjectInputStream s = new ObjectInputStream(f);
             Brain temp = (Brain) s.readObject();
