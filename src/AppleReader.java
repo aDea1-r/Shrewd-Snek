@@ -7,8 +7,8 @@ import java.io.IOException;
 public class AppleReader extends AppleStuff{
     private BufferedReader buff;
 
-    AppleReader(Color c, Grid grid, int id, int generation, int brainID) {
-        super(c,grid,id);
+    AppleReader(Color c, Grid grid, int id, int generation, int brainID, String speciesName) {
+        super(c,grid,id, speciesName);
         try {
             buff = new BufferedReader(new FileReader("Training Data/" +generation + "/" + brainID + "/apple.dat"));
         } catch (FileNotFoundException e) {

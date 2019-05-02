@@ -6,7 +6,8 @@ public class SnakeSorters implements Serializable {
     SnakeSorter[] arr;
     int genNum;
     int genSize;
-    public SnakeSorters(int genNum, int genSize){
+    String speciesName;
+    public SnakeSorters(int genNum, int genSize, String speciesName){
         this.genNum = genNum;
         this.genSize = genSize;
         arr = new SnakeSorter[genSize];
@@ -33,10 +34,11 @@ public class SnakeSorters implements Serializable {
     }
     public void log() {
         pq = null;
-        File file = new File(genNum + "/");
+        String path = String.format("Training Data/%s/%d/", speciesName, genNum);
+        File file = new File(path);
         file.mkdirs();
         try {
-            FileOutputStream f = new FileOutputStream(genNum + "/scores.dat");
+            FileOutputStream f = new FileOutputStream(path + "/scores.dat");
             ObjectOutputStream s = new ObjectOutputStream(f);
             s.writeObject(this);
             s.close();

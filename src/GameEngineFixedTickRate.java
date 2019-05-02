@@ -13,7 +13,7 @@ public class GameEngineFixedTickRate extends GameEngine implements ActionListene
     GameEngineFixedTickRate(double startXPercent, double startYPercent, double screenSize, int height, int width, Map<Integer, Boolean> inputs, boolean upi, Brain brain) {
         super(startXPercent,startYPercent,screenSize,height,width,upi, brain);
 
-        super.food = new AppleMaker(Color.BLACK,gameGrid,2);
+        super.food = new AppleMaker(Color.BLACK,gameGrid,2, "Wut");
         drawables.add(food);
 
         time = new Timer(refreshRate, this); //sets delay to 15 millis and calls the actionPerformed of this class.

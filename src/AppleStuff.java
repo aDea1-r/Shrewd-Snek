@@ -8,11 +8,12 @@ import java.util.*;
 public abstract class AppleStuff extends Actor implements Drawable {
     private final int foodVal = 1;     //length snake gains when eats
     private static BufferedImage image;
+    String speciesName;
 
-    AppleStuff(Color c, Grid grid, int id){
+    AppleStuff(Color c, Grid grid, int id, String speciesName){
         super(c, -1, -1, grid, id);
 //        typeID = 2;
-
+        this.speciesName = speciesName;
 
         if(image==null) {
             try {

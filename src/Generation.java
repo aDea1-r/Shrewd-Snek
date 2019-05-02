@@ -71,7 +71,7 @@ public class Generation implements Drawable {
         //-----------------------------------init
         enginesWaitingToRun = new LinkedList<GameEngine>();
         GameEngineVariableTickRate.genNum = generationNum;
-        snekSort = new SnakeSorters(GameEngineVariableTickRate.genNum, numPerGeneration);
+        snekSort = new SnakeSorters(GameEngineVariableTickRate.genNum, numPerGeneration, speciesName);
 //        enginesCurrentlyRunning = new HashSet<GameEngine>(maximumSimultaneousThreads);
 
         enginesCurrentlyRunning = new GameEngine[numPerGeneration];
@@ -80,7 +80,7 @@ public class Generation implements Drawable {
 
         if(generationNum == 0){
             for (int i = 0; i < numPerGeneration; i++) {
-                GameEngineVariableTickRate temp = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false, i, null);
+                GameEngineVariableTickRate temp = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false, i, null, speciesName);
                 enginesWaitingToRun.add(temp);
             }
         }

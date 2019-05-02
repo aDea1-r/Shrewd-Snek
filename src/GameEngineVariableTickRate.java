@@ -5,13 +5,17 @@ public class GameEngineVariableTickRate extends GameEngine implements Runnable {
     int genID; //ID of engine in current generation
     static int genNum; //current generation number
 
-    GameEngineVariableTickRate(double startXPercent, double startYPercent, double screenSize, int height, int width, boolean upi, int genID, Brain brain) {
+    String speciesName;
+
+    GameEngineVariableTickRate(double startXPercent, double startYPercent, double screenSize, int height, int width, boolean upi, int genID, Brain brain, String speciesName) {
         super(startXPercent,startYPercent,screenSize,height,width,upi, brain);
         thread = new Thread(this,"Brain "+genNum);
         this.genID = genID;
 
-        food = new AppleMaker(Color.BLACK,gameGrid,2,genNum,this.genID);
+        food = new AppleMaker(Color.BLACK,gameGrid,2,genNum,this.genID, speciesName);
         drawables.add(food);
+
+        this.speciesName = speciesName;
     }
     //like action preformed
     public void run() {
@@ -30,7 +34,7 @@ public class GameEngineVariableTickRate extends GameEngine implements Runnable {
         gameRunning = false;
 //        System.out.println("Dead is "+genID);
 //        System.out.printf("Score is: %d, fitness is %f%n", scoreTracker.getScore(), scoreTracker.getFitness());
-        ((AISnakeHead)snake1).getBrain().log(genNum,genID);
+        ((AISnakeHead)snake1).getBrain().log(genNum,genID, speciesName);
         Game.m.killAnEngine(this);
     }
 }
