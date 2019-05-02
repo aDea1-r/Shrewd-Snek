@@ -68,9 +68,14 @@ public class Brain implements Drawable, Serializable {
             Brain temp = (Brain) s.readObject();
             s.close();
             return temp;
-        } catch (Exception e) {
-            return new Brain();
+        } catch (FileNotFoundException e){
+            System.out.printf("FileNotFound at Bran readIn, gen = %d, num = %d, speciesName = %s%n", gen, num, speciesName);
+//            return null;
+        } catch (Exception e){
+            System.out.printf("Exception: %s, at Brain readin%n", e);
+//            return null;
         }
+        return new Brain();
     }
     //used to create a copy version of existing Brain
     public Brain(Brain parent) {
