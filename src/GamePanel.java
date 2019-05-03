@@ -32,7 +32,6 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
     private static int numPerGeneration = 1000;
     private Generation currentGeneration;
-    private Generation nextGeneration;
     private String currentSpeciesName = "Testing";
 
     private double percentOldToKeep;                //the percent of the previous generation we will keep and mutate
@@ -200,8 +199,6 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             snekSort.log();
             System.out.printf("Best snake of generation #%d is%n  Snake with gen ID #%d%n", currentGeneration.generationNum, best.genID);
             startReplay(best.genNum, best.genID);
-
-            nextGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, currentGeneration.generationNum+1, numPerGeneration);
         }
 
         if(selectedNumberSelector!=null) {
@@ -300,6 +297,12 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private void startGeneration() {
         currentTask = 3;
         currentGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, 0, numPerGeneration);
+    }
+    private void startNextGeneration() {
+        Generation nextGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, currentGeneration.generationNum+1, numPerGeneration);
+        nextGeneration.evolve(currentGeneration.snekSort);
+        currentGeneration = nextGeneration;
+        currentTask = 3;
     }
     private void startReplay(int genID, int brainID) {
         GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();

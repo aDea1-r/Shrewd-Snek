@@ -86,6 +86,13 @@ public class Generation implements Drawable {
         }
     }
 
+    public boolean evolve(SnakeSorters s){
+        /*
+        Method which is called by GamePanel, clones, mutates, etc a previous gen
+         */
+        return true;
+    }
+
     public void removeEngine(GameEngineVariableTickRate gm){
 //        System.out.printf("Removing GameEngine: %s%n", gm.genID);
         enginesCurrentlyRunning[gm.genID] = null;

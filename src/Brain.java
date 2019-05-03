@@ -57,7 +57,7 @@ public class Brain implements Drawable, Serializable {
         }
     }
     Brain() {
-        this(14,10,2,4, 0.0, 1, 0, 0.2, 0, 2);
+        this(StaticBrainVariables.sizeInputs,StaticBrainVariables.sizeHidden,StaticBrainVariables.numHidden,StaticBrainVariables.sizeOutput, StaticBrainVariables.initialWeight, StaticBrainVariables.initialBias, StaticBrainVariables.initialMutateMean, StaticBrainVariables.initialMutateStanDev, StaticBrainVariables.initialBiasMutateMean, StaticBrainVariables.initialBiasMutateStanDev);
     }
 
     public static Brain brainReader(int gen, int num, String speciesName) {
