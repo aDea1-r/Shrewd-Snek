@@ -190,9 +190,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
                 currentTask = 4;
             }
         }
-        else if(currentTask == 4){                          //Generation Processing TODO
+        else if(currentTask == 4){
             titleCard = "Processing generation";
-            int numToKeep = (int)(numPerGeneration*percentOldToKeep);
             SnakeSorters snekSort = currentGeneration.snekSort;
 
             SnakeSorter best = snekSort.getNth(0);
@@ -299,8 +298,9 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         currentGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, 0, numPerGeneration);
     }
     private void startNextGeneration() {
+        GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
         Generation nextGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, currentGeneration.generationNum+1, numPerGeneration);
-        nextGeneration.evolve(currentGeneration.snekSort);
+        nextGeneration.evolve(currentGeneration.snekSort, percentOldToKeep);
         currentGeneration = nextGeneration;
         currentTask = 3;
     }

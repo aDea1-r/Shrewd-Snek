@@ -86,10 +86,53 @@ public class Generation implements Drawable {
         }
     }
 
-    public boolean evolve(SnakeSorters s){
+    public boolean evolve(SnakeSorters snekSort, double percentOldToKeep){
         /*
         Method which is called by GamePanel, clones, mutates, etc a previous gen
          */
+        int numToKeep = (int)(percentOldToKeep*numPerGeneration);
+
+        int[] numberOfNewGenToDistributeTo = new int[numToKeep];    //indexed based on sorted SnakeSorters
+
+        //proportional distribution
+        int totalSpotsLeft = numPerGeneration-numToKeep;
+        int proportionalDistribute = totalSpotsLeft/numToKeep;
+        for (int i = 0; i < numToKeep; i++) {
+            numberOfNewGenToDistributeTo[i] = (numToKeep - i)*proportionalDistribute;
+        }
+
+        //randomly distribute remained
+        int numSpotsLeft = totalSpotsLeft - (proportionalDistribute*numToKeep);
+        //TODO
+
+        int index = 0;
+        //Clone existing
+        for (int i = 0; i < numToKeep; i++) {
+            SnakeSorter temp = snekSort.getNth(i);
+
+            Brain b = Brain.brainReader( temp.genNum, temp.genID, speciesName);
+            GameEngineVariableTickRate engineToAdd = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false, index, b, speciesName);
+            enginesWaitingToRun.add(engineToAdd);
+
+            index++;
+        }
+
+        //Mutate based on array
+        for (int i = 0; i < numberOfNewGenToDistributeTo.length; i++) {
+
+            SnakeSorter temp = snekSort.getNth(i);
+
+            for (int numNewBrain = 0; numNewBrain < numberOfNewGenToDistributeTo[i]; numNewBrain++) {
+                Brain b = Brain.brainReader( temp.genNum, temp.genID, speciesName);
+                b.mutate(StaticBrainVariables.mutateMean, StaticBrainVariables.mutateStanDev, StaticBrainVariables.mutateBiasMean, StaticBrainVariables.mutateBiasStanDev);
+                GameEngineVariableTickRate engineToAdd = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false, index, b, speciesName);
+                enginesWaitingToRun.add(engineToAdd);
+
+                index++;
+            }
+
+        }
+
         return true;
     }
 
