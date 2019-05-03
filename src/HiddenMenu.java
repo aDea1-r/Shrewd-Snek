@@ -2,9 +2,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class HiddenMenu implements Drawable {
+public class HiddenMenu implements Drawable {
     private List<Button> btns;
-    private boolean vissible = false;
 
     HiddenMenu(int btnCount) {
         btns = new ArrayList<>(btnCount);
@@ -16,11 +15,19 @@ public abstract class HiddenMenu implements Drawable {
         btns.add(b);
     }
     public void drawMe(Graphics g) {
-        if(vissible)
-            for (Button b: btns)
-                b.drawMe(g);
+        for (Button b: btns)
+            b.drawMe(g);
     }
-    void toggleVisibility() {
-        vissible = !vissible;
+    void addNumberSelector(NumberSelector ns) {
+        ns.addToList(btns);
+    }
+    void tryPress(int x, int y) {
+        for (Button b :
+                btns) {
+            if (b.isPressed(x,y)) {
+                b.press();
+                return;
+            }
+        }
     }
 }

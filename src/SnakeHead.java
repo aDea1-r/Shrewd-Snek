@@ -111,8 +111,8 @@ public class SnakeHead extends Actor implements Drawable {
         if(grid.gridMat[x][y] == null) {
             grid.gridMat[x][y] = temp;
 //            return true;
-        } else if(grid.gridMat[x][y] instanceof AppleMaker) {
-            ((AppleMaker)(grid.gridMat[x][y])).eat(this);
+        } else if(grid.gridMat[x][y] instanceof AppleStuff) {
+            ((AppleStuff)(grid.gridMat[x][y])).eat(this);
             grid.gridMat[x][y] = temp;
 //            return true;
         }

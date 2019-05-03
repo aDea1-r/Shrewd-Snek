@@ -8,24 +8,15 @@ public abstract class Button implements Drawable {
     private Rectangle hitbox;
     private Color buttonColor;
     private Color textColor;
-    boolean visible;
 
     Button(int x, int y, int width, int height, String text) {
-        this(x,y,width,height,text,Color.yellow, Color.black, true);
-    }
-    Button(int x, int y, int width, int height, String text, Color b, Color t, boolean v) {
-        this.text = text;
-        hitbox = new Rectangle(x,y,width,height);
-        buttonColor = b;
-        textColor = t;
-        visible = v;
+        this(x,y,width,height,text,Color.yellow, Color.black);
     }
     Button(int x, int y, int width, int height, String text, Color b, Color t) {
         this.text = text;
         hitbox = new Rectangle(x,y,width,height);
         buttonColor = b;
         textColor = t;
-        visible = true;
     }
     public void drawMe(Graphics stupidG) {
         Graphics g = stupidG.create();
@@ -55,13 +46,12 @@ public abstract class Button implements Drawable {
         g.dispose();
     }
     boolean isPressed(int x, int y) {
-        return hitbox.contains(new Point(x,y)) && visible;
+        return hitbox.contains(new Point(x,y));
     }
     void setText(String s) {
         text = s;
     }
-    public void press() {
-        if(visible)
+    void press() {
             action();
     }
     public abstract void action();

@@ -10,10 +10,10 @@ public class GameEngineFixedTickRate extends GameEngine implements ActionListene
 
     private Map<Integer, Boolean> inputs;
 
-    GameEngineFixedTickRate(double startXPercent, double startYPercent, double screenSize, int height, int width, Map<Integer, Boolean> inputs, boolean upi, Brain brain) {
+    GameEngineFixedTickRate(double startXPercent, double startYPercent, double screenSize, int height, int width, Map<Integer, Boolean> inputs, boolean upi, Brain brain, String speciesName) {
         super(startXPercent,startYPercent,screenSize,height,width,upi, brain);
 
-        super.food = new AppleMaker(Color.BLACK,gameGrid,2, "Wut");
+        super.food = new AppleMaker(Color.BLACK,gameGrid,2, speciesName);
         drawables.add(food);
 
         time = new Timer(refreshRate, this); //sets delay to 15 millis and calls the actionPerformed of this class.
@@ -29,6 +29,15 @@ public class GameEngineFixedTickRate extends GameEngine implements ActionListene
         inputs.put((int)'S', false);
         inputs.put((int)'A', false);
 
+        time.start();
+    }
+    GameEngineFixedTickRate(double startXPercent, double startYPercent, double screenSize, int height, int width, Brain b, int genID, int brainID, String species) {
+        super(startXPercent, startYPercent, screenSize, height, width, false, b);
+
+        food = new AppleReader(Color.MAGENTA,gameGrid,999,genID,brainID,species);
+        drawables.add(food);
+
+        time = new Timer(refreshRate, this); //sets delay to 15 millis and calls the actionPerformed of this class.
         time.start();
     }
     void gameTick(){

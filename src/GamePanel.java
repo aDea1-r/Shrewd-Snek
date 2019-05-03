@@ -2,6 +2,8 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.io.File;
+import java.io.FileFilter;
 import java.util.*;
 import java.util.List;
 import javax.swing.SwingUtilities;
@@ -21,12 +23,14 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
     private Map<Integer, Boolean> inputs;
     private List<Button> buttonList;
+    private List<HiddenMenu> hiddenMenus;               // 0 - Replay Selection Menu
+    private HiddenMenu VisibleMenu;
 
     private GameEngine renderEngine;
     private NumberSelector tickRateSelector;
 
     private static int numPerGeneration = 1000;
-    Generation currentGeneration;
+    private Generation currentGeneration;
 
     private double percentOldToKeep;                //the percent of the previous generation we will keep and mutate
 
@@ -36,7 +40,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
                                         //2 = running single ai
                                         //3 = running generation
                                         //4 = processing generation
-    String playerName;
+    private String playerName;
 
     GamePanel()
     {
@@ -78,16 +82,55 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         };
         buttonList.add(runGeneration);
+        Button replay = new Button((width*17) /20, height*4/10, width/10, height/12, "Replay") {
+            @Override
+            public void action() {
+                int indexOfReplayMenu = 0;
+                if(VisibleMenu==hiddenMenus.get(indexOfReplayMenu))
+                    VisibleMenu = null;
+                else
+                    VisibleMenu = hiddenMenus.get(indexOfReplayMenu);
+            }
+        };
+        buttonList.add(replay);
+
+        hiddenMenus = new ArrayList<>();
+        addReplayMenu();
 
         percentOldToKeep = 1/30.0;
 
-        tickRateSelector = new NumberSelector((width*17) /20, height*4/10, width/40, height/4, 1,120);
+        tickRateSelector = new NumberSelector((width*17) /20, height*5/10, width/40, height/4, 1,120);
         tickRateSelector.addToList(buttonList);
 
         inputs.put((int)'P', false);
         inputs.put((int)'p', false);
 
         setPlayerName();
+    }
+    private void addReplayMenu() {
+        HiddenMenu temp = new HiddenMenu();
+
+        String speciesName = "Testing";
+
+        int numGenerations = getGenCount(speciesName);
+        int numPerGeneration = getNumPerGen(speciesName);
+        NumberSelector gen = new NumberSelector((width*14) /20, height*1/10, width/40, height/5, 0, numGenerations-1);
+        NumberSelector num = new NumberSelector((width*14) /20, height*4/10, width/40, height/5, 0, numPerGeneration-1);
+        temp.addNumberSelector(gen);
+        temp.addNumberSelector(num);
+
+        Button go = new Button((width*14) /20, height*7/10, width/20, height/40, "Go!") {
+            @Override
+            public void action() {
+                int genID = gen.getCurrentValue();
+                int brainID = num.getCurrentValue();
+                startReplay(genID, brainID);
+                VisibleMenu = null;
+            }
+        };
+        temp.addButton(go);
+
+        hiddenMenus.add(temp);
     }
 
     private void setPlayerName() {
@@ -118,6 +161,10 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
         for (Button b: buttonList) {                    //Draw buttons
             b.drawMe(g);
+        }
+
+        if(VisibleMenu!=null) {
+            VisibleMenu.drawMe(g);
         }
 
         //--------------------------------------------------------------------------------------------------------------
@@ -163,9 +210,13 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     {
         e = SwingUtilities.convertMouseEvent(e.getComponent(),e,this);
         for (Button b: buttonList) {
-            if(b.isPressed(e.getX(), e.getY()))
+            if(b.isPressed(e.getX(), e.getY())) {
                 b.press();
+                return;
+            }
         }
+        if(VisibleMenu!=null)
+            VisibleMenu.tryPress(e.getX(),e.getY());
     }
     public void mousePressed(MouseEvent e){}
     public void mouseReleased(MouseEvent e){}
@@ -202,11 +253,11 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private void startPlayer() {
         GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
         currentTask = 1;
-        renderEngine = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,true, null);
+        renderEngine = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,true, null, "Wut");
     }
     private void startAI() {
         GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
-        renderEngine = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,false, null);
+        renderEngine = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,false, null, "Wut");
         currentTask = 2;
     }
     private void startGeneration() {
@@ -224,6 +275,13 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         currentTask = 3;
         currentGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, "Testing", 0, numPerGeneration);
     }
+    private void startReplay(int genID, int brainID) {
+        GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
+
+        Brain b = Brain.brainReader(genID,brainID,"Testing");
+        renderEngine = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, b, genID, brainID, "Testing");
+        currentTask = 2;
+    }
     void killAnEngine(GameEngine gm){
         if(currentTask == 1 || currentTask == 2){
             currentTask = 0;
@@ -234,5 +292,29 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         else if(currentTask == 4){
             System.out.printf("Wait wtf happened, killAnEngine in gamePanel%n");
         }
+    }
+    private int getGenCount(String name) {
+        File dir = new File("Training Data/"+name);
+        if(!dir.exists())
+            return -1;
+        File[] subDirs = dir.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.isDirectory();
+            }
+        });
+        return subDirs.length;
+    }
+    private int getNumPerGen(String name) {
+        File dir = new File("Training Data/"+name+"/0");
+        if (!dir.exists())
+            return -1;
+        File[] subDirs = dir.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.isDirectory();
+            }
+        });
+        return subDirs.length;
     }
 }
