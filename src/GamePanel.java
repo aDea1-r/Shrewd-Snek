@@ -199,6 +199,9 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             System.out.printf("Best snake of generation #%d is%n  Snake with gen ID #%d%n", currentGeneration.generationNum, snekSort.getNth(0).genID);
 //            snekSort.getNth(0);
 //            System.out.printf("Sorted Array of gen #%d is now: %s%n", GameEngineVariableTickRate.genNum, Arrays.toString(snekSort.arr));
+
+            SnakeSorter best = snekSort.getNth(0);
+            startReplay(best.genNum, best.genID);
         }
 
         if(selectedNumberSelector!=null) {
