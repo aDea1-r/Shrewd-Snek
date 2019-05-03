@@ -33,6 +33,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private static int numPerGeneration = 1000;
     private Generation currentGeneration;
 
+    private Generation nextGeneration;
+
     private double percentOldToKeep;                //the percent of the previous generation we will keep and mutate
 
     private int currentTask;        //Track what it is currently doing
@@ -196,11 +198,9 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             int numToKeep = (int)(numPerGeneration*percentOldToKeep);
             SnakeSorters snekSort = currentGeneration.snekSort;
 
-            System.out.printf("Best snake of generation #%d is%n  Snake with gen ID #%d%n", currentGeneration.generationNum, snekSort.getNth(0).genID);
-//            snekSort.getNth(0);
-//            System.out.printf("Sorted Array of gen #%d is now: %s%n", GameEngineVariableTickRate.genNum, Arrays.toString(snekSort.arr));
-
             SnakeSorter best = snekSort.getNth(0);
+            snekSort.log();
+            System.out.printf("Best snake of generation #%d is%n  Snake with gen ID #%d%n", currentGeneration.generationNum, best.genID);
             startReplay(best.genNum, best.genID);
         }
 
@@ -298,17 +298,6 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         currentTask = 2;
     }
     private void startGeneration() {
-//        engines = new HashSet<GameEngine>(numPerGeneration);
-//        GameEngineVariableTickRate.genNum = 0;
-//        snekSort = new SnakeSorters(GameEngineVariableTickRate.genNum, numPerGeneration);
-//        currentTask = 3;
-//        for (int i = 0; i < numPerGeneration; i++) {
-//            GameEngineVariableTickRate temp = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false, i, null);
-//            engines.add(temp);
-//            temp.start();
-//        }
-//        Iterator itr = engines.iterator();
-//        renderEngine = (GameEngine) itr.next();
         currentTask = 3;
         currentGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, "Testing", 0, numPerGeneration);
     }
