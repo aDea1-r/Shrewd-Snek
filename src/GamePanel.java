@@ -298,6 +298,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         currentGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, 0, numPerGeneration);
     }
     private void startNextGeneration() {
+        //TODO: make method to call this, probably make a new button for this
+
         GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
         Generation nextGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, currentGeneration.generationNum+1, numPerGeneration);
         nextGeneration.evolve(currentGeneration.snekSort, percentOldToKeep);
