@@ -225,8 +225,11 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
                 return;
             }
         }
-        if(VisibleMenu!=null)
+        if(VisibleMenu!=null) {
             VisibleMenu.tryPress(e.getX(),e.getY());
+            return;
+        }
+        selectedNumberSelector = null;
     }
     public void mousePressed(MouseEvent e){}
     public void mouseReleased(MouseEvent e){}
@@ -252,7 +255,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             return;
         }
         if(e.getKeyChar()=='\n' && selectedNumberSelector!=null) {
-            selectedNumberSelector.setCurrentVal(Integer.parseInt(numTyping));
+            if (numTyping.length()>0)
+                selectedNumberSelector.setCurrentVal(Integer.parseInt(numTyping));
             numTyping = "";
             selectedNumberSelector = null;
             return;
