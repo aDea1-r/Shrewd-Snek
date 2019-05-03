@@ -34,9 +34,14 @@ public class NumberSelector implements Drawable{
         };
         middle = new Button(x,y+bHeight,width,bHeight,Integer.toString(currentVal)) {
             @Override
-            public void action() { }
+            public void action() {
+                selectThis();
+            }
         };
-
+    }
+    private void selectThis() {
+        Game.m.selectedNumberSelector = this;
+        GamePanel.numTyping = "";
     }
     void addToList(List<Button> list) {
         list.add(increase);
@@ -46,13 +51,16 @@ public class NumberSelector implements Drawable{
     void setCurrentVal(int x) {
         if(x>max) {
             currentVal = max;
+            middle.setText(Integer.toString(currentVal));
             return;
         }
         if(x<min) {
             currentVal = min;
+            middle.setText(Integer.toString(currentVal));
             return;
         }
         currentVal = x;
+        middle.setText(Integer.toString(currentVal));
     }
     public void drawMe(Graphics g) {
         increase.drawMe(g);

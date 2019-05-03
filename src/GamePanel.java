@@ -25,6 +25,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private List<Button> buttonList;
     private List<HiddenMenu> hiddenMenus;               // 0 - Replay Selection Menu
     private HiddenMenu VisibleMenu;
+    NumberSelector selectedNumberSelector;
 
     private GameEngine renderEngine;
     private NumberSelector tickRateSelector;
@@ -239,7 +240,17 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     }
 
     public void keyReleased(KeyEvent e)	{}
-    public void keyTyped(KeyEvent e){}
+
+    static String numTyping = "";
+    public void keyTyped(KeyEvent e){
+        System.out.printf("You typed. KeyChar is %s and keyCode is %d%n",e.getKeyChar(),e.getKeyCode());
+        if(e.getKeyChar()>='0' && e.getKeyChar()<='9')
+            numTyping+=Character.toString(e.getKeyChar());
+        if(e.getKeyChar()=='\n') {
+            selectedNumberSelector.setCurrentVal(Integer.parseInt(numTyping));
+            numTyping = "";
+        }
+    }
 
     private void frameRateTest(){
         int tempFrameRate = frames * (1000/GameEngineFixedTickRate.refreshRate);
