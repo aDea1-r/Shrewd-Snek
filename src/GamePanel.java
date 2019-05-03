@@ -193,6 +193,9 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         else if(currentTask == 4){                          //Generation Processing TODO
             titleCard = "Processing generation";
             int numToKeep = (int)(numPerGeneration*percentOldToKeep);
+            SnakeSorters snekSort = currentGeneration.snekSort;
+
+            System.out.printf("Best snake of generation #%d is%n  Snake with gen ID #%d%n", currentGeneration.generationNum, snekSort.getNth(0).genID);
 //            snekSort.getNth(0);
 //            System.out.printf("Sorted Array of gen #%d is now: %s%n", GameEngineVariableTickRate.genNum, Arrays.toString(snekSort.arr));
         }

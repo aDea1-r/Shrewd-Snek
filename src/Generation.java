@@ -13,10 +13,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Generation implements Drawable {
 
-    private String speciesName;
-    private int generationNum;
+    String speciesName;
+    int generationNum;
 
-    private static int numPerGeneration = 1000;
+    private int numPerGeneration = 1000;
 
     private Queue<GameEngine> enginesWaitingToRun;        //Set of engines which are in the queue to run
 //    private Set<GameEngine> enginesCurrentlyRunning;    //Set of engines currently being run
@@ -24,7 +24,7 @@ public class Generation implements Drawable {
 //    private int enginesCurrentlyRunningLength;
     private final AtomicInteger enginesCurrentlyRunningLength = new AtomicInteger();
 
-    private SnakeSorters snekSort;
+    SnakeSorters snekSort;
     private double percentOldToKeep;                //the percent of the previous generation we will keep and mutate
 
     static int maximumSimultaneousThreads = 50;
@@ -64,7 +64,7 @@ public class Generation implements Drawable {
         this.speciesName = speciesName;
         this.generationNum = generationNum;
 
-        Generation.numPerGeneration = numPerGeneration;
+        this.numPerGeneration = numPerGeneration;
 
         pixelWidthProgress = (gameGrid.size*(gameGrid.numSquares-2)) / (double)numPerGeneration;
 
@@ -109,12 +109,12 @@ public class Generation implements Drawable {
 
         //Act---------------------------------
 //        for (int i = 0; i < maxThreadsToStartAtOnce; i++) {
-        //TODO: for loop commented out because of weird glitch
-            if (!enginesWaitingToRun.isEmpty() && enginesCurrentlyRunningLength.get() < maximumSimultaneousThreads) {
-                //IMPORTANT: cannot call method here because it causes glitch noted above
+//        //TODO: for loop commented out because of weird glitch
+//            if (!enginesWaitingToRun.isEmpty() && enginesCurrentlyRunningLength.get() < maximumSimultaneousThreads) {
+//                //IMPORTANT: cannot call method here because it causes glitch noted above
+////                startEngine();
 //                startEngine();
-                startEngine();
-            }
+//            }
 //        }
 
         //TODO: While loop seems to have fixed it, needs more testing tho

@@ -3,7 +3,7 @@ import java.util.*;
 
 public class SnakeSorters implements Serializable {
     PriorityQueue<SnakeSorter> pq;
-    SnakeSorter[] arr;
+    private SnakeSorter[] arr;
     int genNum;
     int genSize;
     String speciesName;
@@ -15,6 +15,7 @@ public class SnakeSorters implements Serializable {
     }
     public void add(SnakeSorter s){
         arr[s.genID] = s;
+        System.out.printf("SnakeSorter ID #%d, added %n", s.genID);
     }
     private void initArr(){
 //        arr = new SnakeSorter[genSize];
