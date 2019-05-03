@@ -40,7 +40,11 @@ public class NumberSelector implements Drawable{
         };
     }
     private void selectThis() {
-        Game.m.selectedNumberSelector = this;
+        if(Game.m.selectedNumberSelector == this) {
+            Game.m.selectedNumberSelector = null;
+        } else {
+            Game.m.selectedNumberSelector = this;
+        }
         GamePanel.numTyping = "";
     }
     void addToList(List<Button> list) {
