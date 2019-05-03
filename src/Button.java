@@ -55,4 +55,7 @@ public abstract class Button implements Drawable {
             action();
     }
     public abstract void action();
+    Rectangle getHitbox() {
+        return hitbox;
+    }
 }

@@ -201,12 +201,15 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 //            System.out.printf("Sorted Array of gen #%d is now: %s%n", GameEngineVariableTickRate.genNum, Arrays.toString(snekSort.arr));
         }
 
+        if(selectedNumberSelector!=null) {
+            selectedNumberSelector.boxMiddle(g);
+        }
         int fontSize = width/50;
         g.setFont(new Font(Font.MONOSPACED, Font.BOLD, fontSize));
         g.setColor(Color.yellow);
         g.drawString(titleCard, width/4 - (titleCard.length()*fontSize/4), 0+fontSize);
-        //--------------------------------------------------------------------------------------------------------------
-
+        g.drawString(numTyping,getWidth()-60, getHeight()-20);
+        //-------------------------------------------------------------------------------------------------------------
         stupidG.drawImage(buff,0,0,null);   //Double buffer stuff
 
         frames++;
@@ -243,13 +246,27 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
     static String numTyping = "";
     public void keyTyped(KeyEvent e){
-        System.out.printf("You typed. KeyChar is %s and keyCode is %d%n",e.getKeyChar(),e.getKeyCode());
-        if(e.getKeyChar()>='0' && e.getKeyChar()<='9')
+//        System.out.printf("You typed. KeyChar is %s and keyCode is %d%n",e.getKeyChar(),e.getKeyCode());
+        if(e.getKeyChar()>='0' && e.getKeyChar()<='9') {
             numTyping+=Character.toString(e.getKeyChar());
-        if(e.getKeyChar()=='\n') {
+            return;
+        }
+        if(e.getKeyChar()=='\n' && selectedNumberSelector!=null) {
             selectedNumberSelector.setCurrentVal(Integer.parseInt(numTyping));
             numTyping = "";
+            selectedNumberSelector = null;
+            return;
         }
+        if(e.getKeyChar() == KeyEvent.VK_BACK_SPACE && numTyping.length()>0) {
+            numTyping = numTyping.substring(0,numTyping.length()-1);
+            return;
+        }
+        if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
+            numTyping = "";
+            selectedNumberSelector = null;
+            return;
+        }
+
     }
 
     private void frameRateTest(){

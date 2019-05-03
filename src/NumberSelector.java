@@ -67,6 +67,13 @@ public class NumberSelector implements Drawable{
         middle.drawMe(g);
         decrease.drawMe(g);
     }
+    void boxMiddle(Graphics g) {
+        Rectangle box = middle.getHitbox();
+        Color temp = g.getColor();
+        g.setColor(Color.RED);
+        g.drawRect((int)box.getX(),(int)box.getY(),(int)box.getWidth(),(int)box.getHeight());
+        g.setColor(temp);
+    }
     int getCurrentValue() {
         return currentVal;
     }
