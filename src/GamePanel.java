@@ -65,7 +65,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
         initializeButtons();
 
-        tickRateSelector = new NumberSelector((width*17) /20, height*5/10, width/40, height/4, 1,120);
+        tickRateSelector = new NumberSelector((width*17) /20, height*6/10, width/40, height/4, 1,120);
         tickRateSelector.addToList(buttonList);
 
         inputs.put((int)'P', false);
