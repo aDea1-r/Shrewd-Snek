@@ -30,9 +30,13 @@ public class ScoreTracker extends Actor {
     }
     public double getFitness() {
 //        System.out.printf("Scoretracker getFit called score = %d, idleTickCount = %d%n", score, idleTickCount);
-        double duration = idleTickCount;
-        double maxDuration = timeOutTime - timeOutTime*Double.MIN_VALUE;
-        return score + Math.min(duration,maxDuration)/timeOutTime;
+//        double duration = idleTickCount;
+//        double maxDuration = timeOutTime - Double.MIN_VALUE;
+//        double timePoints = 3*(Math.min(duration,maxDuration)/timeOutTime);
+        double duration = tickCount*6;                 //multiplier makes each time step worth more
+        double maxDuration = timeOutTime*22;             //cap of points gained by time
+        double timePoints = (Math.min(duration,maxDuration)/timeOutTime);
+        return score + timePoints;
     }
     int getScore() {
         return score;

@@ -173,13 +173,21 @@ public class Brain implements Drawable, Serializable {
 
     }
 
+    void mutate(){
+        double ran = Math.random();
+        if(ran < StaticBrainVariables.bigMutateChance)
+            this.mutate(StaticBrainVariables.mutateBigMean, StaticBrainVariables.mutateBigStanDev, StaticBrainVariables.mutateBigBiasMean, StaticBrainVariables.mutateBigBiasStanDev);
+        else
+            this.mutate(StaticBrainVariables.mutateMean, StaticBrainVariables.mutateStanDev, StaticBrainVariables.mutateBiasMean, StaticBrainVariables.mutateBiasStanDev);
+    }
+
     void mutate(double mean, double stanDeviation, double biasMean, double biasStanDeviation) {
-        //TODO
         //should mutate current brain object
         Random ran = new Random();
         for (int inputLayerNodeNum = 0; inputLayerNodeNum < inputWeights.length; inputLayerNodeNum++){      //Input weights
             for (int weightNum = 0; weightNum < inputWeights[inputLayerNodeNum].length; weightNum++) {
                 inputWeights[inputLayerNodeNum][weightNum] += (ran.nextGaussian()*stanDeviation)+mean;
+//                inputWeights[inputLayerNodeNum][weightNum] += (Math.random()-0.5)*stanDeviation;
             }
         }
 
@@ -187,18 +195,16 @@ public class Brain implements Drawable, Serializable {
             //Biases
             for (int hiddenBiasNumber = 0; hiddenBiasNumber < hiddenBias[hiddenLayerNum].length; hiddenBiasNumber++) {
                 hiddenBias[hiddenLayerNum][hiddenBiasNumber] += (ran.nextGaussian()*biasStanDeviation)+biasMean;
+//                hiddenBias[hiddenLayerNum][hiddenBiasNumber] += (Math.random()-0.5)*biasStanDeviation;
             }
 
             //Weights
             for (int hiddenLayerNodeNum = 0; hiddenLayerNodeNum < hiddenWeights[hiddenLayerNum].length; hiddenLayerNodeNum++) {
                 for (int weightNum = 0; weightNum < hiddenWeights[hiddenLayerNum][hiddenLayerNodeNum].length; weightNum++) {
                     hiddenWeights[hiddenLayerNum][hiddenLayerNodeNum][weightNum] += (ran.nextGaussian()*stanDeviation)+mean;
+//                    hiddenWeights[hiddenLayerNum][hiddenLayerNodeNum][weightNum] += (Math.random()-0.5)*stanDeviation;
                 }
             }
-        }
-
-        for (int hiddenLayerNum = 0; hiddenLayerNum < hiddenWeights.length; hiddenLayerNum++) {
-
         }
     }
 

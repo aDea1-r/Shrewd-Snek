@@ -118,6 +118,7 @@ public class Generation implements Drawable {
             int correctID = Math.abs( binarySearch(prefixSums, ran, 0, prefixSums.length-1) );
             System.out.printf("Ran is %d, correctID is %d%n", ran, correctID);
             numberOfNewGenToDistributeTo[correctID]++;
+            totalAllocated++;
         }
         System.out.printf("Mutate random distrib: numSpotsLeft = %d, propDistrib = %d%n" +
                 "prefixSums: [%s]%n" +
@@ -143,11 +144,16 @@ public class Generation implements Drawable {
 
             for (int numNewBrain = 0; numNewBrain < numberOfNewGenToDistributeTo[i]; numNewBrain++) {
                 Brain b = Brain.brainReader( temp.genNum, temp.genID, speciesName);
-                b.mutate(StaticBrainVariables.mutateMean, StaticBrainVariables.mutateStanDev, StaticBrainVariables.mutateBiasMean, StaticBrainVariables.mutateBiasStanDev);
+                b.mutate();
                 GameEngineVariableTickRate engineToAdd = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false, index, b, speciesName);
                 enginesWaitingToRun.add(engineToAdd);
 
                 index++;
+
+                if (index >= numPerGeneration) {
+                    i = numberOfNewGenToDistributeTo.length;
+                    break;
+                }
             }
         }
         System.out.printf("End of mutate: index = %d%n", index);

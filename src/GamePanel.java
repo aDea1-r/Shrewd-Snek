@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private Generation currentGeneration;
     private String currentSpeciesName = "Testing";
 
-    private double percentOldToKeep = 1/30.0;                //the percent of the previous generation we will keep and mutate
+    private double percentOldToKeep = 1/80.0;                //the percent of the previous generation we will keep and mutate
 
     private int currentTask;        //Track what it is currently doing
                                         //0 = idle
