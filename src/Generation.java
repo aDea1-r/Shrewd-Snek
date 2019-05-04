@@ -91,19 +91,38 @@ public class Generation implements Drawable {
         Method which is called by GamePanel, clones, mutates, etc a previous gen
          */
         int numToKeep = (int)(percentOldToKeep*numPerGeneration);
+        System.out.printf("Beginning of evolve: numToKeep = %d%n", numToKeep);
 
         int[] numberOfNewGenToDistributeTo = new int[numToKeep];    //indexed based on sorted SnakeSorters
 
         //proportional distribution
-        int totalSpotsLeft = numPerGeneration-numToKeep;
-        int proportionalDistribute = totalSpotsLeft/numToKeep;
+        int totalSpotsLeft = numPerGeneration-numToKeep;            //allocate space for clones
+        int proportionalDistribute = totalSpotsLeft/(numToKeep * numToKeep / 2);
+        int totalAllocated = 0;
         for (int i = 0; i < numToKeep; i++) {
             numberOfNewGenToDistributeTo[i] = (numToKeep - i)*proportionalDistribute;
+            totalAllocated += (numToKeep - i)*proportionalDistribute;
         }
+        System.out.printf("Mutate proportional distrib: totalSpotsLeft = %d, propDistrib = %d%n" +
+                "arr: [%s]%n", totalSpotsLeft, proportionalDistribute, Arrays.toString(numberOfNewGenToDistributeTo));
 
         //randomly distribute remained
-        int numSpotsLeft = totalSpotsLeft - (proportionalDistribute*numToKeep);
-        //TODO
+        int numSpotsLeft = totalSpotsLeft - totalAllocated;
+        int[] prefixSums = new int[numToKeep];                                  //Used to get the probability
+        prefixSums[0] = numberOfNewGenToDistributeTo[0];
+        for (int i = 1; i < numToKeep; i++) {                                   //Compute prefix sums
+            prefixSums[i] = prefixSums[i-1] + numberOfNewGenToDistributeTo[i];
+        }
+        for (int i = 0; i < numSpotsLeft; i++) {
+            int ran = (int)(Math.random()*prefixSums[prefixSums.length-1]);
+            int correctID = Math.abs( binarySearch(prefixSums, ran, 0, prefixSums.length-1) );
+            System.out.printf("Ran is %d, correctID is %d%n", ran, correctID);
+            numberOfNewGenToDistributeTo[correctID]++;
+        }
+        System.out.printf("Mutate random distrib: numSpotsLeft = %d, propDistrib = %d%n" +
+                "prefixSums: [%s]%n" +
+                "arr: [%s]%n", numSpotsLeft, proportionalDistribute, Arrays.toString(prefixSums), Arrays.toString(numberOfNewGenToDistributeTo));
+
 
         int index = 0;
         //Clone existing
@@ -130,8 +149,8 @@ public class Generation implements Drawable {
 
                 index++;
             }
-
         }
+        System.out.printf("End of mutate: index = %d%n", index);
 
         return true;
     }
@@ -158,18 +177,10 @@ public class Generation implements Drawable {
     public void drawMe(Graphics g) {
 
         //Act---------------------------------
-//        for (int i = 0; i < maxThreadsToStartAtOnce; i++) {
-//        //TODO: for loop commented out because of weird glitch
-//            if (!enginesWaitingToRun.isEmpty() && enginesCurrentlyRunningLength.get() < maximumSimultaneousThreads) {
-//                //IMPORTANT: cannot call method here because it causes glitch noted above
-////                startEngine();
-//                startEngine();
-//            }
-//        }
-
-        //TODO: While loop seems to have fixed it, needs more testing tho
-        while (!enginesWaitingToRun.isEmpty() && enginesCurrentlyRunningLength.get() < maximumSimultaneousThreads){
-            startEngine();
+        for (int i = 0; i < maxThreadsToStartAtOnce; i++) {
+            if (!enginesWaitingToRun.isEmpty() && enginesCurrentlyRunningLength.get() < maximumSimultaneousThreads) {
+                startEngine();
+            }
         }
         //------------------------------------
         System.out.printf("Species name: %s, enginesCurrentlyRunning = %d%n", speciesName, enginesCurrentlyRunningLength.get());
@@ -192,4 +203,55 @@ public class Generation implements Drawable {
         int width = gameGrid.size*(gameGrid.numSquares-2) - (int)(pixelWidthProgress*(enginesWaitingToRun.size() + enginesCurrentlyRunningLength.get()));
         g.fillRect(startX, startY, width, gameGrid.size*2 + 1);
     }
+
+    /*------------------------------------------------------------------------------------------------------------------
+    Will search the increasing array, arr for val
+    Will return the index of val, or the negative index of where val should be placed if it doesn't exist
+    Will return -1 if the index was not found and should be placed at the beginning, since -0 is still 0;
+     */
+    private int binarySearch(int[] arr, int val, int startIn, int endIn){
+        int mid;
+        int start = startIn;
+        int end = endIn;
+
+        if(val < arr[startIn]){
+            return 0;
+        }
+
+        while(start <= end){
+
+            mid = (start + end)/2;                          //Initialize mid
+
+            int dirTest = val - (arr[mid]);
+
+            if(dirTest < 0){                                //if val is smaller
+                end = mid - 1;                                  //change range, go to the left
+
+                if(mid - 1 >= startIn && val - (arr[mid-1]) > 0){     //if val is in between mid and mid - 1
+                    return -mid;
+                }
+                else if(mid == startIn){                            //if val is smaller, but we are at beginning of the array
+                   if(mid != 0)
+                        return -mid;
+                    else                                                //Edge case since -0 is 0
+                        return -1;
+                }
+            }
+            else if(dirTest > 0){                           //if val is bigger
+                start = mid + 1;                                //change range, go to the right
+
+                if(mid + 1 < endIn && val - (arr[mid+1]) < 0){        //if val is in between mid and mid + 1
+                    return -mid - 1;
+                }
+                else if(mid == endIn - 1){                          //if val is bigger, but we are at end of the array
+                    return -mid - 1;
+                }
+            }
+            else if(dirTest == 0){
+                return mid;
+            }
+        }
+        return Integer.MIN_VALUE;
+    }
+    //------------------------------------------------------------------------------------------------------------------
 }

@@ -29,7 +29,7 @@ class AppleMaker extends AppleStuff {
         try {
             grid.gridMat[x][y] = null;
         } catch (IndexOutOfBoundsException e) {
-            System.out.println("Apple successfully initialized! ");
+//            System.out.println("Apple successfully initialized! ");
         }
 
         do {

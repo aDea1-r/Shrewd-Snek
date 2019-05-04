@@ -242,7 +242,7 @@ public class Brain implements Drawable, Serializable {
             ObjectOutputStream s = new ObjectOutputStream(f);
             s.writeObject(this);
             s.close();
-            System.out.println("logged "+brainID);
+//            System.out.println("logged "+brainID);
         } catch (IOException e) {
             System.out.println("bad error");
         }

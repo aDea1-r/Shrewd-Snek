@@ -19,12 +19,13 @@ public class SnakeSorters implements Serializable {
     }
     public void add(SnakeSorter s){
         arr[s.genID] = s;
-        System.out.printf("SnakeSorter ID #%d, added %n", s.genID);
+//        System.out.printf("SnakeSorter ID #%d, added %n", s.genID);
     }
     private void initArr(){
 //        arr = new SnakeSorter[genSize];
         pq = new PriorityQueue<SnakeSorter>();
         for (int i = 0; i < genSize; i++) {
+//            System.out.printf("pq: %s%n", pq.toString());
             pq.add(arr[i]);
         }
         for (int i = 0; i < genSize; i++) {

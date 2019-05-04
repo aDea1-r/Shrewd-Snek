@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private Generation currentGeneration;
     private String currentSpeciesName = "Testing";
 
-    private double percentOldToKeep;                //the percent of the previous generation we will keep and mutate
+    private double percentOldToKeep = 1/30.0;                //the percent of the previous generation we will keep and mutate
 
     private int currentTask;        //Track what it is currently doing
                                         //0 = idle
@@ -44,11 +44,13 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
                                         //4 = processing generation
     private String playerName;
 
+    private final int fractionOfScreenToTake = 2;
+
     GamePanel()
     {
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        width = (int) screen.getWidth()/1;
-        height = (int) (screen.getHeight()-100)/1;
+        width = (int) screen.getWidth()/fractionOfScreenToTake;
+        height = (int) (screen.getHeight()-100)/fractionOfScreenToTake;
 
         setSize(width, height);
         setVisible(true); //it's like calling the repaint method.
@@ -62,8 +64,6 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         inputs = new LinkedHashMap<Integer, Boolean>();
 
         initializeButtons();
-
-        percentOldToKeep = 1/30.0;
 
         tickRateSelector = new NumberSelector((width*17) /20, height*5/10, width/40, height/4, 1,120);
         tickRateSelector.addToList(buttonList);
@@ -108,6 +108,16 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         };
         buttonList.add(replay);
+        Button runNextGeneration = new Button((width*17) /20, height*5/10, width/10, height/12, "Next Gen") {
+            @Override
+            public void action() {
+                if(currentGeneration != null)
+                    startNextGeneration();
+                else
+                    System.out.printf("No Next Generation To Run%n");
+            }
+        };
+        buttonList.add(runNextGeneration);
 
         hiddenMenus = new ArrayList<>();
         addReplayMenu();
