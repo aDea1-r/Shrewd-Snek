@@ -20,10 +20,10 @@ public class StaticBrainVariables {
     static double mutateBiasMean = 0;
     static double mutateBiasStanDev = 0.05;
 
-    //For mutating an existing brain
-    static double bigMutateChance = 0.05;
-    static double mutateBigMean = 0;
-    static double mutateBigStanDev = 1.5;
-    static double mutateBigBiasMean = 0;
-    static double mutateBigBiasStanDev = 1.5;
+    //Advanced mutation algorithms
+    static double chanceToMutate = 0.1;    //% chance to mutate each individual weight/bias
+    static int numberOfMutations = 10;       //number of mutations run
+
+    //percent modification: increase/decrease weights/biases by a certain percent
+    static double percentMutatePlusMinus = 0.8;     //Ex: if 0.5, weight/bias multiplied by 0.5 - 1.5
 }

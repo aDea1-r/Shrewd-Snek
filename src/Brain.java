@@ -53,7 +53,7 @@ public class Brain implements Drawable, Serializable {
 
         if(!(initialMutateMean == 0 && initialMutateStanDev == 0 && initialBiasMutateMean == 0 && initialBiasMutateStanDev == 0)) {
             //if statement to prevent mutation when cloning brains
-            this.mutate(initialMutateMean, initialMutateStanDev, initialBiasMutateMean, initialBiasMutateStanDev);
+            this.blanketMutate(initialMutateMean, initialMutateStanDev, initialBiasMutateMean, initialBiasMutateStanDev);
         }
     }
     Brain() {
@@ -95,7 +95,7 @@ public class Brain implements Drawable, Serializable {
         }
         
         transferBetweenLayers(inputNodes, inputWeights, sizeHidden, hiddenNodes[0], null);      //Transfer info from inputs to 1st hidden layer
-        removeNegatives(hiddenNodes[0]);
+//        removeNegatives(hiddenNodes[0]);
 
         
         for (int i = 0; i < hiddenNodes.length - 1; i++) {  //Loop through each hidden layers----------------
@@ -105,13 +105,13 @@ public class Brain implements Drawable, Serializable {
             double[][] layerWeights = hiddenWeights[i];
 
             transferBetweenLayers(layerNodes, layerWeights, sizeHidden, hiddenNodes[i + 1], hiddenBias[i + 1]);
-            removeNegatives(hiddenNodes[i + 1]);
+//            removeNegatives(hiddenNodes[i + 1]);
 
         }
         
         
         transferBetweenLayers(hiddenNodes[numHidden - 1], hiddenWeights[numHidden - 1], sizeOutput, outputNodes, null);    //Transfer info in last hidden layer to output layer
-        removeNegatives(outputNodes);
+//        removeNegatives(outputNodes);
         
         
 //        int maxIndex = 0;                                   //Find the max of the output nodes
@@ -173,41 +173,6 @@ public class Brain implements Drawable, Serializable {
 
     }
 
-    void mutate(){
-        double ran = Math.random();
-        if(ran < StaticBrainVariables.bigMutateChance)
-            this.mutate(StaticBrainVariables.mutateBigMean, StaticBrainVariables.mutateBigStanDev, StaticBrainVariables.mutateBigBiasMean, StaticBrainVariables.mutateBigBiasStanDev);
-        else
-            this.mutate(StaticBrainVariables.mutateMean, StaticBrainVariables.mutateStanDev, StaticBrainVariables.mutateBiasMean, StaticBrainVariables.mutateBiasStanDev);
-    }
-
-    void mutate(double mean, double stanDeviation, double biasMean, double biasStanDeviation) {
-        //should mutate current brain object
-        Random ran = new Random();
-        for (int inputLayerNodeNum = 0; inputLayerNodeNum < inputWeights.length; inputLayerNodeNum++){      //Input weights
-            for (int weightNum = 0; weightNum < inputWeights[inputLayerNodeNum].length; weightNum++) {
-                inputWeights[inputLayerNodeNum][weightNum] += (ran.nextGaussian()*stanDeviation)+mean;
-//                inputWeights[inputLayerNodeNum][weightNum] += (Math.random()-0.5)*stanDeviation;
-            }
-        }
-
-        for (int hiddenLayerNum = 0; hiddenLayerNum < hiddenBias.length; hiddenLayerNum++) {                //Hidden Layer
-            //Biases
-            for (int hiddenBiasNumber = 0; hiddenBiasNumber < hiddenBias[hiddenLayerNum].length; hiddenBiasNumber++) {
-                hiddenBias[hiddenLayerNum][hiddenBiasNumber] += (ran.nextGaussian()*biasStanDeviation)+biasMean;
-//                hiddenBias[hiddenLayerNum][hiddenBiasNumber] += (Math.random()-0.5)*biasStanDeviation;
-            }
-
-            //Weights
-            for (int hiddenLayerNodeNum = 0; hiddenLayerNodeNum < hiddenWeights[hiddenLayerNum].length; hiddenLayerNodeNum++) {
-                for (int weightNum = 0; weightNum < hiddenWeights[hiddenLayerNum][hiddenLayerNodeNum].length; weightNum++) {
-                    hiddenWeights[hiddenLayerNum][hiddenLayerNodeNum][weightNum] += (ran.nextGaussian()*stanDeviation)+mean;
-//                    hiddenWeights[hiddenLayerNum][hiddenLayerNodeNum][weightNum] += (Math.random()-0.5)*stanDeviation;
-                }
-            }
-        }
-    }
-
     @Override
     public void drawMe(Graphics g) {
         System.out.println("Dummy Brain draw");
@@ -253,4 +218,202 @@ public class Brain implements Drawable, Serializable {
             System.out.println("bad error");
         }
     }
+
+    void blanketMutate(double mean, double stanDeviation, double biasMean, double biasStanDeviation) {
+        //should mutate current brain object
+        Random ran = new Random();
+        for (int inputLayerNodeNum = 0; inputLayerNodeNum < inputWeights.length; inputLayerNodeNum++){      //Input weights
+            for (int weightNum = 0; weightNum < inputWeights[inputLayerNodeNum].length; weightNum++) {
+                inputWeights[inputLayerNodeNum][weightNum] += (ran.nextGaussian()*stanDeviation)+mean;
+//                inputWeights[inputLayerNodeNum][weightNum] += (Math.random()-0.5)*stanDeviation;
+            }
+        }
+
+        for (int hiddenLayerNum = 0; hiddenLayerNum < hiddenBias.length; hiddenLayerNum++) {                //Hidden Layer
+            //Biases
+            for (int hiddenBiasNumber = 0; hiddenBiasNumber < hiddenBias[hiddenLayerNum].length; hiddenBiasNumber++) {
+                hiddenBias[hiddenLayerNum][hiddenBiasNumber] += (ran.nextGaussian()*biasStanDeviation)+biasMean;
+//                hiddenBias[hiddenLayerNum][hiddenBiasNumber] += (Math.random()-0.5)*biasStanDeviation;
+            }
+
+            //Weights
+            for (int hiddenLayerNodeNum = 0; hiddenLayerNodeNum < hiddenWeights[hiddenLayerNum].length; hiddenLayerNodeNum++) {
+                for (int weightNum = 0; weightNum < hiddenWeights[hiddenLayerNum][hiddenLayerNodeNum].length; weightNum++) {
+                    hiddenWeights[hiddenLayerNum][hiddenLayerNodeNum][weightNum] += (ran.nextGaussian()*stanDeviation)+mean;
+//                    hiddenWeights[hiddenLayerNum][hiddenLayerNodeNum][weightNum] += (Math.random()-0.5)*stanDeviation;
+                }
+            }
+        }
+    }
+
+    void mutate(){
+        //"Main" mutate method, called by other classes
+        mutateByNumber(StaticBrainVariables.numberOfMutations);
+    }
+
+    private void mutateByNumber(int numToMutate){
+        //This mutate method mutates a set number of random weights/biases
+        int threshold1 = sizeInput*sizeHidden;                                   //weights from input to first hidden layers
+        int threshold2 = sizeHidden*numHidden + threshold1;                      //biases of hidden layers
+        int threshold3 = sizeHidden*sizeHidden*(numHidden-1) + threshold2;       //weights between hidden layers
+        int threshold4 = sizeHidden*sizeOutput + threshold3;                     //weights from last hidden to output layers
+
+        for (int i = 0; i < numToMutate; i++) {
+            int ran = (int)(Math.random()*threshold4);
+
+            if(ran < threshold1){
+                //weights from input to first hidden layers
+                ran -= 0;
+                int inputLayerNodeNum = ran / sizeHidden;
+                int weightNum = ran % sizeHidden;
+
+                inputWeights[inputLayerNodeNum][weightNum] = modifyWeight(inputWeights[inputLayerNodeNum][weightNum]);
+            }
+            else if(ran < threshold2){
+                //biases of hidden layers
+                ran -= threshold1;
+                int hiddenLayerNum = ran / sizeHidden;
+                int hiddenBiasNumber = ran % sizeHidden;
+
+                hiddenBias[hiddenLayerNum][hiddenBiasNumber] = modifyBias(hiddenBias[hiddenLayerNum][hiddenBiasNumber]);
+            }
+            else if(ran < threshold3){
+                //weights between hidden layers
+                ran -= threshold2;
+                int hiddenLayerNum = ran / (sizeHidden*sizeHidden);
+                int temp = ran % (sizeHidden*sizeHidden);
+                int hiddenLayerNodeNum = temp / sizeHidden;
+                int weightNum = temp % sizeHidden;
+
+                hiddenWeights[hiddenLayerNum][hiddenLayerNodeNum][weightNum] = modifyWeight(hiddenWeights[hiddenLayerNum][hiddenLayerNodeNum][weightNum]);
+            }
+            else if(ran < threshold4){
+                ran -= threshold3;
+                int hiddenLayerNodeNum = ran / sizeOutput;
+                int weightNum = ran % sizeOutput;
+
+                hiddenWeights[numHidden-1][hiddenLayerNodeNum][weightNum] = modifyWeight(hiddenWeights[numHidden-1][hiddenLayerNodeNum][weightNum]);
+            }
+            else{
+                System.out.printf("In Brain mutateByNumber(%d), something went wrong: ran = %d%n", numToMutate, ran);
+            }
+        }
+    }
+
+    private void mutateByChance(){
+        //This mutate methods rolls the dice on every weight/bias to see if it should mutate it
+        for (int inputLayerNodeNum = 0; inputLayerNodeNum < inputWeights.length; inputLayerNodeNum++){      //Input weights
+            for (int weightNum = 0; weightNum < inputWeights[inputLayerNodeNum].length; weightNum++) {
+                if(Math.random() < StaticBrainVariables.chanceToMutate) {
+                    inputWeights[inputLayerNodeNum][weightNum] = modifyWeight(inputWeights[inputLayerNodeNum][weightNum]);
+//                inputWeights[inputLayerNodeNum][weightNum] += (Math.random()-0.5)*stanDeviation;
+                }
+            }
+        }
+
+        for (int hiddenLayerNum = 0; hiddenLayerNum < hiddenBias.length; hiddenLayerNum++) {                //Hidden Layer
+            //Biases
+            for (int hiddenBiasNumber = 0; hiddenBiasNumber < hiddenBias[hiddenLayerNum].length; hiddenBiasNumber++) {
+                if(Math.random() < StaticBrainVariables.chanceToMutate) {
+                    hiddenBias[hiddenLayerNum][hiddenBiasNumber] = modifyBias(hiddenBias[hiddenLayerNum][hiddenBiasNumber]);
+//                hiddenBias[hiddenLayerNum][hiddenBiasNumber] += (Math.random()-0.5)*biasStanDeviation;
+                }
+            }
+
+            //Weights
+            for (int hiddenLayerNodeNum = 0; hiddenLayerNodeNum < hiddenWeights[hiddenLayerNum].length; hiddenLayerNodeNum++) {
+                for (int weightNum = 0; weightNum < hiddenWeights[hiddenLayerNum][hiddenLayerNodeNum].length; weightNum++)
+                {
+                    if(Math.random() < StaticBrainVariables.chanceToMutate) {
+                        hiddenWeights[hiddenLayerNum][hiddenLayerNodeNum][weightNum] = modifyWeight(hiddenWeights[hiddenLayerNum][hiddenLayerNodeNum][weightNum]);
+//                    hiddenWeights[hiddenLayerNum][hiddenLayerNodeNum][weightNum] += (Math.random()-0.5)*stanDeviation;
+                    }
+                }
+            }
+        }
+    }
+
+    private double modifyWeight(double initialVal){
+        double val = initialVal;
+        val = percentMutate(initialVal, StaticBrainVariables.percentMutatePlusMinus);
+        return val;
+    }
+
+    private double modifyBias(double initialVal){
+        double val = initialVal;
+        val = percentMutate(initialVal, StaticBrainVariables.percentMutatePlusMinus);
+        return val;
+    }
+
+    private double percentMutate(double initialVal, double maxPercentChange){
+        //increases/decreases a given value by a percentage
+        double temp = Math.random()*(maxPercentChange*2) - maxPercentChange;
+        System.out.printf("Percent Mutate with temp: %f%n", temp);
+        return initialVal * (1 + temp);
+    }
+
+//    public boolean testMe(){
+//        int threshold1 = sizeInput*sizeHidden;                                   //weights from input to first hidden layers
+//        int threshold2 = sizeHidden*numHidden + threshold1;                      //biases of hidden layers
+//        int threshold3 = sizeHidden*sizeHidden*(numHidden-1) + threshold2;       //weights between hidden layers
+//        int threshold4 = sizeHidden*sizeOutput + threshold3;                     //weights from last hidden to output layers
+//        int totalNumOfPossibleWeightsAndBiases = threshold4;
+//
+//        System.out.printf("Thresholds: 1 = %d, 2 = %d, 3 = %d, 4 = %d%n", threshold1, threshold2, threshold3, threshold4);
+//
+//        for (int i = 0; i < totalNumOfPossibleWeightsAndBiases; i++) {
+//
+//            int ran = i;
+//            System.out.printf("Ran = %d%n", ran);
+//
+//            if(ran < threshold1){
+//                //weights from input to first hidden layers
+//                int inputLayerNodeNum = ran / sizeHidden;
+//                int weightNum = ran % sizeHidden;
+//
+//                if(inputWeights[inputLayerNodeNum][weightNum] != 999.999)
+//                    inputWeights[inputLayerNodeNum][weightNum] = 999.999;
+//                else
+//                    System.out.printf(" With ran = %d, duplicate check%n", ran);
+//            }
+//            else if(ran < threshold2){
+//                //biases of hidden layers
+//                ran -= threshold1;
+//                int hiddenLayerNum = ran / sizeHidden;
+//                int hiddenBiasNumber = ran % sizeHidden;
+//
+//                if(hiddenBias[hiddenLayerNum][hiddenBiasNumber] != 999.999)
+//                    hiddenBias[hiddenLayerNum][hiddenBiasNumber] = 999.999;
+//                else
+//                    System.out.printf(" With ran = %d, duplicate check%n", ran);
+//            }
+//            else if(ran < threshold3){
+//                //weights between hidden layers
+//                ran -= threshold2;
+//                int hiddenLayerNum = ran / (sizeHidden*sizeHidden);
+//                int temp = ran % (sizeHidden*sizeHidden);
+//                int hiddenLayerNodeNum = temp / sizeHidden;
+//                int weightNum = temp % sizeHidden;
+//
+//                if(hiddenWeights[hiddenLayerNum][hiddenLayerNodeNum][weightNum] != 999.999)
+//                    hiddenWeights[hiddenLayerNum][hiddenLayerNodeNum][weightNum] = 999.999;
+//                else
+//                    System.out.printf(" With ran = %d, duplicate check%n", ran);
+//            }
+//            else if(ran < threshold4){
+//                ran -= threshold3;
+//                int hiddenLayerNodeNum = ran / sizeOutput;
+//                int weightNum = ran % sizeOutput;
+//
+//                if(hiddenWeights[numHidden-1][hiddenLayerNodeNum][weightNum] != 999.999)
+//                    hiddenWeights[numHidden-1][hiddenLayerNodeNum][weightNum] = 999.999;
+//                else
+//                    System.out.printf(" With ran = %d, duplicate check%n", ran);
+//            }
+//            else{
+//                System.out.printf("In Brain mutateByNumber(%d), something went wrong: ran = %d%n", -999, ran);
+//            }
+//        }
+//        return true;
+//    }
 }
