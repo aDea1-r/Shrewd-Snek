@@ -16,7 +16,7 @@ public class Generation implements Drawable {
     String speciesName;
     int generationNum;
 
-    private int numPerGeneration = 1000;
+    private int numPerGeneration;
 
     private Queue<GameEngine> enginesWaitingToRun;        //Set of engines which are in the queue to run
 //    private Set<GameEngine> enginesCurrentlyRunning;    //Set of engines currently being run
@@ -27,8 +27,8 @@ public class Generation implements Drawable {
     SnakeSorters snekSort;
     private double percentOldToKeep;                //the percent of the previous generation we will keep and mutate
 
-    static int maximumSimultaneousThreads = 50;
-    static int maxThreadsToStartAtOnce = 5;
+    static int maximumSimultaneousThreads = 200;
+    static int maxThreadsToStartAtOnce = 20;
         //TODO: glitch where one or two gameEngines never finish
         //TODO: seems to occur more when this variable is bigger, possibly due to simultaneous running?
         //TODO: Glitch seems fixed? NVM its still broken

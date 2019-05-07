@@ -30,9 +30,9 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private GameEngine renderEngine;
     private NumberSelector tickRateSelector;
 
-    private static int numPerGeneration = 1000;
+    private static int numPerGeneration = 50000;
     private Generation currentGeneration;
-    private String currentSpeciesName = "Testing";
+    private String currentSpeciesName = "Actual Actual Testing";
 
     private double percentOldToKeep = 1/80.0;                //the percent of the previous generation we will keep and mutate
 
@@ -43,6 +43,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
                                         //3 = running generation
                                         //4 = processing generation
     private String playerName;
+    private boolean spamTraining = false;
 
     private final int fractionOfScreenToTake = 2;
 
@@ -65,7 +66,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
         initializeButtons();
 
-        tickRateSelector = new NumberSelector((width*17) /20, height*6/10, width/40, height/4, 1,120);
+        tickRateSelector = new NumberSelector((width*17) /20, height*13/20, width/30, height/4, 1,120);
         tickRateSelector.addToList(buttonList);
 
         inputs.put((int)'P', false);
@@ -76,28 +77,28 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private void initializeButtons() {
         buttonList = new ArrayList<Button>();
 
-        Button player = new Button((width*17) /20, height/10, width/10, height/12, "Player") {
+        Button player = new Button((width*17) /20, height/20, width/8, height/12, "Player") {
             @Override
             public void action() {
                 startPlayer();
             }
         };
         buttonList.add(player);
-        Button AI = new Button((width*17) /20, height*2/10, width/10, height/12, "Computer") {
+        Button AI = new Button((width*17) /20, height*3/20, width/8, height/12, "Computer") {
             @Override
             public void action() {
                 startAI();
             }
         };
         buttonList.add(AI);
-        Button runGeneration = new Button((width*17) /20, height*3/10, width/10, height/12, "Generation") {
+        Button runGeneration = new Button((width*17) /20, height*5/20, width/8, height/12, "Generation") {
             @Override
             public void action() {
                 startGeneration();
             }
         };
         buttonList.add(runGeneration);
-        Button replay = new Button((width*17) /20, height*4/10, width/10, height/12, "Replay") {
+        Button replay = new Button((width*17) /20, height*7/20, width/8, height/12, "Replay") {
             @Override
             public void action() {
                 int indexOfReplayMenu = 0;
@@ -108,7 +109,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         };
         buttonList.add(replay);
-        Button runNextGeneration = new Button((width*17) /20, height*5/10, width/10, height/12, "Next Gen") {
+        Button runNextGeneration = new Button((width*17) /20, height*9/20, width/8, height/12, "Next Gen") {
             @Override
             public void action() {
                 if(currentGeneration != null)
@@ -118,6 +119,19 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         };
         buttonList.add(runNextGeneration);
+        Button spamGenerations = new Button((width*17) /20, height*11/20, width/8, height/12, "Rapid Train: Off") {
+            @Override
+            public void action() {
+                if (spamTraining) {
+                    spamTraining = false;
+                    setText("Rapid Train: Off");
+                } else {
+                    spamTraining = true;
+                    setText("Rapid Train: On");
+                }
+            }
+        };
+        buttonList.add(spamGenerations);
 
         hiddenMenus = new ArrayList<>();
         addReplayMenu();
@@ -222,6 +236,11 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         stupidG.drawImage(buff,0,0,null);   //Double buffer stuff
 
         frames++;
+
+        if(spamTraining && currentTask == 0) {
+            startNextGeneration();
+        }
+
         repaint();
     }
 
