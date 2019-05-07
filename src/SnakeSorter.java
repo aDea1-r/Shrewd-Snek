@@ -15,7 +15,7 @@ public class SnakeSorter implements Comparable {
     public SnakeSorter(GameEngineVariableTickRate in){
         genNum = in.genNum;
         genID = in.genID;
-        score = in.scoreTracker.getFitness();
+        score = in.getFitness();
     }
 
     @Override
