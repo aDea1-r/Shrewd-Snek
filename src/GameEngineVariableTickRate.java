@@ -54,7 +54,7 @@ public class GameEngineVariableTickRate extends GameEngine implements Runnable {
             Game.m.killAnEngine(this);
         }
         else{
-            System.out.printf("Run %d finished, proceeding%n", numTimesRun);
+//            System.out.printf("Run %d finished, proceeding%n", numTimesRun);
             fitnessScores[numTimesRun] = scoreTracker.getFitness();
             reset();
             numTimesRun++;
@@ -62,7 +62,9 @@ public class GameEngineVariableTickRate extends GameEngine implements Runnable {
     }
     double getFitness(){
         double sum = 0;
+//        System.out.printf("getFitness of engine ID #%d called%n", genID);
         for (int i = 0; i < fitnessScores.length; i++) {
+//            System.out.printf(" %d-ith fitness was %f%n", i, fitnessScores[i]);
             sum += fitnessScores[i];
         }
         return sum/fitnessScores.length;
