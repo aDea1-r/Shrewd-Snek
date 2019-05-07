@@ -7,33 +7,41 @@ public class SnakeSorters implements Serializable {
     int genNum;
     int genSize;
     String speciesName;
+    boolean sorted;
     public SnakeSorters(int genNum, int genSize, String speciesName){
         this.genNum = genNum;
         this.genSize = genSize;
         arr = new SnakeSorter[genSize];
+        this.speciesName = speciesName;
+
+        sorted = false;
 //        pq = new PriorityQueue<SnakeSorter>();
     }
     public void add(SnakeSorter s){
         arr[s.genID] = s;
-        System.out.printf("SnakeSorter ID #%d, added %n", s.genID);
+//        System.out.printf("SnakeSorter ID #%d, added %n", s.genID);
     }
     private void initArr(){
 //        arr = new SnakeSorter[genSize];
         pq = new PriorityQueue<SnakeSorter>();
         for (int i = 0; i < genSize; i++) {
+//            System.out.printf("pq: %s%n", pq.toString());
             pq.add(arr[i]);
         }
         for (int i = 0; i < genSize; i++) {
             arr[i] = pq.poll();
         }
         pq = null;
+        sorted = true;
     }
     public SnakeSorter getNth(int n){
-        if(pq == null)
+        if(!sorted)
             initArr();
         return arr[n];
     }
     public void log() {
+        if(!sorted)
+            initArr();
         pq = null;
         String path = String.format("Training Data/%s/%d/", speciesName, genNum);
         File file = new File(path);

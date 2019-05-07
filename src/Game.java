@@ -14,5 +14,7 @@ public class Game{
         j.setVisible(true); //allows the frame to be shown.
 
         j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //makes the dialog box exit when you click the "x" button.
+//        Brain b = new Brain();
+//        b.testMe();
     }
 }

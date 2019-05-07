@@ -32,8 +32,9 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
     private static int numPerGeneration = 1000;
     private Generation currentGeneration;
+    private String currentSpeciesName = "Testing";
 
-    private double percentOldToKeep;                //the percent of the previous generation we will keep and mutate
+    private double percentOldToKeep = 1/80.0;                //the percent of the previous generation we will keep and mutate
 
     private int currentTask;        //Track what it is currently doing
                                         //0 = idle
@@ -43,11 +44,13 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
                                         //4 = processing generation
     private String playerName;
 
+    private final int fractionOfScreenToTake = 2;
+
     GamePanel()
     {
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        width = (int) screen.getWidth()/1;
-        height = (int) (screen.getHeight()-100)/1;
+        width = (int) screen.getWidth()/fractionOfScreenToTake;
+        height = (int) (screen.getHeight()-100)/fractionOfScreenToTake;
 
         setSize(width, height);
         setVisible(true); //it's like calling the repaint method.
@@ -62,9 +65,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
         initializeButtons();
 
-        percentOldToKeep = 1/30.0;
-
-        tickRateSelector = new NumberSelector((width*17) /20, height*5/10, width/40, height/4, 1,120);
+        tickRateSelector = new NumberSelector((width*17) /20, height*6/10, width/40, height/4, 1,120);
         tickRateSelector.addToList(buttonList);
 
         inputs.put((int)'P', false);
@@ -107,6 +108,16 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         };
         buttonList.add(replay);
+        Button runNextGeneration = new Button((width*17) /20, height*5/10, width/10, height/12, "Next Gen") {
+            @Override
+            public void action() {
+                if(currentGeneration != null)
+                    startNextGeneration();
+                else
+                    System.out.printf("No Next Generation To Run%n");
+            }
+        };
+        buttonList.add(runNextGeneration);
 
         hiddenMenus = new ArrayList<>();
         addReplayMenu();
@@ -114,10 +125,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private void addReplayMenu() {
         HiddenMenu temp = new HiddenMenu();
 
-        String speciesName = "Testing";
-
-        int numGenerations = getGenCount(speciesName);
-        int numPerGeneration = getNumPerGen(speciesName);
+        int numGenerations = getGenCount(currentSpeciesName);
+        int numPerGeneration = getNumPerGen(currentSpeciesName);
         NumberSelector gen = new NumberSelector((width*14) /20, height*1/10, width/40, height/5, 0, numGenerations-1);
         NumberSelector num = new NumberSelector((width*14) /20, height*4/10, width/40, height/5, 0, numPerGeneration-1);
         temp.addNumberSelector(gen);
@@ -191,14 +200,14 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
                 currentTask = 4;
             }
         }
-        else if(currentTask == 4){                          //Generation Processing TODO
+        else if(currentTask == 4){
             titleCard = "Processing generation";
-            int numToKeep = (int)(numPerGeneration*percentOldToKeep);
             SnakeSorters snekSort = currentGeneration.snekSort;
 
-            System.out.printf("Best snake of generation #%d is%n  Snake with gen ID #%d%n", currentGeneration.generationNum, snekSort.getNth(0).genID);
-//            snekSort.getNth(0);
-//            System.out.printf("Sorted Array of gen #%d is now: %s%n", GameEngineVariableTickRate.genNum, Arrays.toString(snekSort.arr));
+            SnakeSorter best = snekSort.getNth(0);
+            snekSort.log();
+            System.out.printf("Best snake of generation #%d is%n  Snake with gen ID #%d%n", currentGeneration.generationNum, best.genID);
+            startReplay(best.genNum, best.genID);
         }
 
         if(selectedNumberSelector!=null) {
@@ -299,25 +308,23 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         currentTask = 2;
     }
     private void startGeneration() {
-//        engines = new HashSet<GameEngine>(numPerGeneration);
-//        GameEngineVariableTickRate.genNum = 0;
-//        snekSort = new SnakeSorters(GameEngineVariableTickRate.genNum, numPerGeneration);
-//        currentTask = 3;
-//        for (int i = 0; i < numPerGeneration; i++) {
-//            GameEngineVariableTickRate temp = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false, i, null);
-//            engines.add(temp);
-//            temp.start();
-//        }
-//        Iterator itr = engines.iterator();
-//        renderEngine = (GameEngine) itr.next();
         currentTask = 3;
-        currentGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, "Testing", 0, numPerGeneration);
+        currentGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, 0, numPerGeneration);
+    }
+    private void startNextGeneration() {
+        //TODO: make method to call this, probably make a new button for this
+
+        GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
+        Generation nextGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, currentGeneration.generationNum+1, numPerGeneration);
+        nextGeneration.evolve(currentGeneration.snekSort, percentOldToKeep);
+        currentGeneration = nextGeneration;
+        currentTask = 3;
     }
     private void startReplay(int genID, int brainID) {
         GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
 
-        Brain b = Brain.brainReader(genID,brainID,"Testing");
-        renderEngine = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, b, genID, brainID, "Testing");
+        Brain b = Brain.brainReader(genID,brainID,currentSpeciesName);
+        renderEngine = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, b, genID, brainID, currentSpeciesName);
         currentTask = 2;
     }
     void killAnEngine(GameEngine gm){
