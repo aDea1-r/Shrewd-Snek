@@ -24,6 +24,10 @@ public class Grid implements Drawable {
         }
     }
 
+    void reset(){
+        gridMat = new Object[numSquares][numSquares];
+    }
+
     public int getXGrid(int in){       //Gets x position given a pixel location
         return (in - startX) / size;
     }

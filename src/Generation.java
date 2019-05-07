@@ -79,11 +79,14 @@ public class Generation implements Drawable {
         enginesCurrentlyRunningLength.set(0);
 
         if(generationNum == 0){
+            int tempInt = Math.max(1, StaticEvolutionVariables.numTimesToRunGeneration - (StaticEvolutionVariables.numTimesToRunGenerationDecreaseBy*generationNum) );
             for (int i = 0; i < numPerGeneration; i++) {
-                GameEngineVariableTickRate temp = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false, i, null, speciesName);
+                GameEngineVariableTickRate temp = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false, i, null, speciesName, tempInt);
                 enginesWaitingToRun.add(temp);
             }
         }
+
+        percentOldToKeep = StaticEvolutionVariables.percentOldToKeep;
     }
 
     public boolean evolve(SnakeSorters snekSort, double percentOldToKeep){
@@ -103,8 +106,8 @@ public class Generation implements Drawable {
             numberOfNewGenToDistributeTo[i] = (numToKeep - i)*proportionalDistribute;
             totalAllocated += (numToKeep - i)*proportionalDistribute;
         }
-        System.out.printf("Mutate proportional distrib: totalSpotsLeft = %d, propDistrib = %d%n" +
-                "arr: [%s]%n", totalSpotsLeft, proportionalDistribute, Arrays.toString(numberOfNewGenToDistributeTo));
+//        System.out.printf("Mutate proportional distrib: totalSpotsLeft = %d, propDistrib = %d%n" +
+//                "arr: [%s]%n", totalSpotsLeft, proportionalDistribute, Arrays.toString(numberOfNewGenToDistributeTo));
 
         //randomly distribute remained
         int numSpotsLeft = totalSpotsLeft - totalAllocated;
@@ -116,22 +119,23 @@ public class Generation implements Drawable {
         for (int i = 0; i < numSpotsLeft; i++) {
             int ran = (int)(Math.random()*prefixSums[prefixSums.length-1]);
             int correctID = Math.abs( binarySearch(prefixSums, ran, 0, prefixSums.length-1) );
-            System.out.printf("Ran is %d, correctID is %d%n", ran, correctID);
+//            System.out.printf("Ran is %d, correctID is %d%n", ran, correctID);
             numberOfNewGenToDistributeTo[correctID]++;
             totalAllocated++;
         }
-        System.out.printf("Mutate random distrib: numSpotsLeft = %d, propDistrib = %d%n" +
-                "prefixSums: [%s]%n" +
-                "arr: [%s]%n", numSpotsLeft, proportionalDistribute, Arrays.toString(prefixSums), Arrays.toString(numberOfNewGenToDistributeTo));
+//        System.out.printf("Mutate random distrib: numSpotsLeft = %d, propDistrib = %d%n" +
+//                "prefixSums: [%s]%n" +
+//                "arr: [%s]%n", numSpotsLeft, proportionalDistribute, Arrays.toString(prefixSums), Arrays.toString(numberOfNewGenToDistributeTo));
 
 
         int index = 0;
+        int tempInt = Math.max(1, StaticEvolutionVariables.numTimesToRunGeneration - (StaticEvolutionVariables.numTimesToRunGenerationDecreaseBy*generationNum) );
         //Clone existing
         for (int i = 0; i < numToKeep; i++) {
             SnakeSorter temp = snekSort.getNth(i);
 
             Brain b = Brain.brainReader( temp.genNum, temp.genID, speciesName);
-            GameEngineVariableTickRate engineToAdd = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false, index, b, speciesName);
+            GameEngineVariableTickRate engineToAdd = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false, index, b, speciesName, tempInt);
             enginesWaitingToRun.add(engineToAdd);
 
             index++;
@@ -145,7 +149,7 @@ public class Generation implements Drawable {
             for (int numNewBrain = 0; numNewBrain < numberOfNewGenToDistributeTo[i]; numNewBrain++) {
                 Brain b = Brain.brainReader( temp.genNum, temp.genID, speciesName);
                 b.mutate();
-                GameEngineVariableTickRate engineToAdd = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false, index, b, speciesName);
+                GameEngineVariableTickRate engineToAdd = new GameEngineVariableTickRate(startXPercent, startYPercent, screenSize, height, width, false, index, b, speciesName, tempInt);
                 enginesWaitingToRun.add(engineToAdd);
 
                 index++;
@@ -156,7 +160,7 @@ public class Generation implements Drawable {
                 }
             }
         }
-        System.out.printf("End of mutate: index = %d%n", index);
+//        System.out.printf("End of mutate: index = %d%n", index);
 
         return true;
     }

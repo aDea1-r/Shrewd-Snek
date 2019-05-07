@@ -17,6 +17,11 @@ public class SnakeHead extends Actor implements Drawable {
 //        typeID = 1;
         scoreTracker = score;
     }
+    void reset(){
+        x = 0;
+        y = 0;
+    }
+
     public SnakeHead() {
         this(Color.CYAN, 0, 0, new Grid(0,0,0,0,null), 0, null);
     }

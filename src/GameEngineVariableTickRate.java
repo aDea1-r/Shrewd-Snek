@@ -7,7 +7,11 @@ public class GameEngineVariableTickRate extends GameEngine implements Runnable {
 
     String speciesName;
 
-    GameEngineVariableTickRate(double startXPercent, double startYPercent, double screenSize, int height, int width, boolean upi, int genID, Brain brain, String speciesName) {
+    double[] fitnessScores;     //Tracks fitness scores of previous runs
+    int numTimesRun;            //Tracks number of times it has run already
+    int targetNumTimesRun;
+
+    GameEngineVariableTickRate(double startXPercent, double startYPercent, double screenSize, int height, int width, boolean upi, int genID, Brain brain, String speciesName, int targetNumTimesRun) {
         super(startXPercent,startYPercent,screenSize,height,width,upi, brain);
         thread = new Thread(this,"Brain "+genNum);
         this.genID = genID;
@@ -16,11 +20,22 @@ public class GameEngineVariableTickRate extends GameEngine implements Runnable {
         drawables.add(food);
 
         this.speciesName = speciesName;
+
+        this.targetNumTimesRun = targetNumTimesRun;
+        numTimesRun = 0;
+        fitnessScores = new double[targetNumTimesRun];
     }
     //like action preformed
     public void run() {
-        while(gameRunning)
+        while(gameRunning) {
+//            try {
+//                thread.sleep(10000);
+//            }
+//            catch (Exception e){
+//                System.out.printf("%s at GameEngineVariableTickRate%n", e.toString());
+//            }
             gameTick();
+        }
     }
     void start() {
         thread.start();
@@ -31,10 +46,25 @@ public class GameEngineVariableTickRate extends GameEngine implements Runnable {
         scoreTracker.act(null);
     }
     void kill() {
-        gameRunning = false;
+        if(numTimesRun >= targetNumTimesRun) {
+            gameRunning = false;
 //        System.out.println("Dead is "+genID);
 //        System.out.printf("Score is: %d, fitness is %f%n", scoreTracker.getScore(), scoreTracker.getFitness());
-        ((AISnakeHead)snake1).getBrain().log(genNum,genID, speciesName);
-        Game.m.killAnEngine(this);
+            ((AISnakeHead) snake1).getBrain().log(genNum, genID, speciesName);
+            Game.m.killAnEngine(this);
+        }
+        else{
+            System.out.printf("Run %d finished, proceeding%n", numTimesRun);
+            fitnessScores[numTimesRun] = scoreTracker.getFitness();
+            reset();
+            numTimesRun++;
+        }
+    }
+    double getFitness(){
+        double sum = 0;
+        for (int i = 0; i < fitnessScores.length; i++) {
+            sum += fitnessScores[i];
+        }
+        return sum/fitnessScores.length;
     }
 }

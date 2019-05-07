@@ -30,11 +30,9 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private GameEngine renderEngine;
     private NumberSelector tickRateSelector;
 
-    private static int numPerGeneration = 50000;
+    private static int numPerGeneration = 1000;
     private Generation currentGeneration;
-    private String currentSpeciesName = "Actual Actual Testing";
-
-    private double percentOldToKeep = 1/80.0;                //the percent of the previous generation we will keep and mutate
+    private String currentSpeciesName = "Testing";
 
     private int currentTask;        //Track what it is currently doing
                                         //0 = idle
@@ -331,7 +329,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
         GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
         Generation nextGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, currentGeneration.generationNum+1, numPerGeneration);
-        nextGeneration.evolve(currentGeneration.snekSort, percentOldToKeep);
+        nextGeneration.evolve(currentGeneration.snekSort, StaticEvolutionVariables.percentOldToKeep);
         currentGeneration = nextGeneration;
         currentTask = 3;
     }
