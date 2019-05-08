@@ -62,11 +62,15 @@ public class GameEngineVariableTickRate extends GameEngine implements Runnable {
     }
     double getFitness(){
         double sum = 0;
+        double max = 0;
 //        System.out.printf("getFitness of engine ID #%d called%n", genID);
         for (int i = 0; i < fitnessScores.length; i++) {
 //            System.out.printf(" %d-ith fitness was %f%n", i, fitnessScores[i]);
             sum += fitnessScores[i];
+            if(fitnessScores[i]>max)
+                max = fitnessScores[i];
         }
-        return sum/fitnessScores.length;
+        sum -= max;
+        return sum/(fitnessScores.length-1);
     }
 }
