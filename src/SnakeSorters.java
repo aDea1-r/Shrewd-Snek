@@ -43,7 +43,7 @@ public class SnakeSorters implements Serializable {
         if(!sorted)
             initArr();
         pq = null;
-        String path = String.format("Training Data/%s/%d/", speciesName, genNum);
+        String path = String.format("Training Data/%s/%d", speciesName, genNum);
         File file = new File(path);
         file.mkdirs();
         try {

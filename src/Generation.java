@@ -180,7 +180,15 @@ public class Generation implements Drawable {
     }
 
     public boolean isDone(){
-        return enginesCurrentlyRunningLength.get() == 0 && enginesWaitingToRun.isEmpty();
+        return enginesCurrentlyRunningLength.get() <= 0 && enginesWaitingToRun.isEmpty() && hasOnlyNulls(enginesCurrentlyRunning);
+    }
+
+    private static boolean hasOnlyNulls(Object[] arr) {
+        for (Object o : arr) {
+            if (o != null)
+                return false;
+        }
+        return true;
     }
 
     @Override

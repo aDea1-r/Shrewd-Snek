@@ -30,9 +30,9 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private GameEngine renderEngine;
     private NumberSelector tickRateSelector;
 
-    private static int numPerGeneration = 1000;
+    private static int numPerGeneration = 10000;
     private Generation currentGeneration;
-    private String currentSpeciesName = "Testing";
+    private String currentSpeciesName = "mroe Gay gay Testing";
 
     private int currentTask;        //Track what it is currently doing
                                         //0 = idle
