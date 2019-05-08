@@ -201,7 +201,7 @@ public class Generation implements Drawable {
             }
         }
         //------------------------------------
-        System.out.printf("Species name: %s, enginesCurrentlyRunning = %d%n", speciesName, enginesCurrentlyRunningLength.get());
+//        System.out.printf("Species name: %s, enginesCurrentlyRunning = %d%n", speciesName, enginesCurrentlyRunningLength.get());
         
         gameGrid.drawMe(g);
 

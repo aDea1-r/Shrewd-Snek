@@ -32,7 +32,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
     private static int numPerGeneration = 1000;
     private Generation currentGeneration;
-    private String currentSpeciesName = "afternoon 5/8. gen size 10000, 2,1.999,167,3%,12,1";
+    private String currentSpeciesName = "afternoon 5 per 8, gen size 1000, 2,1,267,1 per 80,12,1 try3";
 
     private int currentTask;        //Track what it is currently doing
                                         //0 = idle

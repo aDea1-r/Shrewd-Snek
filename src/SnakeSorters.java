@@ -8,6 +8,7 @@ public class SnakeSorters implements Serializable {
     int genSize;
     String speciesName;
     boolean sorted;
+
     public SnakeSorters(int genNum, int genSize, String speciesName){
         this.genNum = genNum;
         this.genSize = genSize;

@@ -348,7 +348,7 @@ public class Brain implements Drawable, Serializable {
     private double percentMutate(double initialVal, double maxPercentChange){
         //increases/decreases a given value by a percentage
         double temp = Math.random()*(maxPercentChange*2) - maxPercentChange;
-        System.out.printf("Percent Mutate with temp: %f%n", temp);
+//        System.out.printf("Percent Mutate with temp: %f%n", temp);
         return initialVal * (1 + temp);
     }
 

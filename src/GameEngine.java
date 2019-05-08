@@ -8,7 +8,7 @@ import java.util.Map;
 
 public abstract class GameEngine implements Drawable {
 
-    final static int numSquares = 35;          //The size of the grid taking up the play screen
+    final static int numSquares = 25;          //The size of the grid taking up the play screen
 
     Grid gameGrid;
     ScoreTracker scoreTracker;
