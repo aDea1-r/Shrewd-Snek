@@ -22,7 +22,7 @@ public class StaticBrainVariables {
 
     //Advanced mutation algorithms
     static double chanceToMutate = 0.1;    //% chance to mutate each individual weight/bias
-    static int numberOfMutations = 10;       //number of mutations run
+    static int numberOfMutations = 2;       //number of mutations run
 
     //percent modification: increase/decrease weights/biases by a certain percent
     static double percentMutatePlusMinus = 0.8;     //Ex: if 0.5, weight/bias multiplied by 0.5 - 1.5
