@@ -54,7 +54,7 @@ public class SnakeSorters implements Serializable {
         try {
             FileOutputStream f = new FileOutputStream(path + "scores.dat");
 //            i++;
-            f.write(34);
+//            f.write(34);
 //            i++;
             ObjectOutputStream s = new ObjectOutputStream(f);
 //            i++;
@@ -71,10 +71,17 @@ public class SnakeSorters implements Serializable {
 
     static SnakeSorters snakeSortersReader(int gen, String speciesName){
         String path = String.format("Training Data/%s/%d/scores.dat", speciesName, gen);
+//        int i = 0;
         try (FileInputStream f = new FileInputStream(path)) {
+//            i++;
+//            System.out.println(f.available());
+//            i++;
             ObjectInputStream s = new ObjectInputStream(f);
+//            i++;
             SnakeSorters temp = (SnakeSorters) s.readObject();
+//            i++;
             s.close();
+//            i++;
             return temp;
         } catch (FileNotFoundException e){
             System.out.printf("FileNotFound at snakeSorters readIn, gen = %d, speciesName = %s%n", gen, speciesName);
