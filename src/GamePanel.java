@@ -32,7 +32,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
     private static int numPerGeneration = 1000;
     private Generation currentGeneration;
-    private String currentSpeciesName = "afternoon 5 per 8, gen size 1000, 2,1,267,1 per 80,12,1 try3";
+    private String currentSpeciesName = "morning 5 per 8, gen size 1000, 2,1,200,1 per 80,2,0,3";
 
     private int currentTask;        //Track what it is currently doing
                                         //0 = idle
@@ -219,7 +219,11 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             SnakeSorter best = snekSort.getNth(0);
             snekSort.log();
             System.out.printf("Best snake of generation #%d is%n  Snake with gen ID #%d%n", currentGeneration.generationNum, best.genID);
-            startReplay(best.genNum, best.genID);
+
+            if(best.genNum % 10 == 0)
+                startReplay(best.genNum, best.genID);
+            else
+                currentTask = 0;
         }
 
         if(selectedNumberSelector!=null) {

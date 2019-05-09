@@ -70,7 +70,11 @@ public class GameEngineVariableTickRate extends GameEngine implements Runnable {
             if(fitnessScores[i]>max)
                 max = fitnessScores[i];
         }
-        sum -= max;
-        return sum/(fitnessScores.length-1);
+        if(fitnessScores.length>=StaticEvolutionVariables.thresholdForRemovingBestRun) {
+            sum -= max;
+            return sum/(fitnessScores.length-1);
+        }
+        return sum/fitnessScores.length;
+
     }
 }
