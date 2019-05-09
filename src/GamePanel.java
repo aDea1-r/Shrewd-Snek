@@ -61,15 +61,14 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
         currentTask = 0;
 
-        inputs = new LinkedHashMap<Integer, Boolean>();
+        inputs = new LinkedHashMap<>();
 
         initializeButtons();
+        hiddenMenus = new ArrayList<>();
+        addReplayMenu();
 
         tickRateSelector = new NumberSelector((width*17) /20, height*13/20, width/30, height/4, 1,120);
         tickRateSelector.addToList(buttonList);
-
-        inputs.put((int)'P', false);
-        inputs.put((int)'p', false);
 
         setPlayerName();
     }
@@ -131,9 +130,6 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         };
         buttonList.add(spamGenerations);
-
-        hiddenMenus = new ArrayList<>();
-        addReplayMenu();
     }
     private void addReplayMenu() {
         HiddenMenu temp = new HiddenMenu();
