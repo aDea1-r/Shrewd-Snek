@@ -33,7 +33,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
     private static int numPerGeneration = 1000;
     private Generation currentGeneration;
-    private String currentSpeciesName = "T3st1ng";
+    private String currentSpeciesName = "morning 5 per 8, gen size 1000, 2,1,200,1 per 80,2,0,3";
 
     private int currentTask;        //Track what it is currently doing
                                         //0 = idle
@@ -74,7 +74,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         setPlayerName();
     }
     private void initializeButtons() {
-        buttonList = new ArrayList<Button>();
+        buttonList = new ArrayList<>();
 
         Button player = new Button((width*17) /20, height/20, width/8, height/12, "Player") {
             @Override
@@ -140,7 +140,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
         int numGenerations = getGenCount(currentSpeciesName);
         int numPerGeneration = getNumPerGen(currentSpeciesName);
-        NumberSelector gen = new NumberSelector((width*14) /20, height*1/10, width/40, height/5, 0, numGenerations-1);
+        NumberSelector gen = new NumberSelector((width*14) /20, height*1/10, width*2/40, height/5, 0, numGenerations-1);
         NumberSelector num = new NumberSelector((width*14) /20, height*4/10, width/40, height/5, 0, numPerGeneration-1);
         temp.addNumberSelector(gen);
         temp.addNumberSelector(num);
@@ -204,7 +204,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         };
         temp.addButton(setWorst);
-        Button loadGen = new Button((width*14) /20, height*3/10, width*2/20, height*2/40, "Load Generation") {
+        Button loadGen = new Button((width*14) /20, height*3/10, width*11/80, height*3/40, "Load Generation") {
             @Override
             public void action() {
                 int genID = gen.getCurrentValue();
