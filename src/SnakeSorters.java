@@ -55,7 +55,7 @@ public class SnakeSorters implements Serializable {
 //            i++;
             ObjectOutputStream s = new ObjectOutputStream(f);
 //            i++;
-            s.writeObject(arr);
+            s.writeObject(this);
 //            i++;
             s.close();
 //            i++;
