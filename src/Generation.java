@@ -93,7 +93,7 @@ public class Generation implements Drawable {
         /*
         Method which is called by GamePanel, clones, mutates, etc a previous gen
          */
-        int numToKeep = (int)(percentOldToKeep*numPerGeneration);
+        int numToKeep = Math.max((int)(percentOldToKeep*numPerGeneration),2);
         System.out.printf("Beginning of evolve: numToKeep = %d%n", numToKeep);
 
         int[] numberOfNewGenToDistributeTo = new int[numToKeep];    //indexed based on sorted SnakeSorters

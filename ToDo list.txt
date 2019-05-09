@@ -24,3 +24,10 @@ Write method to init next gen
 Performance:
 Limit total number of threads
 Give main thread higher priority so it doesn't go unresponsive when training (and so auto-advance can be stopped)
+
+Really Good Snake:
+0,153
+38,640
+75,997
+146,616
+179,294
