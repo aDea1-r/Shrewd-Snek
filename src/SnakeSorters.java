@@ -47,22 +47,22 @@ public class SnakeSorters implements Serializable {
         String path = String.format("Training Data/%s/%d/", speciesName, genNum);
 //        File file = new File(path);
 //        file.mkdirs();
-        int i = 0;
+//        int i = 0;
         try {
             FileOutputStream f = new FileOutputStream(path + "scores.dat");
-            i++;
+//            i++;
             f.write(34);
-            i++;
+//            i++;
             ObjectOutputStream s = new ObjectOutputStream(f);
-            i++;
+//            i++;
             s.writeObject(arr);
-            i++;
+//            i++;
             s.close();
-            i++;
+//            i++;
             System.out.println("logged scores of gen"+genNum);
-            i++;
+//            i++;
         } catch (IOException e) {
-            System.out.printf("Error logging snakesorters, i is %d, path is %s %n",i,path+"scores.dat");
+            System.out.printf("Error logging snakesorters, path is %s %n",path+"scores.dat");
         }
     }
 
