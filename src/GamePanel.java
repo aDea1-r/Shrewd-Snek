@@ -25,14 +25,15 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private List<Button> buttonList;
     private List<HiddenMenu> hiddenMenus;               // 0 - Replay Selection Menu
     private HiddenMenu VisibleMenu;
+    private SnakeSorters selectedSorter;
     NumberSelector selectedNumberSelector;
 
     private GameEngine renderEngine;
     private NumberSelector tickRateSelector;
 
-    private static int numPerGeneration = 1000;
+    private static int numPerGeneration = 20;
     private Generation currentGeneration;
-    private String currentSpeciesName = "afternoon 5 per 8, gen size 1000, 2,1,267,1 per 80,12,1 try3";
+    private String currentSpeciesName = "T3st1ng";
 
     private int currentTask;        //Track what it is currently doing
                                         //0 = idle
@@ -144,7 +145,21 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         temp.addNumberSelector(gen);
         temp.addNumberSelector(num);
 
-        Button go = new Button((width*14) /20, height*7/10, width/20, height/40, "Go!") {
+        if(numGenerations>0) {
+            selectedSorter = SnakeSorters.snakeSortersReader(0,currentSpeciesName);
+        }
+
+        Button refresh = new Button(width*14/20, height*1/40, width/10, height/20, "Refresh") {
+            @Override
+            public void action() {
+                int numGenerations = getGenCount(currentSpeciesName);
+                int numPerGeneration = getNumPerGen(currentSpeciesName);
+                gen.setMax(numGenerations-1);
+                num.setMax(numPerGeneration-1);
+            }
+        };
+        temp.addButton(refresh);
+        Button go = new Button((width*14) /20, height*8/10, width/10, height/20, "Go!") {
             @Override
             public void action() {
                 int genID = gen.getCurrentValue();
@@ -154,6 +169,54 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         };
         temp.addButton(go);
+        Button setBest = new Button(width*59/80, height*4/10, width*4/40, height*2/40, "Best: ") {
+            @Override
+            public void action() {
+                num.setCurrentVal(getNumberAtEndOfText());
+            }
+        };
+        temp.addButton(setBest);
+        Button setQ3 = new Button(width*59/80, height*19/40, width*4/40, height*2/40, "Q3: ") {
+            @Override
+            public void action() {
+                num.setCurrentVal(getNumberAtEndOfText());
+            }
+        };
+        temp.addButton(setQ3);
+        Button setMedian = new Button(width*59/80, height*22/40, width*4/40, height*2/40, "Med: ") {
+            @Override
+            public void action() {
+                num.setCurrentVal(getNumberAtEndOfText());
+            }
+        };
+        temp.addButton(setMedian);
+        Button setQ1 = new Button(width*59/80, height*25/40, width*4/40, height*2/40, "Q1: ") {
+            @Override
+            public void action() {
+                num.setCurrentVal(getNumberAtEndOfText());
+            }
+        };
+        temp.addButton(setQ1);
+        Button setWorst = new Button(width*59/80, height*28/40, width*4/40, height*2/40, "Worst: ") {
+            @Override
+            public void action() {
+                num.setCurrentVal(getNumberAtEndOfText());
+            }
+        };
+        temp.addButton(setWorst);
+        Button loadGen = new Button((width*14) /20, height*3/10, width*2/20, height*2/40, "Load Generation") {
+            @Override
+            public void action() {
+                int genID = gen.getCurrentValue();
+                selectedSorter = SnakeSorters.snakeSortersReader(genID,currentSpeciesName);
+                setBest.setText("Best: "+selectedSorter.getNth(0).genID);
+                setQ3.setText("Q3: "+selectedSorter.getNth(selectedSorter.getGenSize()/4).genID);
+                setMedian.setText("Med: "+selectedSorter.getNth(selectedSorter.getGenSize()/2).genID);
+                setQ1.setText("Q1: "+selectedSorter.getNth(selectedSorter.getGenSize()*3/4).genID);
+                setWorst.setText("Worst: "+selectedSorter.getNth(selectedSorter.getGenSize()-1).genID);
+            }
+        };
+        temp.addButton(loadGen);
 
         hiddenMenus.add(temp);
     }

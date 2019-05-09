@@ -40,6 +40,9 @@ public class SnakeSorters implements Serializable {
             initArr();
         return arr[n];
     }
+    int getGenSize() {
+        return genSize;
+    }
     public void log() {
         if(!sorted)
             initArr();
@@ -66,7 +69,7 @@ public class SnakeSorters implements Serializable {
         }
     }
 
-    public static SnakeSorters snakeSortersReader(int gen, String speciesName){
+    static SnakeSorters snakeSortersReader(int gen, String speciesName){
         String path = String.format("Training Data/%s/%d/scores.dat", speciesName, gen);
         try (FileInputStream f = new FileInputStream(path)) {
             ObjectInputStream s = new ObjectInputStream(f);
@@ -75,10 +78,11 @@ public class SnakeSorters implements Serializable {
             return temp;
         } catch (FileNotFoundException e){
             System.out.printf("FileNotFound at snakeSorters readIn, gen = %d, speciesName = %s%n", gen, speciesName);
-            return null;
-        } catch (Exception e){
-            System.out.printf("Exception: %s, at SnakeSorters readin%n", e);
-            return null;
+        } catch (IOException e){
+            System.out.printf("IOException, at SnakeSorters readin%n");
+        } catch (ClassNotFoundException e) {
+            System.out.println("ClassNotFoundException at snakeSorters readin");
         }
+        return null;
     }
 }

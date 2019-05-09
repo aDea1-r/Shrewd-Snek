@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
+import java.util.StringTokenizer;
 
 public abstract class Button implements Drawable {
     private String text;
@@ -57,5 +58,12 @@ public abstract class Button implements Drawable {
     public abstract void action();
     Rectangle getHitbox() {
         return hitbox;
+    }
+    int getNumberAtEndOfText() {
+        StringTokenizer scan = new StringTokenizer(text);
+        scan.nextToken();
+        if (scan.hasMoreTokens())
+            return Integer.parseInt(scan.nextToken());
+        return -1;
     }
 }

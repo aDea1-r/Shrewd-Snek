@@ -81,4 +81,7 @@ public class NumberSelector implements Drawable{
     int getCurrentValue() {
         return currentVal;
     }
+    void setMax(int m) {
+        max = m;
+    }
 }
