@@ -204,7 +204,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         };
         temp.addButton(setWorst);
-        Button loadGen = new Button((width*14) /20, height*3/10, width*11/80, height*3/40, "Load Generation") {
+        Button loadGen = new Button((width*14) /20, height*3/10, width*11/80, height*3/40, "Load Statistics") {
             @Override
             public void action() {
                 int genID = gen.getCurrentValue();

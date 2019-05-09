@@ -9,10 +9,10 @@ public class NumberSelector implements Drawable{
     private int min;
     private int max;
 
-    NumberSelector(int x, int y, int width, int height, int min, int max) {
+    NumberSelector(int x, int y, int width, int height, int low, int high) {
         int bHeight = height/3;
-        this.min = min;
-        this.max = max;
+        this.min = low;
+        this.max = high;
         currentVal = (min+max)/2;
         increase = new Button(x,y,width,bHeight,"/\\") {
             @Override
@@ -83,5 +83,6 @@ public class NumberSelector implements Drawable{
     }
     void setMax(int m) {
         max = m;
+        System.out.println("setting max to "+m);
     }
 }
