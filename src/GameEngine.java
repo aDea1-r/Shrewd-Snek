@@ -54,6 +54,13 @@ public abstract class GameEngine implements Drawable {
         this(0, 0, 0, 1, 1, false, null);
     }
 
+    void reset(){
+        //Re-initializes variables to run game again
+        gameGrid.reset();
+        scoreTracker.reset();
+        snake1.reset();
+    }
+
     abstract void gameTick();
 
     abstract void kill();

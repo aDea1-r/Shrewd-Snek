@@ -49,7 +49,7 @@ public class GameEngineFixedTickRate extends GameEngine implements ActionListene
     }
     void kill() {
         time.stop();
-        System.out.printf("Score is: %d, fitness is %f%n", scoreTracker.getScore(), scoreTracker.getFitness());
+        System.out.printf("Score is: %d, fitness is " + scoreTracker.getFitness() + "%n", scoreTracker.getScore());
         gameRunning = false;
         Game.m.killAnEngine(this);
     }

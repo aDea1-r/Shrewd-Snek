@@ -1,8 +1,10 @@
+import java.io.Serializable;
+
 /*
 Class to help sort the snakes in the generation
 So that we can delete snakes from memory
  */
-public class SnakeSorter implements Comparable {
+public class SnakeSorter implements Comparable, Serializable {
     int genNum;
     int genID;
     double score;
@@ -15,7 +17,7 @@ public class SnakeSorter implements Comparable {
     public SnakeSorter(GameEngineVariableTickRate in){
         genNum = in.genNum;
         genID = in.genID;
-        score = in.scoreTracker.getFitness();
+        score = in.getFitness();
     }
 
     @Override

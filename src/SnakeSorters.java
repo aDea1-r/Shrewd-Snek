@@ -8,6 +8,7 @@ public class SnakeSorters implements Serializable {
     int genSize;
     String speciesName;
     boolean sorted;
+
     public SnakeSorters(int genNum, int genSize, String speciesName){
         this.genNum = genNum;
         this.genSize = genSize;
@@ -44,16 +45,24 @@ public class SnakeSorters implements Serializable {
             initArr();
         pq = null;
         String path = String.format("Training Data/%s/%d/", speciesName, genNum);
-        File file = new File(path);
-        file.mkdirs();
+//        File file = new File(path);
+//        file.mkdirs();
+        int i = 0;
         try {
-            FileOutputStream f = new FileOutputStream(path + "/scores.dat");
+            FileOutputStream f = new FileOutputStream(path + "scores.dat");
+            i++;
+            f.write(34);
+            i++;
             ObjectOutputStream s = new ObjectOutputStream(f);
-            s.writeObject(this);
+            i++;
+            s.writeObject(arr);
+            i++;
             s.close();
+            i++;
             System.out.println("logged scores of gen"+genNum);
+            i++;
         } catch (IOException e) {
-            System.out.println("bad error");
+            System.out.printf("Error logging snakesorters, i is %d, path is %s %n",i,path+"scores.dat");
         }
     }
 
