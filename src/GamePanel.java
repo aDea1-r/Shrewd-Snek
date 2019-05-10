@@ -129,6 +129,13 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         };
         buttonList.add(spamGenerations);
+        Button changeSpecies = new Button((width*17) /20, height*11/20, width/8, height/12, "Change Species") {
+            @Override
+            public void action() {
+                startReboot();
+            }
+        };
+        buttonList.add(changeSpecies);
     }
     private void addReplayMenu() {
         HiddenMenu temp = new HiddenMenu();
@@ -460,5 +467,11 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     }
     private int getNumPerGen(String name) {
         return numPerGeneration;
+    }
+    private void startReboot() {
+        String next = JOptionPane.showInputDialog("Please Input Species Name: ",currentSpeciesName);
+        if (next==null)
+            return;
+        Game.reboot(next);
     }
 }
