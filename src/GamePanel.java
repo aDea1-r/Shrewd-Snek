@@ -96,7 +96,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 //            }
 //        };
 //        buttonList.add(runGeneration);
-        Button replay = new Button((width*17) /20, height*7/20, width/8, height/12, "Replay") {
+        Button replay = new Button((width*17) /20, height*5/20, width/8, height/12, "Replay") {
             @Override
             public void action() {
                 int indexOfReplayMenu = 0;
@@ -107,14 +107,14 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         };
         buttonList.add(replay);
-        Button runNextGeneration = new Button((width*17) /20, height*9/20, width/8, height/12, "Next Gen") {
+        Button runNextGeneration = new Button((width*17) /20, height*7/20, width/8, height/12, "Next Gen") {
             @Override
             public void action() {
                     startNextGeneration();
             }
         };
         buttonList.add(runNextGeneration);
-        Button spamGenerations = new Button((width*17) /20, height*11/20, width/8, height/12, "Rapid Train: Off") {
+        Button spamGenerations = new Button((width*17) /20, height*9/20, width/8, height/12, "Rapid Train: Off") {
             @Override
             public void action() {
                 if (spamTraining) {
@@ -425,6 +425,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         }
     }
 
+    //TODO: BufferedGenCount needs additional testing
     private int bufferedGenCount;
     private void updateGenCount() {
         File dir = new File("Training Data/"+currentSpeciesName);
