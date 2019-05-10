@@ -1,4 +1,7 @@
 import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
+import java.awt.geom.AffineTransform;
 import java.util.List;
 
 public class NumberSelector implements Drawable{
@@ -10,10 +13,13 @@ public class NumberSelector implements Drawable{
     private int max;
 
     NumberSelector(int x, int y, int width, int height, int low, int high) {
+        this(x,y,width,height,low,high,(low+high)/2);
+    }
+    NumberSelector(int x, int y, int width, int height, int low, int high, int start) {
         int bHeight = height/3;
         this.min = low;
         this.max = high;
-        currentVal = (min+max)/2;
+        currentVal = start;
         increase = new Button(x,y,width,bHeight,"/\\") {
             @Override
             public void action() {
@@ -36,6 +42,12 @@ public class NumberSelector implements Drawable{
             @Override
             public void action() {
                 selectThis();
+            }
+            @Override
+            void setText(String s) {
+                if (s.equals("-1"))
+                    s = " ";
+                super.setText(s);
             }
         };
     }
@@ -83,6 +95,7 @@ public class NumberSelector implements Drawable{
     }
     void setMax(int m) {
         max = m;
-        System.out.println("setting max to "+m);
+//        System.out.println("setting max to "+m);
+        setCurrentVal(min);
     }
 }

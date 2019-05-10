@@ -14,7 +14,7 @@ public abstract class Button implements Drawable {
         this(x,y,width,height,text,Color.yellow, Color.black);
     }
     Button(int x, int y, int width, int height, String text, Color b, Color t) {
-        this.text = text;
+        setText(text);
         hitbox = new Rectangle(x,y,width,height);
         buttonColor = b;
         textColor = t;

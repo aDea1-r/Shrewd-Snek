@@ -24,6 +24,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private Map<Integer, Boolean> inputs;
     private List<Button> buttonList;
     private List<HiddenMenu> hiddenMenus;               // 0 - Replay Selection Menu
+                                                        // 1 - Computer Selection Menu
     private HiddenMenu VisibleMenu;
     private SnakeSorters selectedSorter;
     NumberSelector selectedNumberSelector;
@@ -65,9 +66,13 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
         inputs = new LinkedHashMap<>();
 
+        updateGenCount();
+        calcNumPerGen(speciesName);
+
         initializeButtons();
         hiddenMenus = new ArrayList<>();
         addReplayMenu();
+        addComputerMenu();
 
         tickRateSelector = new NumberSelector((width*17) /20, height*13/20, width/30, height/4, 1,120);
         tickRateSelector.addToList(buttonList);
@@ -87,7 +92,11 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         Button AI = new Button((width*17) /20, height*3/20, width/8, height/12, "Computer") {
             @Override
             public void action() {
-                startAI();
+                int indexOfComputerMenu = 1;
+                if(VisibleMenu==hiddenMenus.get(indexOfComputerMenu))
+                    VisibleMenu = null;
+                else
+                    VisibleMenu = hiddenMenus.get(indexOfComputerMenu);
             }
         };
         buttonList.add(AI);
@@ -140,11 +149,14 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private void addReplayMenu() {
         HiddenMenu temp = new HiddenMenu();
 
-        updateGenCount();
+//        updateGenCount();
         int numGenerations = getGenCount(currentSpeciesName);
 
-        NumberSelector gen = new NumberSelector((width*14) /20, height*1/10, width*2/40, height/5, 0, numGenerations-1);
-        NumberSelector num = new NumberSelector((width*14) /20, height*4/10, width/40, height/5, 0, numPerGeneration-1);
+        int genStart = 0;
+        if(numGenerations==0)
+            genStart=-1;
+        NumberSelector gen = new NumberSelector((width*14) /20, height*1/10, width*2/40, height/5, 0, numGenerations-1,genStart);
+        NumberSelector num = new NumberSelector((width*14) /20, height*4/10, width/40, height/5, 0, BufferedNumPerGen-1,genStart);
         temp.addNumberSelector(gen);
         temp.addNumberSelector(num);
 
@@ -220,6 +232,104 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         };
         temp.addButton(loadGen);
+
+        hiddenMenus.add(temp);
+    }
+
+    private void addComputerMenu() {
+        HiddenMenu temp = new HiddenMenu();
+
+//        updateGenCount();
+        int numGenerations = getGenCount(currentSpeciesName);
+
+        int genStart = 0;
+        if(numGenerations==0)
+            genStart=-1;
+        NumberSelector gen = new NumberSelector((width*14) /20, height*1/10, width*2/40, height/5, 0, numGenerations-1,genStart);
+        NumberSelector num = new NumberSelector((width*14) /20, height*4/10, width/40, height/5, 0, BufferedNumPerGen-1,genStart);
+        temp.addNumberSelector(gen);
+        temp.addNumberSelector(num);
+
+        if(numGenerations>0) {
+            selectedSorter = SnakeSorters.snakeSortersReader(0,currentSpeciesName);
+        }
+
+        Button refresh = new Button(width*14/20, height*1/40, width/10, height/20, "Refresh") {
+            @Override
+            public void action() {
+                int numGenerations = getGenCount(currentSpeciesName);
+                int numPerGeneration = getNumPerGen(currentSpeciesName);
+                gen.setMax(numGenerations-1);
+                num.setMax(numPerGeneration-1);
+            }
+        };
+        temp.addButton(refresh);
+        Button go = new Button((width*14) /20, height*8/10, width/10, height/20, "Go!") {
+            @Override
+            public void action() {
+                int genID = gen.getCurrentValue();
+                int brainID = num.getCurrentValue();
+                startAI(genID, brainID);
+                VisibleMenu = null;
+            }
+        };
+        temp.addButton(go);
+        Button setBest = new Button(width*59/80, height*4/10, width*4/40, height*2/40, "Best: ") {
+            @Override
+            public void action() {
+                num.setCurrentVal(getNumberAtEndOfText());
+            }
+        };
+        temp.addButton(setBest);
+        Button setQ3 = new Button(width*59/80, height*19/40, width*4/40, height*2/40, "Q3: ") {
+            @Override
+            public void action() {
+                num.setCurrentVal(getNumberAtEndOfText());
+            }
+        };
+        temp.addButton(setQ3);
+        Button setMedian = new Button(width*59/80, height*22/40, width*4/40, height*2/40, "Med: ") {
+            @Override
+            public void action() {
+                num.setCurrentVal(getNumberAtEndOfText());
+            }
+        };
+        temp.addButton(setMedian);
+        Button setQ1 = new Button(width*59/80, height*25/40, width*4/40, height*2/40, "Q1: ") {
+            @Override
+            public void action() {
+                num.setCurrentVal(getNumberAtEndOfText());
+            }
+        };
+        temp.addButton(setQ1);
+        Button setWorst = new Button(width*59/80, height*28/40, width*4/40, height*2/40, "Worst: ") {
+            @Override
+            public void action() {
+                num.setCurrentVal(getNumberAtEndOfText());
+            }
+        };
+        temp.addButton(setWorst);
+        Button loadGen = new Button((width*14) /20, height*3/10, width*11/80, height*3/40, "Load Statistics") {
+            @Override
+            public void action() {
+                int genID = gen.getCurrentValue();
+                selectedSorter = SnakeSorters.snakeSortersReader(genID,currentSpeciesName);
+                setBest.setText("Best: "+selectedSorter.getNth(0).genID);
+                setQ3.setText("Q3: "+selectedSorter.getNth(selectedSorter.getGenSize()/4).genID);
+                setMedian.setText("Med: "+selectedSorter.getNth(selectedSorter.getGenSize()/2).genID);
+                setQ1.setText("Q1: "+selectedSorter.getNth(selectedSorter.getGenSize()*3/4).genID);
+                setWorst.setText("Worst: "+selectedSorter.getNth(selectedSorter.getGenSize()-1).genID);
+            }
+        };
+        temp.addButton(loadGen);
+        Button rand = new Button((width*14) /20, height*35/40, width/10, height*3/90, "Random") {
+            @Override
+            public void action() {
+                startAI();
+                VisibleMenu = null;
+            }
+        };
+        temp.addButton(rand);
 
         hiddenMenus.add(temp);
     }
@@ -394,6 +504,12 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         renderEngine = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,false, null, "Wut");
         currentTask = 2;
     }
+    private void startAI(int genID, int brainID) {
+        GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
+        Brain brain = Brain.brainReader(genID,brainID,currentSpeciesName);
+        renderEngine = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,false, brain, "Wut");
+        currentTask = 2;
+    }
 //    private void startGeneration() {
 //        currentGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, 0, numPerGeneration);
 //        currentTask = 3;
@@ -453,17 +569,21 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private int getGenCount(String name) {
         return bufferedGenCount;
     }
-    private int calcNumPerGen(String name) {
+
+    private int BufferedNumPerGen;
+    private void calcNumPerGen(String name) {
         File dir = new File("Training Data/"+name+"/0");
-        if (!dir.exists())
-            return 0;
+        if (!dir.exists()) {
+            BufferedNumPerGen = 0;
+            return;
+        }
         File[] subDirs = dir.listFiles(new FileFilter() {
             @Override
             public boolean accept(File pathname) {
                 return pathname.isDirectory();
             }
         });
-        return subDirs.length;
+        BufferedNumPerGen = subDirs.length;
     }
     private int getNumPerGen(String name) {
         return numPerGeneration;
