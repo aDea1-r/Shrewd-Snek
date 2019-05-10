@@ -279,7 +279,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             snekSort.log();
             System.out.printf("Best snake of generation #%d is%n  Snake with gen ID #%d%n", currentGeneration.generationNum, best.genID);
 
-            if(best.genNum % 10 == 0)
+            if(!spamTraining)
                 startReplay(best.genNum, best.genID);
             else
                 currentTask = 0;
