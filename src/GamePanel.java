@@ -89,13 +89,13 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         };
         buttonList.add(AI);
-        Button runGeneration = new Button((width*17) /20, height*5/20, width/8, height/12, "Generation") {
-            @Override
-            public void action() {
-                startGeneration();
-            }
-        };
-        buttonList.add(runGeneration);
+//        Button runGeneration = new Button((width*17) /20, height*5/20, width/8, height/12, "Generation") {
+//            @Override
+//            public void action() {
+//                startGeneration();
+//            }
+//        };
+//        buttonList.add(runGeneration);
         Button replay = new Button((width*17) /20, height*7/20, width/8, height/12, "Replay") {
             @Override
             public void action() {
@@ -110,10 +110,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         Button runNextGeneration = new Button((width*17) /20, height*9/20, width/8, height/12, "Next Gen") {
             @Override
             public void action() {
-                if(currentGeneration != null)
                     startNextGeneration();
-                else
-                    System.out.printf("No Next Generation To Run%n");
             }
         };
         buttonList.add(runNextGeneration);
@@ -134,8 +131,9 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private void addReplayMenu() {
         HiddenMenu temp = new HiddenMenu();
 
+        updateGenCount();
         int numGenerations = getGenCount(currentSpeciesName);
-        int numPerGeneration = getNumPerGen(currentSpeciesName);
+
         NumberSelector gen = new NumberSelector((width*14) /20, height*1/10, width*2/40, height/5, 0, numGenerations-1);
         NumberSelector num = new NumberSelector((width*14) /20, height*4/10, width/40, height/5, 0, numPerGeneration-1);
         temp.addNumberSelector(gen);
@@ -387,18 +385,26 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         renderEngine = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,false, null, "Wut");
         currentTask = 2;
     }
-    private void startGeneration() {
-        currentTask = 3;
-        currentGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, 0, numPerGeneration);
-    }
+//    private void startGeneration() {
+//        currentGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, 0, numPerGeneration);
+//        currentTask = 3;
+//    }
     private void startNextGeneration() {
         //TODO: make method to call this, probably make a new button for this
-
         GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
-        Generation nextGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, currentGeneration.generationNum+1, numPerGeneration);
-        nextGeneration.evolve(currentGeneration.snekSort, StaticEvolutionVariables.percentOldToKeep);
-        currentGeneration = nextGeneration;
+        if(currentGeneration==null && getGenCount(currentSpeciesName)==0) {
+            currentGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, 0, numPerGeneration);
+        } else if(currentGeneration!=null) {
+            Generation nextGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, currentGeneration.generationNum+1, numPerGeneration);
+            nextGeneration.evolve(currentGeneration.snekSort, StaticEvolutionVariables.percentOldToKeep);
+            currentGeneration = nextGeneration;
+        } else {
+            SnakeSorters prevData = SnakeSorters.snakeSortersReader(getGenCount(currentSpeciesName)-1,currentSpeciesName);
+            currentGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, prevData.genNum+1, numPerGeneration);
+            currentGeneration.evolve(prevData, StaticEvolutionVariables.percentOldToKeep);
+        }
         currentTask = 3;
+        bufferedGenCount++;
     }
     private void startReplay(int genID, int brainID) {
         GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
@@ -418,10 +424,29 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             System.out.printf("Wait wtf happened, killAnEngine in gamePanel%n");
         }
     }
+
+    private int bufferedGenCount;
+    private void updateGenCount() {
+        File dir = new File("Training Data/"+currentSpeciesName);
+        if(!dir.exists()) {
+            bufferedGenCount = 0;
+            return;
+        }
+        File[] subDirs = dir.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.isDirectory();
+            }
+        });
+        bufferedGenCount = subDirs.length;
+    }
     private int getGenCount(String name) {
-        File dir = new File("Training Data/"+name);
-        if(!dir.exists())
-            return -1;
+        return bufferedGenCount;
+    }
+    private int calcNumPerGen(String name) {
+        File dir = new File("Training Data/"+name+"/0");
+        if (!dir.exists())
+            return 0;
         File[] subDirs = dir.listFiles(new FileFilter() {
             @Override
             public boolean accept(File pathname) {
@@ -431,15 +456,6 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         return subDirs.length;
     }
     private int getNumPerGen(String name) {
-        File dir = new File("Training Data/"+name+"/0");
-        if (!dir.exists())
-            return -1;
-        File[] subDirs = dir.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.isDirectory();
-            }
-        });
-        return subDirs.length;
+        return numPerGeneration;
     }
 }
