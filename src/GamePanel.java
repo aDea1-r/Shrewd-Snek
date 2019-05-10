@@ -469,7 +469,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         return numPerGeneration;
     }
     private void startReboot() {
-        String next = JOptionPane.showInputDialog("Please Input Species Name: ",currentSpeciesName);
+        String next = JOptionPane.showInputDialog("Please Input Species Name: \n(Leave Blank for Default)",currentSpeciesName);
         if (next==null)
             return;
         Game.reboot(next);
