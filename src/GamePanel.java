@@ -28,6 +28,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private List<Button> buttonList;
     private List<HiddenMenu> hiddenMenus;               // 0 - Replay Selection Menu
                                                         // 1 - Computer Selection Menu
+                                                        // 2 - Species Selection Menu
 
     private HiddenMenu VisibleMenu;
     private SnakeSorters selectedSorter;
@@ -79,6 +80,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         hiddenMenus = new ArrayList<>();
         addReplayMenu();
         addComputerMenu();
+        addChangeSpeciesMenu();
 
         tickRateSelector = new NumberSelector((width*17) /20, height*13/20, width/30, height/4, 1,120);
         tickRateSelector.addToList(buttonList);
@@ -147,7 +149,11 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         Button changeSpecies = new Button((width*17) /20, height*11/20, width/8, height/12, "Change Species") {
             @Override
             public void action() {
-                startRebootWithExistingSpecies();
+                int indexOfSpeciesMenu = 2;
+                if(VisibleMenu==hiddenMenus.get(indexOfSpeciesMenu))
+                    VisibleMenu = null;
+                else
+                    VisibleMenu = hiddenMenus.get(indexOfSpeciesMenu);
             }
         };
         buttonList.add(changeSpecies);
@@ -336,6 +342,27 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         };
         temp.addButton(rand);
+
+        hiddenMenus.add(temp);
+    }
+
+    private void addChangeSpeciesMenu() {
+        HiddenMenu temp = new HiddenMenu();
+
+        Button load = new Button((width*14) /20, height*3/10, width*11/80, height*3/40, "Load Existing Species") {
+            @Override
+            public void action() {
+                startRebootWithExistingSpecies();
+            }
+        };
+        temp.addButton(load);
+        Button create = new Button((width*14) /20, height*4/10, width*11/80, height*3/40, "Create New Species") {
+            @Override
+            public void action() {
+                startRebootWithNewSpecies();
+            }
+        };
+        temp.addButton(create);
 
         hiddenMenus.add(temp);
     }
@@ -615,7 +642,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         String[] subDirs = dir.list(new FilenameFilter() {
             @Override
             public boolean accept(File pathname, String temp) {
-                return pathname.isDirectory();
+                return !temp.contains(".");
             }
         });
         BufferedNumSpecies = subDirs.length;
@@ -638,5 +665,46 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         if (next==null)
             return;
         Game.reboot(next);
+    }
+    private void startRebootWithNewSpecies() {
+        Icon darwin = null;
+        try {
+            darwin = new ImageIcon(AppleStuff.createResizedCopy(ImageIO.read(new File("darwin.png")),50,50));
+        } catch (IOException e) {
+            System.out.println("Cannot find darwin icon");
+        }
+        String title = "Create New Species Wizard";
+        String next = (String) JOptionPane.showInputDialog(this,
+                                                            "Please Input New Species Name: ",
+                                                            title,
+                                                            JOptionPane.QUESTION_MESSAGE,
+                                                            darwin,
+                                                            null,
+                                                            currentSpeciesName);
+        if (next==null)
+            return;
+        String[] existingSpecies = calcNumSpecies();
+        boolean spotTaken = contains(existingSpecies,next);
+        while(spotTaken) {
+            JOptionPane.showMessageDialog(this,"Species Already Exists!",title,JOptionPane.ERROR_MESSAGE,darwin);
+            next = (String) JOptionPane.showInputDialog(this,
+                                                        "Please Input New Species Name: ",
+                                                        title,
+                                                        JOptionPane.QUESTION_MESSAGE,
+                                                        darwin,
+                                                        null,
+                                                        next);
+            if (next==null)
+                return;
+            spotTaken = contains(existingSpecies,next);
+        }
+        Game.reboot(next);
+    }
+    private static boolean contains(String[] arr, String str) {
+        for (String s : arr) {
+            if (s.equals(str))
+                return true;
+        }
+        return false;
     }
 }
