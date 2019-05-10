@@ -465,7 +465,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     static String numTyping = "";
     public void keyTyped(KeyEvent e){
 //        System.out.printf("You typed. KeyChar is %s and keyCode is %d%n",e.getKeyChar(),e.getKeyCode());
-        if(e.getKeyChar()>='0' && e.getKeyChar()<='9') {
+        if(e.getKeyChar()>='0' && e.getKeyChar()<='9' && numTyping.length()<9) {
             numTyping+=Character.toString(e.getKeyChar());
             return;
         }
@@ -474,6 +474,10 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
                 selectedNumberSelector.setCurrentVal(Integer.parseInt(numTyping));
             numTyping = "";
             selectedNumberSelector = null;
+            return;
+        }
+        if (e.getKeyChar()=='\n') {
+            numTyping = "";
             return;
         }
         if(e.getKeyChar() == KeyEvent.VK_BACK_SPACE && numTyping.length()>0) {

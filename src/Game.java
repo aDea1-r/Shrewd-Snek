@@ -22,6 +22,8 @@ public class Game{
         j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //makes the dialog box exit when you click the "x" button.
 //        Brain b = new Brain();
 //        b.testMe();
+
+//        StaticEvolutionVariables.create("Testing");
         //TODO: Add reboot method, called by button in GUI, that opens dialog box asking for new Species name, and reboots GamePanel with new species name.
     }
     static void reboot(@NotNull String name) {
