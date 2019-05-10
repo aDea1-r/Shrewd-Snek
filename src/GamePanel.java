@@ -25,6 +25,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private List<Button> buttonList;
     private List<HiddenMenu> hiddenMenus;               // 0 - Replay Selection Menu
                                                         // 1 - Computer Selection Menu
+    Brain brainToDraw;
+
     private HiddenMenu VisibleMenu;
     private SnakeSorters selectedSorter;
     NumberSelector selectedNumberSelector;
@@ -358,7 +360,12 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         g.fillRect(0,0,2000,1500);
 
         if(renderEngine!=null)                          //Draw last
+        {
             renderEngine.drawMe(g);
+            if(brainToDraw!=null)
+                brainToDraw.drawMe(g,renderEngine.gameGrid);
+        }
+
 
         for (Button b: buttonList) {                    //Draw buttons
             b.drawMe(g);
@@ -424,6 +431,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
     public void mouseClicked(MouseEvent e)
     {
+        brainToDraw = null;
         e = SwingUtilities.convertMouseEvent(e.getComponent(),e,this);
         for (Button b: buttonList) {
             if(b.isPressed(e.getX(), e.getY())) {

@@ -9,6 +9,7 @@ public class AISnakeHead extends SnakeHead {
             this.brain = new Brain();
         else
             this.brain = brain;
+        Game.m.brainToDraw = this.brain;
     }
     boolean act(int[] vision) {
         double[] inputs = brain.compute(vision);
@@ -32,7 +33,7 @@ public class AISnakeHead extends SnakeHead {
     @Override
     public void drawMe(Graphics g){
         super.drawMe(g);
-        brain.drawMe(g, grid);
+//        brain.drawMe(g, grid);
     }
 
     public Brain getBrain() {
