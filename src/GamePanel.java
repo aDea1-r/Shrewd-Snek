@@ -33,7 +33,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
     private static int numPerGeneration = 1000;
     private Generation currentGeneration;
-    private String currentSpeciesName = "test1";
+    private String currentSpeciesName;
 
     private int currentTask;        //Track what it is currently doing
                                         //0 = idle
@@ -46,8 +46,10 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
     private final int fractionOfScreenToTake = 2;
 
-    GamePanel()
+    GamePanel(String speciesName)
     {
+        currentSpeciesName = speciesName;
+
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         width = (int) screen.getWidth()/fractionOfScreenToTake;
         height = (int) (screen.getHeight()-100)/fractionOfScreenToTake;
