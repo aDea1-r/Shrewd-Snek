@@ -665,6 +665,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         if (next==null)
             return;
         Game.reboot(next);
+        StaticEvolutionVariables.readVars(next);
     }
     private void startRebootWithNewSpecies() {
         Icon darwin = null;
@@ -699,6 +700,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             spotTaken = contains(existingSpecies,next);
         }
         Game.reboot(next);
+        StaticEvolutionVariables.create(next,darwin);
     }
     private static boolean contains(String[] arr, String str) {
         for (String s : arr) {
