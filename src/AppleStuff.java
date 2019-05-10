@@ -48,7 +48,7 @@ public abstract class AppleStuff extends Actor implements Drawable {
         grid.drawImage(g,this,image);
     }
 
-    private static BufferedImage createResizedCopy(Image originalImage, int scaledWidth, int scaledHeight)
+    static BufferedImage createResizedCopy(Image originalImage, int scaledWidth, int scaledHeight)
     {
 //        System.out.println("resizing...");
         int imageType = BufferedImage.TYPE_INT_ARGB;

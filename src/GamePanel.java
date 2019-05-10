@@ -1,9 +1,12 @@
 import java.awt.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import javax.swing.SwingUtilities;
@@ -70,6 +73,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
         updateGenCount();
         calcNumPerGen(speciesName);
+//        calcNumSpecies();
 
         initializeButtons();
         hiddenMenus = new ArrayList<>();
@@ -143,7 +147,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         Button changeSpecies = new Button((width*17) /20, height*11/20, width/8, height/12, "Change Species") {
             @Override
             public void action() {
-                startReboot();
+                startRebootWithExistingSpecies();
             }
         };
         buttonList.add(changeSpecies);
@@ -601,8 +605,36 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private int getNumPerGen(String name) {
         return numPerGeneration;
     }
-    private void startReboot() {
-        String next = JOptionPane.showInputDialog("Please Input Species Name: \n(Leave Blank for Default)",currentSpeciesName);
+    private int BufferedNumSpecies;
+    private String[] calcNumSpecies() {
+        File dir = new File("Training Data/");
+        if (!dir.exists()) {
+            BufferedNumSpecies = 0;
+            return new String[0];
+        }
+        String[] subDirs = dir.list(new FilenameFilter() {
+            @Override
+            public boolean accept(File pathname, String temp) {
+                return pathname.isDirectory();
+            }
+        });
+        BufferedNumSpecies = subDirs.length;
+        return subDirs;
+    }
+    private void startRebootWithExistingSpecies() {
+        Icon darwin = null;
+        try {
+            darwin = new ImageIcon(AppleStuff.createResizedCopy(ImageIO.read(new File("darwin.png")),50,50));
+        } catch (IOException e) {
+            System.out.println("Cannot find darwin icon");
+        }
+        String next = (String) JOptionPane.showInputDialog(this,
+                                                        "Please Select Species to Load: ",
+                                                        "Species Selection Wizard",
+                                                        JOptionPane.QUESTION_MESSAGE,
+                                                        darwin,
+                                                        calcNumSpecies(),
+                                                        currentSpeciesName);
         if (next==null)
             return;
         Game.reboot(next);
