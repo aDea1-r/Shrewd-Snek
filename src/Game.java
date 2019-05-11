@@ -1,15 +1,18 @@
 import com.sun.istack.internal.NotNull;
-
 import javax.swing.*;
-import java.awt.event.KeyListener;
-import java.security.Key;
+import java.io.File;
 
 public class Game{
     static GamePanel m;
-    static JFrame j;
-    static String defaultName = "Testing";
+    private static JFrame j;
+    private static String defaultName = "Testing";
+
     public static void main(String[] args) {
-        j = new JFrame();  //JFrame is the window; window is a depricated class
+        File dir = new File("Training Data/"+defaultName+"/evolutionVars.dat");
+        if (!dir.exists())
+            StaticEvolutionVariables.logVars(String.format("Training Data/&s/evolutionVars.dat",defaultName));
+
+        j = new JFrame();  //JFrame is the window; window is a depreciated class
         m = new GamePanel(defaultName);
         j.setSize(m.getSize());
         j.add(m); //adds the panel to the frame so that the picture will be drawn
@@ -40,7 +43,7 @@ public class Game{
 
         j.addMouseListener(m);
         j.addKeyListener(m);
-        j.setVisible(true);
+//        j.setVisible(true);
 
         j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }

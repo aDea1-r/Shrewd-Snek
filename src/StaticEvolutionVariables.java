@@ -36,7 +36,7 @@ public class StaticEvolutionVariables {
             System.out.println("FileNotFoundException at StaticEvolutionVars readVars");
         }
     }
-    private static void logVars(String path) {
+    static void logVars(String path) {
 //        String path = String.format("Training Data/%s/evolutionVars.dat",speciesName);
         try {
             PrintWriter logger = new PrintWriter(path);
