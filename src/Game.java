@@ -1,18 +1,27 @@
 import com.sun.istack.internal.NotNull;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 public class Game{
     static GamePanel m;
     private static JFrame j;
     private static String defaultName = "Testing";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         File dir = new File("Training Data/"+defaultName+"/evolutionVars.dat");
         if (!dir.exists())
             StaticEvolutionVariables.logVars(String.format("Training Data/%s/evolutionVars.dat",defaultName));
 
-        j = new JFrame();  //JFrame is the window; window is a depreciated class
+        j = new JFrame("Shrewd Snek");  //JFrame is the window; window is a depreciated class
+
+        Image snake = ImageIO.read(new File("snake.png"));
+        j.setIconImage(snake);
+
         m = new GamePanel(defaultName);
         j.setSize(m.getSize());
         j.add(m); //adds the panel to the frame so that the picture will be drawn
