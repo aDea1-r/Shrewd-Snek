@@ -48,7 +48,7 @@ public class StaticEvolutionVariables {
             logger.println(numTimesToRunGenerationDecreaseBy);
             logger.println(thresholdForRemovingBestRun);
         } catch (FileNotFoundException e) {
-            System.out.println("FileNotFoundException at StaticEvolutionVars logger");
+            System.out.printf("FileNotFoundException at StaticEvolutionVars logger: %s%n",e);
         }
     }
 //    static void init(String speciesName) {

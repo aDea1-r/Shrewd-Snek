@@ -10,7 +10,7 @@ public class Game{
     public static void main(String[] args) {
         File dir = new File("Training Data/"+defaultName+"/evolutionVars.dat");
         if (!dir.exists())
-            StaticEvolutionVariables.logVars(String.format("Training Data/&s/evolutionVars.dat",defaultName));
+            StaticEvolutionVariables.logVars(String.format("Training Data/%s/evolutionVars.dat",defaultName));
 
         j = new JFrame();  //JFrame is the window; window is a depreciated class
         m = new GamePanel(defaultName);
