@@ -13,9 +13,11 @@ public class Game{
     private static String defaultName = "Testing";
 
     public static void main(String[] args) throws IOException {
-        File dir = new File("Training Data/"+defaultName+"/evolutionVars.dat");
-        if (!dir.exists())
+        File dir = new File("Training Data/"+defaultName);
+        if (!dir.exists()) {
+            dir.mkdirs();
             StaticEvolutionVariables.logVars(String.format("Training Data/%s/evolutionVars.dat",defaultName));
+        }
 
         j = new JFrame("Shrewd Snek");  //JFrame is the window; window is a depreciated class
 
@@ -39,7 +41,7 @@ public class Game{
         //TODO: Add reboot method, called by button in GUI, that opens dialog box asking for new Species name, and reboots GamePanel with new species name.
     }
     static void reboot(@NotNull String name) {
-//        j.setVisible(false);
+        j.setVisible(false);
         j.remove(m);
 
         if (name.length()==0)
@@ -52,7 +54,7 @@ public class Game{
 
         j.addMouseListener(m);
         j.addKeyListener(m);
-//        j.setVisible(true);
+        j.setVisible(true);
 
         j.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }

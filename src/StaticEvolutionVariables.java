@@ -39,6 +39,9 @@ public class StaticEvolutionVariables {
     static void logVars(String path) {
 //        String path = String.format("Training Data/%s/evolutionVars.dat",speciesName);
         try {
+            File dir = new File(path.substring(0,path.lastIndexOf('/')+1));
+            if (!dir.exists())
+                dir.mkdirs();
             PrintWriter logger = new PrintWriter(path);
             logger.println(timeScoreMultiplier);
             logger.println(maxTimeScore);
@@ -76,9 +79,10 @@ public class StaticEvolutionVariables {
                     title, JOptionPane.QUESTION_MESSAGE, icon, null,
                     Double.toString(timeScoreMultiplier));
             isValid = isDouble(temp);
+            System.out.printf("isValid = %s, temp = %s%n", isValid, temp);
             if(!isValid)
                 JOptionPane.showMessageDialog(Game.m,String.format("Invalid Input! %nFound: %s%nRequired: %s",temp,((Object)timeScoreMultiplier).getClass().getName()),title,JOptionPane.ERROR_MESSAGE,icon);
-        } while (isValid);
+        } while (!isValid);
         timeScoreMultiplier = Double.valueOf(temp);
 
         //Init maxTimeScore
@@ -90,7 +94,7 @@ public class StaticEvolutionVariables {
             isValid = isDouble(temp);
             if(!isValid)
                 JOptionPane.showMessageDialog(Game.m,String.format("Invalid Input! %nFound: %s%nRequired: %s",temp,((Object)maxTimeScore).getClass().getName()),title,JOptionPane.ERROR_MESSAGE,icon);
-        } while (isValid);
+        } while (!isValid);
         maxTimeScore = Double.valueOf(temp);
 
         //Init timeOutTime
@@ -102,7 +106,7 @@ public class StaticEvolutionVariables {
             isValid = isInt(temp);
             if(!isValid)
                 JOptionPane.showMessageDialog(Game.m,String.format("Invalid Input! %nFound: %s%nRequired: %s",temp,((Object)timeOutTime).getClass().getName()),title,JOptionPane.ERROR_MESSAGE,icon);
-        } while (isValid);
+        } while (!isValid);
         timeOutTime = Integer.valueOf(temp);
 
         //Init percentOldToKeep
@@ -114,7 +118,7 @@ public class StaticEvolutionVariables {
             isValid = isDouble(temp);
             if(!isValid)
                 JOptionPane.showMessageDialog(Game.m,String.format("Invalid Input! %nFound: %s%nRequired: %s",temp,((Object)percentOldToKeep).getClass().getName()),title,JOptionPane.ERROR_MESSAGE,icon);
-        } while (isValid);
+        } while (!isValid);
         percentOldToKeep = Double.valueOf(temp);
 
         //Init numTimesToRunGeneration
@@ -126,7 +130,7 @@ public class StaticEvolutionVariables {
             isValid = isInt(temp);
             if(!isValid)
                 JOptionPane.showMessageDialog(Game.m,String.format("Invalid Input! %nFound: %s%nRequired: %s",temp,((Object)numTimesToRunGeneration).getClass().getName()),title,JOptionPane.ERROR_MESSAGE,icon);
-        } while (isValid);
+        } while (!isValid);
         numTimesToRunGeneration = Integer.valueOf(temp);
 
         //Init numTimesToRunGenerationDecreaseBy
@@ -138,7 +142,7 @@ public class StaticEvolutionVariables {
             isValid = isInt(temp);
             if(!isValid)
                 JOptionPane.showMessageDialog(Game.m,String.format("Invalid Input! %nFound: %s%nRequired: %s",temp,((Object)numTimesToRunGenerationDecreaseBy).getClass().getName()),title,JOptionPane.ERROR_MESSAGE,icon);
-        } while (isValid);
+        } while (!isValid);
         numTimesToRunGenerationDecreaseBy = Integer.valueOf(temp);
 
         //Init thresholdForRemovingBestRun
@@ -150,51 +154,59 @@ public class StaticEvolutionVariables {
             isValid = isInt(temp);
             if(!isValid)
                 JOptionPane.showMessageDialog(Game.m,String.format("Invalid Input! %nFound: %s%nRequired: %s",temp,((Object)thresholdForRemovingBestRun).getClass().getName()),title,JOptionPane.ERROR_MESSAGE,icon);
-        } while (isValid);
+        } while (!isValid);
         thresholdForRemovingBestRun = Integer.valueOf(temp);
         
         logVars(path);
     }
     private static boolean isDouble(String myString) {
-        final String Digits     = "(\\p{Digit}+)";
-        final String HexDigits  = "(\\p{XDigit}+)";
-        // an exponent is 'e' or 'E' followed by an optionally
-        // signed decimal integer.
-        final String Exp        = "[eE][+-]?"+Digits;
-        final String fpRegex    =
-                ("[\\x00-\\x20]*"+  // Optional leading "whitespace"
-                        "[+-]?(" + // Optional sign character
-                        "NaN|" +           // "NaN" string
-                        "Infinity|" +      // "Infinity" string
-
-                        // A decimal floating-point string representing a finite positive
-                        // number without a leading sign has at most five basic pieces:
-                        // Digits . Digits ExponentPart FloatTypeSuffix
-                        //
-                        // Since this method allows integer-only strings as input
-                        // in addition to strings of floating-point literals, the
-                        // two sub-patterns below are simplifications of the grammar
-                        // productions from section 3.10.2 of
-                        // The Java Language Specification.
-
-                        // Digits ._opt Digits_opt ExponentPart_opt FloatTypeSuffix_opt
-                        "((("+Digits+"(\\.)?("+Digits+"?)("+Exp+")?)|"+
-
-                        // . Digits ExponentPart_opt FloatTypeSuffix_opt
-                        "(\\.("+Digits+")("+Exp+")?)|"+
-
-                        // Hexadecimal strings
-                        "((" +
-                        // 0[xX] HexDigits ._opt BinaryExponent FloatTypeSuffix_opt
-                        "(0[xX]" + HexDigits + "(\\.)?)|" +
-
-                        // 0[xX] HexDigits_opt . HexDigits BinaryExponent FloatTypeSuffix_opt
-                        "(0[xX]" + HexDigits + "?(\\.)" + HexDigits + ")" +
-
-                        ")[pP][+-]?" + Digits + "))" +
-                        "[fFdD]?))" +
-                        "[\\x00-\\x20]*");// Optional trailing "whitespace"
-        return Pattern.matches(fpRegex, myString);
+//        final String Digits     = "(\\p{Digit}+)";
+//        final String HexDigits  = "(\\p{XDigit}+)";
+//        // an exponent is 'e' or 'E' followed by an optionally
+//        // signed decimal integer.
+//        final String Exp        = "[eE][+-]?"+Digits;
+//        final String fpRegex    =
+//                ("[\\x00-\\x20]*"+  // Optional leading "whitespace"
+//                        "[+-]?(" + // Optional sign character
+//                        "NaN|" +           // "NaN" string
+//                        "Infinity|" +      // "Infinity" string
+//
+//                        // A decimal floating-point string representing a finite positive
+//                        // number without a leading sign has at most five basic pieces:
+//                        // Digits . Digits ExponentPart FloatTypeSuffix
+//                        //
+//                        // Since this method allows integer-only strings as input
+//                        // in addition to strings of floating-point literals, the
+//                        // two sub-patterns below are simplifications of the grammar
+//                        // productions from section 3.10.2 of
+//                        // The Java Language Specification.
+//
+//                        // Digits ._opt Digits_opt ExponentPart_opt FloatTypeSuffix_opt
+//                        "((("+Digits+"(\\.)?("+Digits+"?)("+Exp+")?)|"+
+//
+//                        // . Digits ExponentPart_opt FloatTypeSuffix_opt
+//                        "(\\.("+Digits+")("+Exp+")?)|"+
+//
+//                        // Hexadecimal strings
+//                        "((" +
+//                        // 0[xX] HexDigits ._opt BinaryExponent FloatTypeSuffix_opt
+//                        "(0[xX]" + HexDigits + "(\\.)?)|" +
+//
+//                        // 0[xX] HexDigits_opt . HexDigits BinaryExponent FloatTypeSuffix_opt
+//                        "(0[xX]" + HexDigits + "?(\\.)" + HexDigits + ")" +
+//
+//                        ")[pP][+-]?" + Digits + "))" +
+//                        "[fFdD]?))" +
+//                        "[\\x00-\\x20]*");// Optional trailing "whitespace"
+//        return Pattern.matches(fpRegex, myString);
+        try{
+            Double.parseDouble(myString);
+            return true;
+        }catch(NumberFormatException e){
+            return false;
+        } catch (NullPointerException e) {
+            return false;
+        }
     }
     private static boolean isInt(String s) {
         int radix = 10;

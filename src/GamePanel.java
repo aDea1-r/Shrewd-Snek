@@ -235,6 +235,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             @Override
             public void action() {
                 int genID = gen.getCurrentValue();
+//                System.out.println("Loading gen");
                 selectedSorter = SnakeSorters.snakeSortersReader(genID,currentSpeciesName);
                 setBest.setText("Best: "+selectedSorter.getNth(0).genID);
                 setQ3.setText("Q3: "+selectedSorter.getNth(selectedSorter.getGenSize()/4).genID);
@@ -263,6 +264,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         temp.addNumberSelector(num);
 
         if(numGenerations>0) {
+//            System.out.println("Loading gen"+numGenerations);
             selectedSorter = SnakeSorters.snakeSortersReader(0,currentSpeciesName);
         }
 
@@ -562,6 +564,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         //TODO: make method to call this, probably make a new button for this
         GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
         if(currentGeneration==null && getGenCount(currentSpeciesName)==0) {
+            System.out.println("Gen count is "+getGenCount(currentSpeciesName));
             currentGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, 0, numPerGeneration);
         } else if(currentGeneration!=null) {
             Generation nextGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, currentGeneration.generationNum+1, numPerGeneration);
