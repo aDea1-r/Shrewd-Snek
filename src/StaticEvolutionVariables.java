@@ -100,7 +100,7 @@ class StaticEvolutionVariables {
         //Init timeOutTime
         do {
             temp = (String) JOptionPane.showInputDialog(Game.m,
-                    "Please Enter timeOutTime: \nThis is a measure of how fast points for time accrue",
+                    "Please Enter timeOutTime: \nThis is how long a snake can last without eating an apple.",
                     title, JOptionPane.QUESTION_MESSAGE, icon, null,
                     Integer.toString(timeOutTime));
             isValid = isInt(temp);

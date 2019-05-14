@@ -41,6 +41,8 @@ public class Game{
     }
     static void reboot(@NotNull String name) {
         j.setVisible(false);
+        j.removeMouseListener(m);
+        j.removeKeyListener(m);
         j.remove(m);
 
         if (name.length()==0)
