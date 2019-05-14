@@ -77,6 +77,20 @@ public class Brain implements Drawable, Serializable {
         }
         return new Brain();
     }
+    static Brain brainReader(String name) {
+        String path = String.format("Saved Data/%s/brain.dat",name);
+        try (FileInputStream f = new FileInputStream(path)) {
+            ObjectInputStream s = new ObjectInputStream(f);
+            Brain temp = (Brain) s.readObject();
+            s.close();
+            return temp;
+        } catch (FileNotFoundException e){
+            System.out.printf("FileNotFound at Bran readIn2, name: %s%n",name);
+        } catch (Exception e){
+            System.out.printf("Exception: %s, at Brain readin2 %n", e);
+        }
+        return new Brain();
+    }
     //used to create a copy version of existing Brain
     public Brain(Brain parent) {
         this(parent.sizeInput,parent.sizeHidden,parent.numHidden,parent.sizeOutput, 0, 0, 0, 0, 0, 0);

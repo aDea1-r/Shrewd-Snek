@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.List;
 import javax.swing.SwingUtilities;
@@ -196,10 +197,20 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         };
         temp.addButton(go);
+        Button save = new Button((width*31)/40, height*2/10, width*5/80, height*3/40, "Save") {
+            @Override
+            public void action() {
+                int genID = gen.getCurrentValue();
+                int brainID = num.getCurrentValue();
+                save(genID, brainID);
+            }
+        };
+        temp.addButton(save);
         Button setBest = new Button(width*59/80, height*4/10, width*4/40, height*2/40, "Best: ") {
             @Override
             public void action() {
                 num.setCurrentVal(getNumberAtEndOfText());
+                VisibleMenu = null;
             }
         };
         temp.addButton(setBest);
@@ -268,6 +279,14 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             selectedSorter = SnakeSorters.snakeSortersReader(0,currentSpeciesName);
         }
 
+        Button loadSaved = new Button(width*61/80,height/10,width*3/40, height/10, "Saved") {
+            @Override
+            public void action() {
+                playSaved();
+                VisibleMenu = null;
+            }
+        };
+        temp.addButton(loadSaved);
         Button refresh = new Button(width*14/20, height*1/40, width/10, height/20, "Refresh") {
             @Override
             public void action() {
@@ -711,5 +730,70 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
                 return true;
         }
         return false;
+    }
+    void save(int genID, int brainID) {
+        Icon icon = null;
+        try {
+            BufferedImage temp = ImageIO.read(new File("darwin.png"));
+            temp = AppleStuff.createResizedCopy(temp,50,50);
+            icon = new ImageIcon(temp);
+        } catch (IOException e) {
+            System.out.printf("IOException at replaySaved, cannot find darwin.png%n");
+        }
+        boolean isValid = false;
+        String newName = null;
+        File newDir = null;
+        while (!isValid) {
+            newName = null;
+            while(newName==null || newName.length()<=0) {
+                Object temp = JOptionPane.showInputDialog(this,"Please Name This Snake: ", "Snake Saving", JOptionPane.QUESTION_MESSAGE, icon, null, null);
+                newName = ((String)temp).trim();
+            }
+
+            newDir = new File(String.format("Saved Data/%s/",newName));
+            if (!newDir.exists())
+                isValid = true;
+            else
+                JOptionPane.showMessageDialog(this,String.format("Snake With Name %s Already Exists!",newName),"Snake Saving",JOptionPane.ERROR_MESSAGE,icon);
+        }
+        newDir.mkdirs();
+
+        File oldBrain = new File(String.format("Training Data/%s/%d/%d/brain.dat",currentSpeciesName,genID,brainID));
+        File newBrain = new File(String.format("Saved Data/%s/brain.dat",newName));
+        try {
+            Files.copy(oldBrain.toPath(),newBrain.toPath());
+        } catch (IOException e) {
+            System.out.printf("failed to save brain%n");
+        }
+    }
+    void playSaved() {
+        String[] savedList = getSavedList();
+        Icon icon = null;
+        try {
+            BufferedImage temp = ImageIO.read(new File("darwin.png"));
+            temp = AppleStuff.createResizedCopy(temp,50,50);
+            icon = new ImageIcon(temp);
+        } catch (IOException e) {
+            System.out.printf("IOException at replaySaved, cannot find darwin.png%n");
+        }
+        Object temp = JOptionPane.showInputDialog(this,"Please Select Saved Snake to Run", "Snake Selection", JOptionPane.QUESTION_MESSAGE, icon, savedList, null);
+        String snakeToRun = (String)temp;
+        Brain brain = Brain.brainReader(snakeToRun);
+
+        renderEngine = new GameEngineFixedTickRate(startXPercent, startYPercent, screenSize, height, width, inputs,false, brain, "Wut");
+        currentTask = 2;
+    }
+    private String[] getSavedList() {
+        File dir = new File("Saved Data/");
+        if (!dir.exists()) {
+            return new String[0];
+        }
+        String[] subDirs = dir.list(new FilenameFilter() {
+            @Override
+            public boolean accept(File pathname, String temp) {
+                return !temp.contains(".");
+            }
+        });
+        return subDirs;
     }
 }
