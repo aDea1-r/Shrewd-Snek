@@ -75,7 +75,7 @@ public class StaticEvolutionVariables {
         //Init timeScoreMultiplier
         do {
             temp = (String) JOptionPane.showInputDialog(Game.m,
-                    "Please Enter timeScoreMultiplier: \nThis is a measure of how fast points for time accrue",
+                    "Please Enter timeScoreMultiplier: \nThis is a measure of how fast points for time accrue.",
                     title, JOptionPane.QUESTION_MESSAGE, icon, null,
                     Double.toString(timeScoreMultiplier));
             isValid = isDouble(temp);
@@ -88,7 +88,7 @@ public class StaticEvolutionVariables {
         //Init maxTimeScore
         do {
             temp = (String) JOptionPane.showInputDialog(Game.m,
-                    "Please Enter maxTimeScore: \nThis is a measure of how fast points for time accrue",
+                    "Please Enter maxTimeScore: \nThis is the maximum number of points earned by surviving.",
                     title, JOptionPane.QUESTION_MESSAGE, icon, null,
                     Double.toString(maxTimeScore));
             isValid = isDouble(temp);
@@ -102,7 +102,7 @@ public class StaticEvolutionVariables {
             temp = (String) JOptionPane.showInputDialog(Game.m,
                     "Please Enter timeOutTime: \nThis is a measure of how fast points for time accrue",
                     title, JOptionPane.QUESTION_MESSAGE, icon, null,
-                    Double.toString(timeOutTime));
+                    Integer.toString(timeOutTime));
             isValid = isInt(temp);
             if(!isValid)
                 JOptionPane.showMessageDialog(Game.m,String.format("Invalid Input! %nFound: %s%nRequired: %s",temp,((Object)timeOutTime).getClass().getName()),title,JOptionPane.ERROR_MESSAGE,icon);
@@ -112,7 +112,7 @@ public class StaticEvolutionVariables {
         //Init percentOldToKeep
         do {
             temp = (String) JOptionPane.showInputDialog(Game.m,
-                    "Please Enter percentOldToKeep: \nThis is a measure of how fast points for time accrue",
+                    "Please Enter percentOldToKeep: \nThis is a measure of how many snakes to not kill each generation.",
                     title, JOptionPane.QUESTION_MESSAGE, icon, null,
                     Double.toString(percentOldToKeep));
             isValid = isDouble(temp);
@@ -124,9 +124,9 @@ public class StaticEvolutionVariables {
         //Init numTimesToRunGeneration
         do {
             temp = (String) JOptionPane.showInputDialog(Game.m,
-                    "Please Enter numTimesToRunGeneration: \nThis is a measure of how fast points for time accrue",
+                    "Please Enter numTimesToRunGeneration: \nThis is a measure of how many times each snake is ran.",
                     title, JOptionPane.QUESTION_MESSAGE, icon, null,
-                    Double.toString(numTimesToRunGeneration));
+                    Integer.toString(numTimesToRunGeneration));
             isValid = isInt(temp);
             if(!isValid)
                 JOptionPane.showMessageDialog(Game.m,String.format("Invalid Input! %nFound: %s%nRequired: %s",temp,((Object)numTimesToRunGeneration).getClass().getName()),title,JOptionPane.ERROR_MESSAGE,icon);
@@ -136,9 +136,9 @@ public class StaticEvolutionVariables {
         //Init numTimesToRunGenerationDecreaseBy
         do {
             temp = (String) JOptionPane.showInputDialog(Game.m,
-                    "Please Enter numTimesToRunGenerationDecreaseBy: \nThis is a measure of how fast points for time accrue",
+                    "Please Enter numTimesToRunGenerationDecreaseBy: \nThis is a measure of how fast numTimesToRunGeneration decreases.",
                     title, JOptionPane.QUESTION_MESSAGE, icon, null,
-                    Double.toString(numTimesToRunGenerationDecreaseBy));
+                    Integer.toString(numTimesToRunGenerationDecreaseBy));
             isValid = isInt(temp);
             if(!isValid)
                 JOptionPane.showMessageDialog(Game.m,String.format("Invalid Input! %nFound: %s%nRequired: %s",temp,((Object)numTimesToRunGenerationDecreaseBy).getClass().getName()),title,JOptionPane.ERROR_MESSAGE,icon);
@@ -148,9 +148,9 @@ public class StaticEvolutionVariables {
         //Init thresholdForRemovingBestRun
         do {
             temp = (String) JOptionPane.showInputDialog(Game.m,
-                    "Please Enter thresholdForRemovingBestRun: \nThis is a measure of how fast points for time accrue",
+                    "Please Enter thresholdForRemovingBestRun: \nThis is a threshold of numTimesToRunGeneration for removing the best run of each snake.",
                     title, JOptionPane.QUESTION_MESSAGE, icon, null,
-                    Double.toString(thresholdForRemovingBestRun));
+                    Integer.toString(thresholdForRemovingBestRun));
             isValid = isInt(temp);
             if(!isValid)
                 JOptionPane.showMessageDialog(Game.m,String.format("Invalid Input! %nFound: %s%nRequired: %s",temp,((Object)thresholdForRemovingBestRun).getClass().getName()),title,JOptionPane.ERROR_MESSAGE,icon);
