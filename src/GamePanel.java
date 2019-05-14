@@ -210,7 +210,6 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             @Override
             public void action() {
                 num.setCurrentVal(getNumberAtEndOfText());
-                VisibleMenu = null;
             }
         };
         temp.addButton(setBest);
@@ -590,6 +589,13 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             currentGeneration = nextGeneration;
         } else {
             SnakeSorters prevData = SnakeSorters.snakeSortersReader(getGenCount(currentSpeciesName)-1,currentSpeciesName);
+            if (prevData==null) {
+                String path = String.format("Training Data/%s/%d",currentSpeciesName,bufferedGenCount-1);
+                deleteDirectory(new File(path));
+                bufferedGenCount--;
+                startNextGeneration();
+                return;
+            }
             currentGeneration = new Generation(startXPercent, startYPercent, screenSize, height, width, currentSpeciesName, prevData.genNum+1, numPerGeneration);
             currentGeneration.evolve(prevData, StaticEvolutionVariables.percentOldToKeep);
         }
@@ -794,5 +800,14 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         });
         return subDirs;
+    }
+    private static boolean deleteDirectory(File directoryToBeDeleted) {
+        File[] allContents = directoryToBeDeleted.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteDirectory(file);
+            }
+        }
+        return directoryToBeDeleted.delete();
     }
 }

@@ -22,7 +22,7 @@ public class ScoreTracker extends Actor {
         tickCount++;
         idleTickCount++;
 //        System.out.println(idleTickCount*GameEngine.refreshRate/1000.0);
-        if(idleTickCount > StaticEvolutionVariables.timeOutTime+score*(StaticEvolutionVariables.timeOutTime*0.1))
+        if(idleTickCount > StaticEvolutionVariables.timeOutTime+score)
             game.kill();
         return true;
     }

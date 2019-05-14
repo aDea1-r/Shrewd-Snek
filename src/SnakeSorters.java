@@ -8,6 +8,7 @@ public class SnakeSorters implements Serializable {
     private int genSize;
     String speciesName;
     private boolean sorted;
+    public static final long serialVersionUID = 573487534857384L;
 
     SnakeSorters(int genNum, int genSize, String speciesName){
         this.genNum = genNum;
@@ -86,7 +87,7 @@ public class SnakeSorters implements Serializable {
         } catch (FileNotFoundException e){
             System.out.printf("FileNotFound at snakeSorters readIn, gen = %d, speciesName = %s%n", gen, speciesName);
         } catch (IOException e){
-            System.out.printf("IOException, at SnakeSorters readin%n");
+            System.out.printf("IOException %s , at SnakeSorters readin%n",e);
         } catch (ClassNotFoundException e) {
             System.out.println("ClassNotFoundException at snakeSorters readin");
         }
