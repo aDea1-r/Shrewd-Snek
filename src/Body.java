@@ -7,7 +7,7 @@ public class Body extends Actor implements Drawable {
         super(c, x, y, grid, id);
     }
 
-    public void kill(){
+    void kill(){
         grid.gridMat[x][y] = null;
     }
 

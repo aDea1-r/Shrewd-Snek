@@ -13,7 +13,7 @@ public abstract class Button implements Drawable {
     Button(int x, int y, int width, int height, String text) {
         this(x,y,width,height,text,Color.yellow, Color.black);
     }
-    Button(int x, int y, int width, int height, String text, Color b, Color t) {
+    private Button(int x, int y, int width, int height, String text, Color b, Color t) {
         setText(text);
         hitbox = new Rectangle(x,y,width,height);
         buttonColor = b;

@@ -1,4 +1,4 @@
-public class StaticBrainVariables {
+class StaticBrainVariables {
 
     //neural net constants
     static final int sizeInputs = 14;

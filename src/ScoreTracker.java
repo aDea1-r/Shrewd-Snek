@@ -32,7 +32,7 @@ public class ScoreTracker extends Actor {
         score++;
         idleTickCount = 0;
     }
-    public double getFitness() {
+    double getFitness() {
 //        System.out.printf("Scoretracker getFit called score = %d, idleTickCount = %d%n", score, idleTickCount);
         double duration = idleTickCount*StaticEvolutionVariables.timeScoreMultiplier;
         double maxTimePoints = StaticEvolutionVariables.maxTimeScore - 100*Double.MIN_VALUE;

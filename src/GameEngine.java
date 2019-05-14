@@ -215,8 +215,9 @@ public abstract class GameEngine implements Drawable {
     }
     private static String printArr(int[] arr){
         StringBuilder str = new StringBuilder();
-        for (int i = 0; i < arr.length; i++) {
-            str.append(arr[i] + " ");
+        for (int value : arr) {
+            str.append(value);
+            str.append(" ");
         }
         return str.toString();
     }

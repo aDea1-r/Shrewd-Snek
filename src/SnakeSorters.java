@@ -5,11 +5,11 @@ public class SnakeSorters implements Serializable {
     PriorityQueue<SnakeSorter> pq;
     private SnakeSorter[] arr;
     int genNum;
-    int genSize;
+    private int genSize;
     String speciesName;
-    boolean sorted;
+    private boolean sorted;
 
-    public SnakeSorters(int genNum, int genSize, String speciesName){
+    SnakeSorters(int genNum, int genSize, String speciesName){
         this.genNum = genNum;
         this.genSize = genSize;
         arr = new SnakeSorter[genSize];
@@ -35,7 +35,7 @@ public class SnakeSorters implements Serializable {
         pq = null;
         sorted = true;
     }
-    public SnakeSorter getNth(int n){
+    SnakeSorter getNth(int n){
         if(!sorted)
             initArr();
         return arr[n];
@@ -43,7 +43,7 @@ public class SnakeSorters implements Serializable {
     int getGenSize() {
         return genSize;
     }
-    public void log() {
+    void log() {
         if(!sorted)
             initArr();
         pq = null;

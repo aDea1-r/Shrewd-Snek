@@ -7,9 +7,9 @@ public class GameEngineVariableTickRate extends GameEngine implements Runnable {
 
     String speciesName;
 
-    double[] fitnessScores;     //Tracks fitness scores of previous runs
-    int numTimesRun;            //Tracks number of times it has run already
-    int targetNumTimesRun;
+    private double[] fitnessScores;     //Tracks fitness scores of previous runs
+    private int numTimesRun;            //Tracks number of times it has run already
+    private int targetNumTimesRun;
 
     GameEngineVariableTickRate(double startXPercent, double startYPercent, double screenSize, int height, int width, boolean upi, int genID, Brain brain, String speciesName, int targetNumTimesRun) {
         super(startXPercent,startYPercent,screenSize,height,width,upi, brain);
@@ -64,11 +64,11 @@ public class GameEngineVariableTickRate extends GameEngine implements Runnable {
         double sum = 0;
         double max = 0;
 //        System.out.printf("getFitness of engine ID #%d called%n", genID);
-        for (int i = 0; i < fitnessScores.length; i++) {
+        for (double fitnessScore : fitnessScores) {
 //            System.out.printf(" %d-ith fitness was %f%n", i, fitnessScores[i]);
-            sum += fitnessScores[i];
-            if(fitnessScores[i]>max)
-                max = fitnessScores[i];
+            sum += fitnessScore;
+            if (fitnessScore > max)
+                max = fitnessScore;
         }
         if(fitnessScores.length>=StaticEvolutionVariables.thresholdForRemovingBestRun) {
             sum -= max;

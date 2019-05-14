@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class AppleReader extends AppleStuff{
+class AppleReader extends AppleStuff{
     private BufferedReader buff;
 
     AppleReader(Color c, Grid grid, int id, int generation, int brainID, String speciesName) {

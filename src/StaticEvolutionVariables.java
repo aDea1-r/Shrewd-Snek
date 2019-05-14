@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-public class StaticEvolutionVariables {
+class StaticEvolutionVariables {
 
     //time score stuff
     static double timeScoreMultiplier = 2;     //How fast points for time accrue,
@@ -202,9 +202,7 @@ public class StaticEvolutionVariables {
         try{
             Double.parseDouble(myString);
             return true;
-        }catch(NumberFormatException e){
-            return false;
-        } catch (NullPointerException e) {
+        }catch(NumberFormatException | NullPointerException e){
             return false;
         }
     }

@@ -11,7 +11,7 @@ public class SnakeHead extends Actor implements Drawable {
 
     SnakeHead(Color c, int x, int y, Grid grid, int id, ScoreTracker score){
         super(c, x, y, grid, id);
-        bodyParts = new LinkedList<Body>();
+        bodyParts = new LinkedList<>();
         length = 4;
         direction = 1;
 //        typeID = 1;

@@ -1,4 +1,3 @@
-import javax.management.monitor.GaugeMonitor;
 import java.awt.*;
 import java.util.*;
 import java.io.*;
@@ -60,7 +59,7 @@ public class Brain implements Drawable, Serializable {
         this(StaticBrainVariables.sizeInputs,StaticBrainVariables.sizeHidden,StaticBrainVariables.numHidden,StaticBrainVariables.sizeOutput, StaticBrainVariables.initialWeight, StaticBrainVariables.initialBias, StaticBrainVariables.initialMutateMean, StaticBrainVariables.initialMutateStanDev, StaticBrainVariables.initialBiasMutateMean, StaticBrainVariables.initialBiasMutateStanDev);
     }
 
-    public static Brain brainReader(int gen, int num, String speciesName) {
+    static Brain brainReader(int gen, int num, String speciesName) {
 //        String path = "Training Data/" +gen+"/"+num+"/brain.dat";
         String path = String.format("Training Data/%s/%d/%d/brain.dat", speciesName, gen, num);
         try (FileInputStream f = new FileInputStream(path)) {
@@ -233,7 +232,7 @@ public class Brain implements Drawable, Serializable {
         }
     }
 
-    void blanketMutate(double mean, double stanDeviation, double biasMean, double biasStanDeviation) {
+    private void blanketMutate(double mean, double stanDeviation, double biasMean, double biasStanDeviation) {
         //should mutate current brain object
         Random ran = new Random();
         for (int inputLayerNodeNum = 0; inputLayerNodeNum < inputWeights.length; inputLayerNodeNum++){      //Input weights

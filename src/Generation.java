@@ -27,8 +27,8 @@ public class Generation implements Drawable {
     SnakeSorters snekSort;
     private double percentOldToKeep;                //the percent of the previous generation we will keep and mutate
 
-    static int maximumSimultaneousThreads = 200;
-    static int maxThreadsToStartAtOnce = 20;
+    private static int maximumSimultaneousThreads = 200;
+    private static int maxThreadsToStartAtOnce = 20;
         //TODO: glitch where one or two gameEngines never finish
         //TODO: seems to occur more when this variable is bigger, possibly due to simultaneous running?
         //TODO: Glitch seems fixed? NVM its still broken
@@ -44,7 +44,7 @@ public class Generation implements Drawable {
     private double screenSize;      //% of the total screen which the play screen will take up
     private Grid gameGrid;
 
-    public Generation(double startXPercent, double startYPercent, double screenSize, int height, int width, String speciesName, int generationNum, int numPerGeneration){
+    Generation(double startXPercent, double startYPercent, double screenSize, int height, int width, String speciesName, int generationNum, int numPerGeneration){
 
         this.startXPercent = startXPercent;
         this.startYPercent = startYPercent;
@@ -89,7 +89,7 @@ public class Generation implements Drawable {
         percentOldToKeep = StaticEvolutionVariables.percentOldToKeep;
     }
 
-    public boolean evolve(SnakeSorters snekSort, double percentOldToKeep){
+    boolean evolve(SnakeSorters snekSort, double percentOldToKeep){
         /*
         Method which is called by GamePanel, clones, mutates, etc a previous gen
          */
@@ -165,7 +165,7 @@ public class Generation implements Drawable {
         return true;
     }
 
-    public void removeEngine(GameEngineVariableTickRate gm){
+    void removeEngine(GameEngineVariableTickRate gm){
 //        System.out.printf("Removing GameEngine: %s%n", gm.genID);
         enginesCurrentlyRunning[gm.genID] = null;
         enginesCurrentlyRunningLength.decrementAndGet();
@@ -179,7 +179,7 @@ public class Generation implements Drawable {
         temp.start();
     }
 
-    public boolean isDone(){
+    boolean isDone(){
         return enginesCurrentlyRunningLength.get() <= 0 && enginesWaitingToRun.isEmpty() && hasOnlyNulls(enginesCurrentlyRunning);
     }
 
