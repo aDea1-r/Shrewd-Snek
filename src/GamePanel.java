@@ -168,7 +168,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         int genStart = 0;
         if(numGenerations==0)
             genStart=-1;
-        NumberSelector gen = new NumberSelector((width*14) /20, height*1/10, width*2/40, height/5, 0, numGenerations-1,genStart);
+        NumberSelector gen = new NumberSelector((width*14) /20, height/10, width*2/40, height/5, 0, numGenerations-1,genStart);
         NumberSelector num = new NumberSelector((width*14) /20, height*4/10, width/40, height/5, 0, BufferedNumPerGen-1,genStart);
         temp.addNumberSelector(gen);
         temp.addNumberSelector(num);
@@ -177,7 +177,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             selectedSorter = SnakeSorters.snakeSortersReader(0,currentSpeciesName);
         }
 
-        Button refresh = new Button(width*14/20, height*1/40, width/10, height/20, "Refresh") {
+        Button refresh = new Button(width*14/20, height/40, width/10, height/20, "Refresh") {
             @Override
             public void action() {
                 int numGenerations = getGenCount(currentSpeciesName);
@@ -269,7 +269,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         int genStart = 0;
         if(numGenerations==0)
             genStart=-1;
-        NumberSelector gen = new NumberSelector((width*14) /20, height*1/10, width*2/40, height/5, 0, numGenerations-1,genStart);
+        NumberSelector gen = new NumberSelector((width*14) /20, height/10, width*2/40, height/5, 0, numGenerations-1,genStart);
         NumberSelector num = new NumberSelector((width*14) /20, height*4/10, width/40, height/5, 0, BufferedNumPerGen-1,genStart);
         temp.addNumberSelector(gen);
         temp.addNumberSelector(num);
@@ -287,7 +287,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         };
         temp.addButton(loadSaved);
-        Button refresh = new Button(width*14/20, height*1/40, width/10, height/20, "Refresh") {
+        Button refresh = new Button(width*14/20, height/40, width/10, height/20, "Refresh") {
             @Override
             public void action() {
                 int numGenerations = getGenCount(currentSpeciesName);
@@ -467,7 +467,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         int fontSize = width/50;
         g.setFont(new Font(Font.MONOSPACED, Font.BOLD, fontSize));
         g.setColor(Color.yellow);
-        g.drawString(titleCard, width/4 - (titleCard.length()*fontSize/4), 0+fontSize);
+        g.drawString(titleCard, width/4 - (titleCard.length()*fontSize/4), fontSize);
         g.drawString(numTyping,getWidth()-60, getHeight()-20);
         //-------------------------------------------------------------------------------------------------------------
         stupidG.drawImage(buff,0,0,null);   //Double buffer stuff
@@ -539,7 +539,6 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
             numTyping = "";
             selectedNumberSelector = null;
-            return;
         }
 
     }
@@ -654,11 +653,11 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private int getNumPerGen(String name) {
         return numPerGeneration;
     }
-    private int BufferedNumSpecies;
+//    private int BufferedNumSpecies;
     private String[] calcNumSpecies() {
         File dir = new File("Training Data/");
         if (!dir.exists()) {
-            BufferedNumSpecies = 0;
+//            BufferedNumSpecies = 0;
             return new String[0];
         }
         String[] subDirs = dir.list(new FilenameFilter() {
@@ -667,7 +666,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
                 return !temp.contains(".");
             }
         });
-        BufferedNumSpecies = subDirs.length;
+//        BufferedNumSpecies = subDirs.length;
         return subDirs;
     }
     private void startRebootWithExistingSpecies() {
@@ -731,7 +730,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         }
         return false;
     }
-    void save(int genID, int brainID) {
+    private void save(int genID, int brainID) {
         Icon icon = null;
         try {
             BufferedImage temp = ImageIO.read(new File("darwin.png"));
@@ -766,7 +765,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             System.out.printf("failed to save brain%n");
         }
     }
-    void playSaved() {
+    private void playSaved() {
         String[] savedList = getSavedList();
         Icon icon = null;
         try {
