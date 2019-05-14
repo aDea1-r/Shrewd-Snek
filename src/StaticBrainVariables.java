@@ -3,7 +3,7 @@ class StaticBrainVariables {
     //neural net constants
     static final int sizeInputs = 14;
     static final int sizeHidden = 10;
-    static final int numHidden = 1;
+    static final int numHidden = 2;
     static final int sizeOutput = 4;
 
     //for the very first mutate, when constructing a new brain
