@@ -743,7 +743,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             temp = AppleStuff.createResizedCopy(temp,50,50);
             icon = new ImageIcon(temp);
         } catch (IOException e) {
-            System.out.printf("IOException at replaySaved, cannot find darwin.png%n");
+            System.out.printf("IOException save, cannot find darwin.png%n");
         }
         boolean isValid = false;
         String newName = null;
@@ -772,6 +772,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         }
     }
     private void playSaved() {
+        GameEngineFixedTickRate.refreshRate = tickRateSelector.getCurrentValue();
         String[] savedList = getSavedList();
         Icon icon = null;
         try {
