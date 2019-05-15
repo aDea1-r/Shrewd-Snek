@@ -52,7 +52,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private String playerName;
     private boolean spamTraining = false;
 
-    private final int fractionOfScreenToTake = 2;
+    private final int fractionOfScreenToTake = 1;
 
     GamePanel(String speciesName)
     {
@@ -98,7 +98,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         };
         buttonList.add(player);
-        Button AI = new Button((width*17) /20, height*3/20, width/8, height/12, "Computer") {
+        Button AI = new Button((width*17) /20, height*3/20, width/8, height/12, "Start AI") {
             @Override
             public void action() {
                 int indexOfComputerMenu = 1;
@@ -296,7 +296,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         };
         temp.addButton(refresh);
-        Button go = new Button((width*14) /20, height*8/10, width/10, height/20, "Go!") {
+        Button go = new Button((width*14) /20, height*61/80, width/10, height*2/42, "Go!") {
             @Override
             public void action() {
                 int genID = gen.getCurrentValue();
@@ -354,7 +354,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         };
         temp.addButton(loadGen);
-        Button rand = new Button((width*14) /20, height*35/40, width/10, height*3/90, "Random") {
+        Button rand = new Button((width*14) /20, height*66/80, width/10, height*2/42, "Random") {
             @Override
             public void action() {
                 startAI();
