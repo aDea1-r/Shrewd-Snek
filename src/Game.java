@@ -1,4 +1,4 @@
-import com.sun.istack.internal.NotNull;
+
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -39,7 +39,9 @@ public class Game{
 //        StaticEvolutionVariables.create("Testing");
         //TODO: Add reboot method, called by button in GUI, that opens dialog box asking for new Species name, and reboots GamePanel with new species name.
     }
-    static void reboot(@NotNull String name) {
+    static void reboot(String name) {
+        if(name == null)
+            return;
         j.setVisible(false);
         j.removeMouseListener(m);
         j.removeKeyListener(m);
